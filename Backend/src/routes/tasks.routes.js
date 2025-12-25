@@ -1,15 +1,15 @@
 import { Router } from 'express'
 import {
-    listTasks,
+    getTasks,
     createTasks,
     toggleTasks,
     deleteTasks,
     renameTasks
-} from '../controllers/tasks.controllers.js';
+} from '../controllers/tasks.controllers.js'
 
-const router = Router();
+const router = Router()
 
-router.get('/', listTasks)
+router.get('/', getTasks)
 router.post('/', createTasks)
 router.patch('/:id', toggleTasks)
 router.delete('/:id', deleteTasks)
