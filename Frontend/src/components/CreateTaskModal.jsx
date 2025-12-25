@@ -7,31 +7,29 @@ function CreateTaskModal({ isOpen, onClose, onCreate, value, setValue }) {
     useEffect(() => {
 
         function handleKeyDown(e) {
-            if (!isOpen) return;
-
             if (e.key === 'Escape') {
-                onClose();
+                onClose()
             }
 
             if (e.key === 'Enter') {
-                e.preventDefault();
-                onCreate();
+                e.preventDefault()
+                onCreate()
             }
-
         }
-        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keydown', handleKeyDown)
 
         return () => {
             window.removeEventListener('keydown', handleKeyDown)
-        };
+        }
 
     }, [isOpen, onClose, onCreate])
 
-    if (!isOpen) return null;
+    if(!isOpen) return null;
 
     return (
-        <div className="modal-overlay">
-            <div className="modal">
+
+        <div className='modal-overlay'>
+            <div className='modal'>
                 <h2>Criar Tarefa</h2>
 
                 <input
@@ -41,13 +39,14 @@ function CreateTaskModal({ isOpen, onClose, onCreate, value, setValue }) {
                     onChange={(e) => setValue(e.target.value)}
                 />
 
-                <div className="modal-actions">
-                    <button title="Criar" onClick={onCreate}><FaCheck /></button>
-                    <button title="Cancelar" onClick={onClose}><MdCancel /></button>
+                <div className='modal-actions'>
+                    <button title='Criar' onClick={onCreate}> <FaCheck /> </button>
+                    <button title='Cancelar' onClick={onClose}> <MdCancel /> </button>
                 </div>
+
             </div>
         </div>
     )
-};
+}
 
-export default CreateTaskModal;
+export default CreateTaskModal
