@@ -7,31 +7,28 @@ function EditTaskModal({ isOpen, onClose, onRename, value, setValue }) {
     useEffect(() => {
 
         function handleKeyDown(e) {
-            if (!isOpen) return;
-
             if (e.key === 'Escape') {
-                onClose();
+                onClose()
             }
 
             if (e.key === 'Enter') {
-                e.preventDefault();
-                onRename();
+                e.preventDefault()
+                onRename()
             }
-
         }
-        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keydown', handleKeyDown)
 
         return () => {
             window.removeEventListener('keydown', handleKeyDown)
-        };
+        }
 
     }, [isOpen, onClose, onRename])
 
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay">
-            <div className="modal">
+        <div className='modal-overlay'>
+            <div className='modal'>
                 <h2>Editar Tarefa</h2>
 
                 <input
@@ -41,13 +38,13 @@ function EditTaskModal({ isOpen, onClose, onRename, value, setValue }) {
                     onChange={(e) => setValue(e.target.value)}
                 />
 
-                <div className="modal-actions">
-                    <button title="Salvar" onClick={onRename}><FaSave /></button>
-                    <button title="Cancelar" onClick={onClose}><MdCancel /></button>
+                <div className='modal-actions'>
+                    <button title='Salvar' onClick={onRename}> <FaSave /> </button>
+                    <button title='Cancelar' onClick={onClose}> <MdCancel /> </button>
                 </div>
             </div>
         </div>
     )
-};
+}
 
-export default EditTaskModal;
+export default EditTaskModal

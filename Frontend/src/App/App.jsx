@@ -1,56 +1,61 @@
 import { FaCheck, FaReply, FaTrash, FaPencilAlt } from 'react-icons/fa'
-import { useState, useEffect } from 'react'
-import CreateTaskModal from '../components/CreateTaskModal'
+import { useEffect, useState } from 'react'
 import { api } from '../services/api'
+import CreateTaskModal from '../components/CreateTaskModal'
 import EditTaskModal from '../components/EditTaskModal'
 
 function App() {
 
     const [title, setTitle] = useState('')
     const [tasks, setTasks] = useState([])
-    const [isModalCreateOpen, setIsModalCreateOpen] = useState(false)
     const [isModalEditOpen, setIsModalEditOpen] = useState(false)
+    const [isModalCreateOpen, setIsModalCreateOpen] = useState(false)
     const [editTitle, setEditTitle] = useState('')
-    const [editId, setEditId] = useState([])
+    const [editId, setEditId] = useState(null)
 
     async function loadTasks() {
-        const res = await api.get('/tasks');
-        setTasks(res.data)
-    };
+        try {
+            const res = await api.get('/tasks');
+            setTasks(res.data)
+        } catch (err) {
+            console.error('Erro ao carregar tarefas', err)
+        }
+    }
 
     async function createTasks() {
         if (!title) return;
 
-        await api.post('/tasks', { title });
+        await api.post('/tasks', { title })
         setTitle('')
         loadTasks()
-    };
+    }
 
     async function toggleTasks(id) {
         await api.patch(`/tasks/${id}`)
         loadTasks()
-    };
+    }
 
     async function deleteTasks(id) {
         await api.delete(`/tasks/${id}`)
         loadTasks()
-    };
+    }
 
     function openModal() {
         setIsModalCreateOpen(true)
-    };
+    }
 
     function openEditModal(task) {
-        setEditTitle(task.title)
         setEditId(task.id)
+        setEditTitle(task.title)
         setIsModalEditOpen(true)
     }
 
     async function saveEdit() {
+        if (!editTitle.trim()) return;
+
         await api.put(`/tasks/${editId}`, {
             title: editTitle
         });
-
         setIsModalEditOpen(false)
         loadTasks()
     }
@@ -63,11 +68,8 @@ function App() {
         <div className='container'>
             <h1>Lista de Tarefas</h1>
 
-            <button
-                className='open-modal'
-                onClick={() => openModal()}
-            >
-                Nova Tarefa
+            <button className='open-modal' onClick={openModal}>
+                Adicionar Tarefa
             </button>
 
             <hr />
