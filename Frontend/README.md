@@ -1,14 +1,18 @@
-## FullStack To-Do-List 
+## FullStack To-Do-List
 
-FrontEnd: React + Vite
-BackEnd: Node.js + Express
-Database: MySQL
+Aplicação Full-Stack onde o frontend consome uma API hospedada externamente.
 
-### Rodar Projeto
+### Tecnologias
+**Frontend:** React + Vite  
+**Backend:** Node.js + Express (hospedado)  
+**Database:** MySQL  
 
-cd .\Backend\src\
-node server.js
+---
 
-cd ..\..\Frontend\
+## Como rodar o projeto
+
+### Frontend
+```bash
+cd Frontend
 npm install
 npm run dev
