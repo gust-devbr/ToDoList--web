@@ -16,9 +16,10 @@ function App() {
     async function loadTasks() {
         try {
             const res = await api.get('/tasks');
-            setTasks(res.data)
+            setTasks(Array.isArray(res.data) ? res.data : res.data.tasks || [])
         } catch (err) {
             console.error('Erro ao carregar tarefas', err)
+            setTasks([])
         }
     }
 
@@ -75,7 +76,7 @@ function App() {
             <hr />
 
             <ul>
-                {tasks.map(task => (
+                {tasks?.map(task => (
                     <li
                         key={task.id}
                         style={{ textDecoration: task.completed ? 'line-through' : 'none' }}
