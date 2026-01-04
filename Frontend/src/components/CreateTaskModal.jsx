@@ -14,6 +14,7 @@ function CreateTaskModal({ isOpen, onClose, onCreate, value, setValue }) {
             if (e.key === 'Enter') {
                 e.preventDefault()
                 onCreate()
+                onClose()
             }
         }
         window.addEventListener('keydown', handleKeyDown)
