@@ -126,6 +126,13 @@ function App() {
                 value={editTitle}
                 setValue={setEditTitle}
             />
+
+            {tasks.length > 0 && (
+                <div className='stats'>
+                    <span>Total: {tasks.length}</span>
+                    <span>Concluídas: {tasks.filter((t) => t.completed).length}</span>
+                </div>
+            )}
         </div>
     )
 };
