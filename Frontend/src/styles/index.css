@@ -80,3 +80,14 @@ li {
     font-size: 16px;
     cursor: pointer;
 }
+
+.stats {
+    margin-top: 5%;
+    padding: 10px;
+    background: #fff;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #555;
+}
