@@ -1,28 +1,27 @@
-import { FaSave } from 'react-icons/fa'
-import { MdCancel } from 'react-icons/md'
-import { useEffect } from 'react'
+import { FaSave } from 'react-icons/fa';
+import { MdCancel } from 'react-icons/md';
+import { useEffect } from 'react';
 
-function EditTaskModal({ isOpen, onClose, onRename, value, setValue }) {
+export default function EditTaskModal({ isOpen, onClose, onRename, value, setValue }) {
 
     useEffect(() => {
-
         function handleKeyDown(e) {
             if (e.key === 'Escape') {
                 onClose()
-            }
+            };
 
             if (e.key === 'Enter') {
                 e.preventDefault()
                 onRename()
-            }
+            };
         }
         window.addEventListener('keydown', handleKeyDown)
 
         return () => {
             window.removeEventListener('keydown', handleKeyDown)
-        }
+        };
 
-    }, [isOpen, onClose, onRename])
+    }, [isOpen, onClose, onRename]);
 
     if (!isOpen) return null;
 
@@ -45,6 +44,4 @@ function EditTaskModal({ isOpen, onClose, onRename, value, setValue }) {
             </div>
         </div>
     )
-}
-
-export default EditTaskModal
+};
