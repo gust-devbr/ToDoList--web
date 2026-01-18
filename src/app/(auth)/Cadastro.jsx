@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from '../../services/api';
-import { useTheme } from '../../context/ThemeContext';
 
 export default function Cadastro() {
-    const { theme } = useTheme();
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
@@ -21,31 +19,31 @@ export default function Cadastro() {
 
     return (
         <form onSubmit={handleCadastro}>
-            <div style={{ ...styles.container, backgroundColor: theme.card }}>
+            <div style={{ ...styles.container }}>
                 <h1>Cadastro</h1>
 
                 <input
-                    style={{ ...styles.input, color: theme.text }}
+                    style={{ ...styles.input }}
                     placeholder="Nome"
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
                 />
 
                 <input
-                    style={{ ...styles.input, color: theme.text }}
+                    style={{ ...styles.input }}
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
 
                 <input
-                    style={{ ...styles.input, color: theme.text }}
+                    style={{ ...styles.input }}
                     placeholder="Senha"
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
                 />
 
-                <span style={{ ...styles.box, backgroundColor: theme.card }}>
+                <span style={{ ...styles.box }}>
                     <span>Já tem conta?</span>
                     <span style={{ ...styles.link }} onClick={() => navigate("/login")}>Login</span>
                 </span>
@@ -53,13 +51,14 @@ export default function Cadastro() {
                 <button style={{ ...styles.button }}>Cadastro</button>
             </div>
 
-            <p style={{...styles.aviso, color: theme.icon}}>*Não utilize dados reais</p>
+            <p style={{...styles.aviso }}>*Não utilize dados reais</p>
         </form>
     )
 };
 
 const styles = {
     container: {
+        backgroundColor: '#F2F2F2',
         border: 'none',
         borderRadius: '20px',
         padding: '15px',
@@ -103,5 +102,6 @@ const styles = {
     aviso: {
         textAlign: 'center',
         fontSize: '17px',
+        color: 'red',
     },
 };

@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from '../../services/api';
-import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 
 export default function Login() {
-    const { theme } = useTheme();
     const { login } = useAuth();
 
     const [email, setEmail] = useState('');
@@ -34,24 +32,24 @@ export default function Login() {
 
     return (
         <form onSubmit={handleLogin}>
-            <div style={{ ...styles.container, backgroundColor: theme.card }}>
+            <div style={{ ...styles.container }}>
                 <h1>Login</h1>
 
                 <input
-                    style={{ ...styles.input, color: theme.text }}
+                    style={{ ...styles.input }}
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
 
                 <input
-                    style={{ ...styles.input, color: theme.text }}
+                    style={{ ...styles.input }}
                     placeholder="Senha"
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
                 />
 
-                <span style={{ ...styles.box, backgroundColor: theme.card }}>
+                <span style={{ ...styles.box }}>
                     <span>Não tem conta?</span>
                     <span style={{ ...styles.link }} onClick={() => navigate("/cadastro")}>Cadastre-se</span>
                 </span>
@@ -64,6 +62,7 @@ export default function Login() {
 
 const styles = {
     container: {
+        backgroundColor: '#F2F2F2',
         border: 'none',
         borderRadius: '20px',
         padding: '15px',
