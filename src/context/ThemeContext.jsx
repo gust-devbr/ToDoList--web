@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "./AuthContext";
 
 const ThemeContext = createContext();
 
@@ -20,6 +21,7 @@ const darkTheme = {
 
 export function ThemeProvider({ children }) {
     const [darkMode, setDarkMode] = useState(false);
+    const { user } = useAuth();
 
     useEffect(() => {
         const saved = localStorage.getItem("theme");
@@ -33,9 +35,13 @@ export function ThemeProvider({ children }) {
     const theme = darkMode ? darkTheme : lightTheme;
 
     useEffect(() => {
-        document.body.style.backgroundColor = theme.background;
-        document.body.style.transition = "background-color 0.3s ease";
-    }, [theme])
+        if (user) {
+            document.body.style.backgroundColor = theme.background;
+            document.body.style.transition = "background-color 0.3s ease";
+        } else {
+            document.body.style.backgroundColor = "#FFF";
+        }
+    }, [theme, user])
 
     function toggleTheme() {
         setDarkMode(prev => !prev);
