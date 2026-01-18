@@ -151,7 +151,7 @@ export default function Tasks() {
             />
 
             {tasks.length > 0 && (
-                <div style={{...styles.statusBar, backgroundColor: theme.card }}>
+                <div style={{...styles.statusBar, backgroundColor: theme.background }}>
                     <span style={{ color: theme.text }}>Total: {tasks.length}</span>
                     <span style={{ color: theme.text }}>Concluídas: {tasks.filter((t) => t.completed).length}</span>
                 </div>
