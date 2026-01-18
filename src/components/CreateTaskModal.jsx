@@ -41,9 +41,9 @@ export default function CreateTaskModal({ isOpen, onClose, onCreate, value, setV
                     onChange={(e) => setValue(e.target.value)}
                 />
 
-                <div style={{...styles.modalActions, backgroundColor: theme.card}}>
-                    <button style={{...styles.button}} title='Criar' onClick={onCreate}> <FaCheck /> </button>
-                    <button style={{...styles.button}} title='Cancelar' onClick={onClose}> <MdCancel /> </button>
+                <div style={{...styles.modalActions }}>
+                    <button style={{...styles.button, color: theme.text}} title='Criar' onClick={onCreate}> <FaCheck /> </button>
+                    <button style={{...styles.button, color: theme.text}} title='Cancelar' onClick={onClose}> <MdCancel /> </button>
                 </div>
 
             </div>
@@ -57,7 +57,7 @@ const styles = {
         top: 0,
         left: 0,
         width: '100%',
-        heigth: '100%',
+        height: '100%',
         background: 'rgba(0, 0, 0, 0.5)',
         display: 'flex',
         alignItems: 'center',
@@ -67,7 +67,7 @@ const styles = {
         padding: '20px',
         borderRadius: '8px',
         width: '250px',
-        heigth: '100px',
+        height: '100px',
     },
     modalActions: {
         display: 'flex',
