@@ -201,6 +201,8 @@ const styles = {
         fontWeight: 'bold',
         flex: '1',
         wordBreak: 'break-word',
+        marginLeft: '-40px',
+        marginRight: '50px',
     },
     btnOpenModal: {
         width: '100%',
