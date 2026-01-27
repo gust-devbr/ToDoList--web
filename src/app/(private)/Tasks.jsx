@@ -72,12 +72,19 @@ export default function Tasks() {
     }, [])
 
     return (
-        <div style={{ ...styles.container, backgroundColor: theme.card, color: theme.text }}>
+        <div
+            className='border-none rounded-3xl p-10 shadow-2xl max-w-200 min-w-100'
+            style={{ backgroundColor: theme.card, color: theme.text }}
+        >
 
-            <div style={{...styles.header, color: theme.text }}>
+            <div
+                className='flex flex-row justify-between items-center mb-2'
+                style={{ color: theme.text }}
+            >
                 <h3>Olá, {user.nome}</h3>
                 <button
-                    style={{...styles.btnSettings, color: theme.text }}
+                    className='bg-transparent border-none text-2xl'
+                    style={{ color: theme.text }}
                     type='button'
                     title='Configurações'
                     onClick={() => navigate("/settings")}
@@ -87,52 +94,64 @@ export default function Tasks() {
             </div>
 
             <hr />
-            <p style={{...styles.title}}>Lista de Tarefas</p>
+            <p className='text-3xl text-center mb-8 font-bold mt-5'>
+                Lista de Tarefas
+            </p>
 
-            <button style={{...styles.btnOpenModal }} onClick={openModal}>
+            <button
+                className='text-xl w-full border-none rounded-[5px] py-2 px-8 bg-green-700 text-white hover:bg-green-600 mb-5'
+                onClick={openModal}>
                 Adicionar Tarefa
             </button>
 
             <hr />
 
-            <ul>
-                {tasks?.map(task => (
-                    <li
-                        key={task.id}
-                        style={{...styles.li, textDecoration: task.completed ? 'line-through' : 'none' }}
-                    >
-                        <span style={{...styles.taskTitle}}>
-                            {task.title}
-                        </span>
+            {tasks.length === 0 ? (
+                <p className='text-center mt-3'>Nenhuma tarefa encontrada</p>
+            ) : (
+                <ul>
+                    {tasks?.map(task => (
+                        <li
+                            className='flex justify-between items-center p-1 gap-10'
+                            key={task.id}
+                            style={{ textDecoration: task.completed ? 'line-through' : 'none' }}
+                        >
+                            <span className='text-[17px] font-bold flex-1 wrap-break-word mr-12.5'>
+                                {task.title}
+                            </span>
 
-                        <span>
-                            <button
-                                style={{ ...styles.actionsButtons, color: theme.text }}
-                                title='Editar'
-                                onClick={() => openEditModal(task)}
-                            >
-                                <FaPencilAlt />
-                            </button>
+                            <span className='flex gap-3'>
+                                <button
+                                    className='bg-transparent border-none cursor-pointer text-[20px]'
+                                    style={{ color: theme.text }}
+                                    title='Editar'
+                                    onClick={() => openEditModal(task)}
+                                >
+                                    <FaPencilAlt />
+                                </button>
 
-                            <button
-                                style={{ ...styles.actionsButtons, color: theme.checkIcon }}
-                                title={task.completed ? 'Desmarcar' : 'Concluída'}
-                                onClick={() => toggleTasks(task.id)}
-                            >
-                                {task.completed ? <FaReply /> : <FaCheck />}
-                            </button>
+                                <button
+                                    className='bg-transparent border-none cursor-pointer text-[22px]'
+                                    style={{ color: theme.checkIcon }}
+                                    title={task.completed ? 'Desmarcar' : 'Concluída'}
+                                    onClick={() => toggleTasks(task.id)}
+                                >
+                                    {task.completed ? <FaReply /> : <FaCheck />}
+                                </button>
 
-                            <button
-                                style={{ ...styles.actionsButtons,color: theme.icon }}
-                                title='Excluir'
-                                onClick={() => deleteTasks(task.id)}
-                            >
-                                <FaTrash />
-                            </button>
-                        </span>
-                    </li>
-                ))}
-            </ul>
+                                <button
+                                    className='bg-transparent border-none cursor-pointer text-[20px]'
+                                    style={{ color: theme.icon }}
+                                    title='Excluir'
+                                    onClick={() => deleteTasks(task.id)}
+                                >
+                                    <FaTrash />
+                                </button>
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            )}
 
             <CreateTaskModal
                 isOpen={isModalCreateOpen}
@@ -151,77 +170,14 @@ export default function Tasks() {
             />
 
             {tasks.length > 0 && (
-                <div style={{...styles.statusBar, backgroundColor: theme.background }}>
+                <div
+                    className='mt-8 p-3 rounded-sm flex justify-between text-[14px]'
+                    style={{ backgroundColor: theme.background }}
+                >
                     <span style={{ color: theme.text }}>Total: {tasks.length}</span>
                     <span style={{ color: theme.text }}>Concluídas: {tasks.filter((t) => t.completed).length}</span>
                 </div>
             )}
         </div>
     )
-};
-
-const styles = {
-    container: {
-        border: 'none',
-        borderRadius: '20px',
-        padding: '15px',
-        boxShadow: '2px 2px 15px',
-        maxWidth: '500px',
-        minWidth: '400px',
-    },
-    title: {
-        fontSize: '28px',
-        textAlign: 'center',
-        marginBottom: '30px',
-        fontWeight: 'bold',
-    },
-    li: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '10px',
-        gap: '10px',
-    },
-    actionsButtons: {
-        background: 'transparent',
-        border: 'none',
-        cursor: 'pointer',
-        fontSize: '20px',
-    },
-    statusBar: {
-        marginTop: '5%',
-        padding: '10px',
-        borderRadius: '4px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        fontSize: '14px',
-    },
-    taskTitle: {
-        fontSize: '17px',
-        fontWeight: 'bold',
-        flex: '1',
-        wordBreak: 'break-word',
-        marginLeft: '-40px',
-        marginRight: '50px',
-    },
-    btnOpenModal: {
-        width: '100%',
-        border: 'none',
-        borderRadius: '5px',
-        padding: '10px 25px',
-        backgroundColor: 'rgb(0, 100, 0)', 
-        color: '#FFF',
-        fontSize: '15px',
-    },
-    header: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    btnSettings: {
-        background: 'transparent',
-        border: 'none',
-        fontSize: '20px',
-    },
 };

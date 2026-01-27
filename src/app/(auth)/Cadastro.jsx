@@ -19,89 +19,42 @@ export default function Cadastro() {
 
     return (
         <form onSubmit={handleCadastro}>
-            <div style={{ ...styles.container }}>
-                <h1>Cadastro</h1>
+            <div className="flex flex-col bg-gray-100 border-none rounded-3xl p-3.5 shadow-md shadow-gray-800 min-w-100 max-w-120">
+                <h1 className="text-center text-3xl mb-5 mt-2">Cadastro</h1>
 
                 <input
-                    style={{ ...styles.input }}
+                    autoFocus
+                    className="border border-solid rounded-md mt-0.5 mb-0.5 py-3 px-4 text-md"
                     placeholder="Nome"
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
                 />
 
                 <input
-                    style={{ ...styles.input }}
+                    className="border border-solid rounded-md mt-0.5 mb-0.5 py-3 px-4 text-md"
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
 
                 <input
-                    style={{ ...styles.input }}
+                    className="border border-solid rounded-md mt-0.5 mb-0.5 py-3 px-4 text-md"
                     placeholder="Senha"
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
                 />
 
-                <span style={{ ...styles.box }}>
+                <span className="flex flex-row justify-between mt-3 mb-3 text-md py-1 px-2 rounded-xl">
                     <span>Já tem conta?</span>
-                    <span style={{ ...styles.link }} onClick={() => navigate("/login")}>Login</span>
+                    <span className="text-blue-600 hover:underline" onClick={() => navigate("/login")}>Login</span>
                 </span>
 
-                <button style={{ ...styles.button }}>Cadastro</button>
+                <button className="bg-green-700 text-white py-2 px-3 text-xl rounded-xl hover:bg-green-600 hover:shadow-md hover:shadow-gray-600">
+                    Cadastro
+                </button>
             </div>
 
-            <p style={{...styles.aviso }}>*Não utilize dados reais</p>
+            <p className="text-center text-2xs text-red-600 mt-2">*Não utilize dados reais</p>
         </form>
     )
-};
-
-const styles = {
-    container: {
-        backgroundColor: '#F2F2F2',
-        border: 'none',
-        borderRadius: '20px',
-        padding: '15px',
-        boxShadow: '2px 2px 15px',
-        maxWidth: '500px',
-        minWidth: '300px',
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    input: {
-        border: 'solid 1px',
-        borderRadius: '5px',
-        marginTop: '2px',
-        marginBottom: '2px',
-        padding: '10px 15px',
-        fontSize: '15px',
-    },
-    button: {
-        border: 'solid 1px',
-        borderRadius: '5px',
-        backgroundColor: 'green',
-        color: '#FFF',
-        width: '100%',
-        padding: '7px 10px',
-        fontSize: '18px',
-    },
-    box: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: '10px',
-        marginBottom: '10px',
-        fontSize: '17px',
-        padding: '5px 8px',
-        borderRadius: '10px',
-    },
-    link: {
-        color: 'blue',
-        textDecoration: 'underline',
-    },
-    aviso: {
-        textAlign: 'center',
-        fontSize: '17px',
-        color: 'red',
-    },
 };
