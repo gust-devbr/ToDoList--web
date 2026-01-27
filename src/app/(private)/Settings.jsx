@@ -10,90 +10,57 @@ export default function Settings() {
     const { darkMode, toggleTheme, theme } = useTheme();
 
     return (
-        <div style={{ ...styles.container, backgroundColor: theme.card, color: theme.text }}>
+        <div className="border border-solid px-10 py-8 rounded-xl max-w-119 min-w-110" style={{ backgroundColor: theme.card, color: theme.text }}>
 
-            <div style={{ ...styles.header }}>
+            <div className="flex items-center justify-between mb-5">
                 <button
-                    style={{ ...styles.btnBack, color: theme.text }}
+                    className="bg-transparent border-none text-xl"
+                    style={{ color: theme.text }}
                     title="Voltar"
                     onClick={() => navigate("/tasks")}
                 >
                     <FaArrowLeft />
                 </button>
-                <h2>Configurações</h2>
+                <h2 className="text-[18px]">Configurações</h2>
             </div>
 
             <hr />
 
-            <div style={{ ...styles.card, backgroundColor: theme.card }}>
-                <p style={{...styles.username}}>
+            <div className="flex flex-row justify-between mt-2 rounded-xl p-3 items-center" style={{ backgroundColor: theme.background }}>
+                <label>
+                    {darkMode ? "Tema claro" : "Tema escuro"}
+                </label>
+                <input
+                    className="accent-indigo-600 w-5 h-5"
+                    type="checkbox"
+                    checked={darkMode}
+                    onChange={toggleTheme}
+                />
+            </div>
+
+            <div className="p-2 mb-3 mt-3 rounded-xl" style={{ backgroundColor: theme.background }}>
+                <p className="text-md text-center">
                     <strong>Usuário:</strong> {user?.nome}
                     <br />
                     <strong>Email:</strong> {user?.email}
                 </p>
             </div>
 
-            <div style={{ ...styles.card, backgroundColor: theme.card }}>
-                <button onClick={toggleTheme} style={styles.button}>
-                    {darkMode ? "Tema Claro" : "Tema Escuro"}
-                </button>
-            </div>
-
-
-            <div style={{ ...styles.card, backgroundColor: theme.card }}>
+            <div className="p-2 mb-3 rounded-sm mt-10" style={{ backgroundColor: theme.card }}>
                 <button
+                    className="mb-1 w-full px-5 py-2 border-none rounded-sm cursor-pointer text-[1rem] text-white bg-red-600"
                     onClick={logout}
-                    style={{ ...styles.button, backgroundColor: "#fa1d1d" }}
                 >
                     Sair
                 </button>
 
                 <button
+                    className="w-full px-5 py-2 border-none rounded-sm cursor-pointer text-[1rem] text-white bg-red-800"
                     onClick={deleteAccount}
-                    style={{ ...styles.button, backgroundColor: "#7f1d1d" }}
                 >
                     Apagar Conta
                 </button>
             </div>
         </div>
     );
-};
-
-const styles = {
-    container: {
-        border: 'solid 1px',
-        padding: "20px 30px",
-        maxWidth: "500px",
-        borderRadius: "20px",
-    },
-    header: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '20px',
-    },
-    card: {
-        padding: "5px",
-        marginBottom: "1rem",
-        borderRadius: "8px",
-    },
-    button: {
-        width: "100%",
-        padding: "10px 15px",
-        border: "none",
-        borderRadius: "6px",
-        cursor: "pointer",
-        fontSize: "1rem",
-        color: "#fff",
-        backgroundColor: "#4f46e5",
-    },
-    username: {
-        fontSize: '18px',
-        textAlign: 'center',
-    },
-    btnBack: {
-        background: 'transparent',
-        border: 'none',
-        fontSize: '18px',
-    },
 };
