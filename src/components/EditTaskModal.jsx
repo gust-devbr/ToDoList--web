@@ -28,54 +28,41 @@ export default function EditTaskModal({ isOpen, onClose, onRename, value, setVal
     if (!isOpen) return null;
 
     return (
-        <div style={{ ...styles.modalOverlay }}>
-            <div style={{ ...styles.modal, background: theme.background }}>
-                <h2>Editar Tarefa</h2>
+        <div className='flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/30'>
+            <div
+                className='p-5 rounded-xl w-80 min-h-20 shadow-white shadow-sm'
+                style={{ background: theme.background }}
+            >
+                <h2 className='text-center mb-5 text-xl'>Editar Tarefa</h2>
 
                 <input
                     autoFocus
+                    className='border rounded-sm px-2'
                     placeholder='Editar Tarefa:'
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                 />
 
-                <div style={{ ...styles.modalActions }}>
-                    <button style={{ ...styles.button, color: theme.text }} title='Salvar' onClick={onRename}> <FaSave /> </button>
-                    <button style={{ ...styles.button, color: theme.text }} title='Cancelar' onClick={onClose}> <MdCancel /> </button>
+                <div className='flex justify-end -mt-6 gap-2'>
+                    <button
+                        className='border-none bg-transparent text-xl cursor-pointer'
+                        style={{ color: theme.text }}
+                        title='Salvar'
+                        onClick={onRename}
+                    >
+                        <FaSave />
+                    </button>
+
+                    <button
+                        className='border-none bg-transparent text-xl cursor-pointer'
+                        style={{ color: theme.text }}
+                        title='Cancelar'
+                        onClick={onClose}
+                    >
+                        <MdCancel />
+                    </button>
                 </div>
             </div>
         </div>
     )
-};
-
-const styles = {
-    modalOverlay: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        background: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    modal: {
-        padding: '20px',
-        borderRadius: '8px',
-        width: '250px',
-        height: '100px',
-    },
-    modalActions: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        marginTop: '-22px',
-        gap: '5px',
-    },
-    button: {
-        border: 'none',
-        background: 'transparent',
-        fontSize: '16px',
-        cursor: 'pointer',
-    },
 };

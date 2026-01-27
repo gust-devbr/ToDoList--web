@@ -18,7 +18,7 @@ export default function Login() {
             const res = await api.post('/auth/login', { email, senha });
 
             console.log(res.data)
-            
+
             await login({
                 token: res.data.token,
                 user: { nome: res.data.nome, email: res.data.email }
@@ -32,75 +32,33 @@ export default function Login() {
 
     return (
         <form onSubmit={handleLogin}>
-            <div style={{ ...styles.container }}>
-                <h1>Login</h1>
+            <div className="flex flex-col bg-gray-100 border-none rounded-3xl p-3.5 shadow-md shadow-gray-800 min-w-100 max-w-120">
+                <h1 className="text-center text-3xl mb-5 mt-2">Login</h1>
 
                 <input
-                    style={{ ...styles.input }}
+                    autoFocus
+                    className="border border-solid rounded-md mt-0.5 mb-0.5 py-3 px-4 text-md"
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
 
                 <input
-                    style={{ ...styles.input }}
+                    className="border border-solid rounded-md mt-0.5 mb-0.5 py-3 px-4 text-md"
                     placeholder="Senha"
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
                 />
 
-                <span style={{ ...styles.box }}>
+                <span className="flex flex-row justify-between mt-3 mb-3 text-md py-1 px-2 rounded-xl">
                     <span>Não tem conta?</span>
-                    <span style={{ ...styles.link }} onClick={() => navigate("/cadastro")}>Cadastre-se</span>
+                    <span className="text-blue-600 hover:underline" onClick={() => navigate("/cadastro")}>Cadastre-se</span>
                 </span>
 
-                <button style={{ ...styles.button }}>Login</button>
+                <button className="bg-green-700 text-white py-2 px-3 text-xl rounded-xl hover:bg-green-600 hover:shadow-md hover:shadow-gray-600">
+                    Login
+                </button>
             </div>
         </form>
     )
-};
-
-const styles = {
-    container: {
-        backgroundColor: '#F2F2F2',
-        border: 'none',
-        borderRadius: '20px',
-        padding: '15px',
-        boxShadow: '2px 2px 15px',
-        maxWidth: '500px',
-        minWidth: '300px',
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    input: {
-        border: 'solid 1px',
-        borderRadius: '5px',
-        marginTop: '2px',
-        marginBottom: '2px',
-        padding: '10px 15px',
-        fontSize: '15px',
-    },
-    button: {
-        border: 'solid 1px',
-        borderRadius: '5px',
-        backgroundColor: 'green',
-        color: '#FFF',
-        width: '100%',
-        padding: '7px 10px',
-        fontSize: '18px',
-    },
-    box: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: '10px',
-        marginBottom: '10px',
-        fontSize: '17px',
-        padding: '5px 8px',
-        borderRadius: '10px',
-    },
-    link: {
-        color: 'blue',
-        textDecoration: 'underline',
-    },
 };
