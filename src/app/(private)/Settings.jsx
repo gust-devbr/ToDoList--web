@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import { FaArrowLeft } from "react-icons/fa";
+import ChangeModalPass from "../../components/ChangePassModal";
 
 export default function Settings() {
     const navigate = useNavigate();
 
     const { user, logout, deleteAccount } = useAuth();
     const { darkMode, toggleTheme, theme } = useTheme();
+    const [isModalChangePassOpen, setIsModalChangePassOpen] = useState(false);
 
     return (
         <div className="border border-solid px-10 py-8 rounded-xl max-w-119 min-w-110" style={{ backgroundColor: theme.card, color: theme.text }}>
@@ -39,12 +42,23 @@ export default function Settings() {
             </div>
 
             <div className="p-2 mb-3 mt-3 rounded-xl" style={{ backgroundColor: theme.background }}>
-                <p className="text-md text-center">
+                <p className="text-md text-left">
                     <strong>Usuário:</strong> {user?.nome}
                     <br />
                     <strong>Email:</strong> {user?.email}
                 </p>
+                <button 
+                    className="mt-2 border text-black font-semibold text-md bg-white px-2 py-1 rounded-md"
+                    onClick={() => setIsModalChangePassOpen(true)}
+                >
+                    Alterar senha
+                </button>
             </div>
+
+            <ChangeModalPass
+                isOpen={isModalChangePassOpen}
+                onClose={() => setIsModalChangePassOpen(false)}
+            />
 
             <div className="p-2 mb-3 rounded-sm mt-10" style={{ backgroundColor: theme.card }}>
                 <button
