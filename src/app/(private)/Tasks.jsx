@@ -73,7 +73,7 @@ export default function Tasks() {
 
     return (
         <div
-            className='border-none rounded-3xl p-10 shadow-2xl max-w-200 min-w-100'
+            className='flex flex-col px-4 py-5 shadow-2xl w-full min-w-screen min-h-screen'
             style={{ backgroundColor: theme.card, color: theme.text }}
         >
 
@@ -171,7 +171,7 @@ export default function Tasks() {
 
             {tasks.length > 0 && (
                 <div
-                    className='mt-8 p-3 rounded-sm flex justify-between text-[14px]'
+                    className='mt-auto mb-10 lg:mb-0 p-3 rounded-sm flex justify-between text-[14px]'
                     style={{ backgroundColor: theme.background }}
                 >
                     <span style={{ color: theme.text }}>Total: {tasks.length}</span>
