@@ -10,7 +10,10 @@ export default function Navbar() {
     );
 
     return (
-        <header style={{ background: theme.background }} className='bg-white min-w-screen shadow-sm top-0 left-0 z-50 fixed flex justify-center border-b'>
+        <header
+            style={{ background: theme.background }}
+            className='bg-white min-w-screen shadow-sm top-0 left-0 z-50 fixed flex justify-center border-b'
+        >
             <nav className="max-w-7xl mx-auto h-15 px-8 flex items-center justify-between">
 
                 <ul className="flex gap-12">
@@ -21,7 +24,13 @@ export default function Navbar() {
                     </li>
 
                     <li>
-                        <NavLink to="settings" className={linkClass}>
+                        <NavLink to="/notes" className={linkClass}>
+                            Notas
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/settings" className={linkClass}>
                             Configurações
                         </NavLink>
                     </li>
