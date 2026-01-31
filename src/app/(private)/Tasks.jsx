@@ -1,4 +1,4 @@
-import { FaCheck, FaReply, FaTrash, FaPencilAlt, FaCog } from 'react-icons/fa';
+import { FaCheck, FaReply, FaTrash, FaPencilAlt } from 'react-icons/fa';
 import { useEffect, useState } from 'react'
 import api from '../../services/api'
 import CreateTaskModal from '../../components/CreateTaskModal';
@@ -77,23 +77,6 @@ export default function Tasks() {
             style={{ backgroundColor: theme.card, color: theme.text }}
         >
 
-            <div
-                className='flex flex-row justify-between items-center mb-2'
-                style={{ color: theme.text }}
-            >
-                <h3>Olá, {user.nome}</h3>
-                <button
-                    className='bg-transparent border-none text-2xl'
-                    style={{ color: theme.text }}
-                    type='button'
-                    title='Configurações'
-                    onClick={() => navigate("/settings")}
-                >
-                    <FaCog />
-                </button>
-            </div>
-
-            <hr />
             <p className='text-3xl text-center mb-8 font-bold mt-5'>
                 Lista de Tarefas
             </p>
