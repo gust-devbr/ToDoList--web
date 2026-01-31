@@ -13,7 +13,7 @@ export default function Settings() {
     const [isModalChangePassOpen, setIsModalChangePassOpen] = useState(false);
 
     return (
-        <div className="border border-solid px-10 py-8 rounded-xl max-w-119 min-w-110" style={{ backgroundColor: theme.card, color: theme.text }}>
+        <div className="px-3 py-5 w-full min-h-screen min-w-screen flex flex-col lg:w-screen" style={{ backgroundColor: theme.card, color: theme.text }}>
 
             <div className="flex items-center justify-between mb-5">
                 <button
@@ -30,9 +30,7 @@ export default function Settings() {
             <hr />
 
             <div className="flex flex-row justify-between mt-2 rounded-xl p-3 items-center" style={{ backgroundColor: theme.background }}>
-                <label>
-                    {darkMode ? "Tema claro" : "Tema escuro"}
-                </label>
+                <label>Tema escuro</label>
                 <input
                     className="accent-indigo-600 w-5 h-5"
                     type="checkbox"
@@ -41,7 +39,7 @@ export default function Settings() {
                 />
             </div>
 
-            <div className="p-2 mb-3 mt-3 rounded-xl" style={{ backgroundColor: theme.background }}>
+            <div className="p-3 mb-3 mt-3 rounded-xl" style={{ backgroundColor: theme.background }}>
                 <p className="text-md text-left">
                     <strong>Usuário:</strong> {user?.nome}
                     <br />
@@ -60,7 +58,7 @@ export default function Settings() {
                 onClose={() => setIsModalChangePassOpen(false)}
             />
 
-            <div className="p-2 mb-3 rounded-sm mt-10" style={{ backgroundColor: theme.card }}>
+            <div className="p-2 rounded-sm mt-auto mb-8 lg:mb-0" style={{ backgroundColor: theme.card }}>
                 <button
                     className="mb-1 w-full px-5 py-2 border-none rounded-sm cursor-pointer text-[1rem] text-white bg-red-600"
                     onClick={logout}
