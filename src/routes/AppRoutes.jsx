@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import Login from '../app/(auth)/Login';
 import Cadastro from '../app/(auth)/Cadastro';
 import Tasks from '../app/(private)/Tasks';
+import Notes from "../app/(private)/Notes";
 import Settings from '../app/(private)/Settings';
 
 import PrivateLayout from "../layout/PrivateLayout";
@@ -14,16 +15,18 @@ export default function AppRoutes() {
 
     return (
         <Routes>
-            {!user ? (
+            {!user && (
                 <>
                     <Route path="/login" element={<Login />} />
                     <Route path="/cadastro" element={<Cadastro />} />
                     <Route path="*" element={<Navigate to='/login' />} />
                 </>
-            ) : (
+            )}
+            {user && (
                 <>
                     <Route element={<PrivateLayout />}>
                         <Route path="/tasks" element={<Tasks />} />
+                        <Route path="/notes" element={<Notes />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="*" element={<Navigate to="/tasks" />} />
                     </Route>
