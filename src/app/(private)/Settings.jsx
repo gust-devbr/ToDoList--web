@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
-import { FaArrowLeft } from "react-icons/fa";
 import ChangeModalPass from "../../components/ChangePassModal";
 
 export default function Settings() {
@@ -14,20 +13,6 @@ export default function Settings() {
 
     return (
         <div className="px-3 py-5 w-full min-h-screen min-w-screen flex flex-col lg:w-screen" style={{ backgroundColor: theme.card, color: theme.text }}>
-
-            <div className="flex items-center justify-between mb-5">
-                <button
-                    className="bg-transparent border-none text-xl"
-                    style={{ color: theme.text }}
-                    title="Voltar"
-                    onClick={() => navigate("/tasks")}
-                >
-                    <FaArrowLeft />
-                </button>
-                <h2 className="text-[18px]">Configurações</h2>
-            </div>
-
-            <hr />
 
             <div className="flex flex-row justify-between mt-2 rounded-xl p-3 items-center" style={{ backgroundColor: theme.background }}>
                 <label>Tema escuro</label>

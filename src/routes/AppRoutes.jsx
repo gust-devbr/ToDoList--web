@@ -5,6 +5,8 @@ import Cadastro from '../app/(auth)/Cadastro';
 import Tasks from '../app/(private)/Tasks';
 import Settings from '../app/(private)/Settings';
 
+import PrivateLayout from "../layout/PrivateLayout";
+
 export default function AppRoutes() {
     const { user, loading } = useAuth();
 
@@ -20,9 +22,11 @@ export default function AppRoutes() {
                 </>
             ) : (
                 <>
-                    <Route path="/tasks" element={<Tasks />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="*" element={<Navigate to="/tasks" />} />
+                    <Route element={<PrivateLayout />}>
+                        <Route path="/tasks" element={<Tasks />} />
+                        <Route path="/settings" element={<Settings />} />
+                        <Route path="*" element={<Navigate to="/tasks" />} />
+                    </Route>
                 </>
             )}
         </Routes>
