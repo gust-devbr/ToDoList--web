@@ -3,19 +3,30 @@ import { useNavigate } from "react-router-dom";
 import api from '../../services/api';
 
 export default function Cadastro() {
-
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
     async function handleCadastro(e) {
         e.preventDefault();
 
-        await api.post("/auth/register", { nome, email, senha });
-        navigate("/login");
+        try {
+            await api.post("/auth/register", { nome, email, senha });
+            navigate("/login");
+
+        } catch (err) {
+            console.log(err);
+            alert("Erro ao cadastrar");
+
+        } finally {
+            setLoading(false);
+        }
     };
+
+    const isDisabled = !nome || !email || !senha;
 
     return (
         <form onSubmit={handleCadastro}>
@@ -49,8 +60,15 @@ export default function Cadastro() {
                     <span className="text-blue-600 hover:underline" onClick={() => navigate("/login")}>Login</span>
                 </span>
 
-                <button className="bg-green-700 text-white py-2 px-3 text-xl rounded-xl hover:bg-green-600 hover:shadow-md hover:shadow-gray-600">
-                    Cadastro
+                <button
+                    disabled={isDisabled}
+                    className={`text-white py-2 px-3 text-xl rounded-xl hover:shadow-md hover:shadow-gray-600
+                            ${isDisabled
+                            ? "bg-gray-400 cursor-not-allowed pointer-events-none"
+                            : "bg-green-700 hover:bg-green-600 hover:shadow-md hover:shadow-gray-600"}
+                        `}
+                >
+                    {loading ? "Cadastrando..." : "Cadastrar"}
                 </button>
             </div>
 

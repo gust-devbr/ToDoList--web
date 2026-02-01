@@ -8,6 +8,7 @@ export default function Login() {
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -15,6 +16,8 @@ export default function Login() {
         e.preventDefault();
 
         try {
+            setLoading(true)
+
             const res = await api.post('/auth/login', { email, senha });
 
             console.log(res.data)
@@ -24,11 +27,19 @@ export default function Login() {
                 user: { nome: res.data.nome, email: res.data.email }
             });
 
-            navigate("/tasks");
+            setTimeout(() => {
+                navigate("/tasks");
+            }, 800);
+
         } catch (err) {
-            alert(err.response?.data?.error || "Email ou senha inválidos")
+            console.log(err);
+            alert("Email ou senha inválidos");
+        } finally {
+            setLoading(false);
         }
     };
+
+    const isDisabled = !email || !senha;
 
     return (
         <form onSubmit={handleLogin}>
@@ -55,8 +66,15 @@ export default function Login() {
                     <span className="text-blue-600 hover:underline" onClick={() => navigate("/cadastro")}>Cadastre-se</span>
                 </span>
 
-                <button className="bg-green-700 text-white py-2 px-3 text-xl rounded-xl hover:bg-green-600 hover:shadow-md hover:shadow-gray-600">
-                    Login
+                <button
+                    disabled={isDisabled}
+                    className={`text-white py-2 px-3 text-xl rounded-xl hover:shadow-md hover:shadow-gray-600
+                            ${isDisabled || loading
+                            ? "bg-gray-400 cursor-not-allowed pointer-events-none"
+                            : "bg-green-700 hover:bg-green-600 hover:shadow-md hover:shadow-gray-600"}
+                        `}
+                >
+                    {loading ? "Entrando..." : "Login"}
                 </button>
             </div>
         </form>
