@@ -1,15 +1,27 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import ChangeModalPass from "../../components/ChangePassModal";
 
 export default function Settings() {
-    const navigate = useNavigate();
 
     const { user, logout, deleteAccount } = useAuth();
     const { darkMode, toggleTheme, theme } = useTheme();
     const [isModalChangePassOpen, setIsModalChangePassOpen] = useState(false);
+
+    function handleLogout() {
+        const confirmed = window.confirm("Realmente deseja sair?")
+        if (confirmed) {
+            logout()
+        }
+    };
+
+    function handleDelete() {
+        const confirmed = window.confirm("Deseja realmente deletar conta?")
+        if (confirmed) {
+            deleteAccount()
+        }
+    };
 
     return (
         <div className="px-3 py-5 w-full min-h-screen min-w-screen flex flex-col lg:w-screen" style={{ backgroundColor: theme.card, color: theme.text }}>
@@ -46,14 +58,14 @@ export default function Settings() {
             <div className="p-2 rounded-sm mt-auto mb-8 lg:mb-0" style={{ backgroundColor: theme.card }}>
                 <button
                     className="mb-1 w-full px-5 py-2 border-none rounded-sm cursor-pointer text-[1rem] text-white bg-red-600"
-                    onClick={logout}
+                    onClick={handleLogout}
                 >
                     Sair
                 </button>
 
                 <button
                     className="w-full px-5 py-2 border-none rounded-sm cursor-pointer text-[1rem] text-white bg-red-800"
-                    onClick={deleteAccount}
+                    onClick={handleDelete}
                 >
                     Apagar Conta
                 </button>
