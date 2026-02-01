@@ -1,23 +1,26 @@
 import { FaCheck, FaReply, FaTrash, FaPencilAlt } from 'react-icons/fa';
+import { MdOutlineInfo } from "react-icons/md";
 import { useEffect, useState } from 'react'
 import api from '../../services/api'
 import CreateTaskModal from '../../components/CreateTaskModal';
 import EditTaskModal from '../../components/EditTaskModal'
-import { useAuth } from '../../context/AuthContext'
-import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 
+function formatDate(date) {
+    return new Date(date).toLocaleDateString("pt-BR");
+};
+
 export default function Tasks() {
-    const navigate = useNavigate()
-    const { user } = useAuth()
     const { theme } = useTheme();
 
-    const [title, setTitle] = useState('')
-    const [tasks, setTasks] = useState([])
-    const [isModalEditOpen, setIsModalEditOpen] = useState(false)
-    const [isModalCreateOpen, setIsModalCreateOpen] = useState(false)
-    const [editTitle, setEditTitle] = useState('')
-    const [editId, setEditId] = useState(null)
+    const [title, setTitle] = useState('');
+    const [tasks, setTasks] = useState([]);
+    const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+    const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
+    const [editTitle, setEditTitle] = useState('');
+    const [editId, setEditId] = useState(null);
+
+    const [openInfoId, setOpenInfoId] = useState(false);
 
     async function loadTasks() {
         try {
@@ -94,13 +97,29 @@ export default function Tasks() {
             ) : (
                 <ul>
                     {tasks?.map(task => (
-                        <li
-                            className='flex justify-between items-center p-1 gap-10'
-                            key={task.id}
-                            style={{ textDecoration: task.completed ? 'line-through' : 'none' }}
-                        >
-                            <span className='text-[17px] font-bold flex-1 wrap-break-word mr-12.5'>
-                                {task.title}
+                        <li key={task.id} className='flex justify-between items-center p-1 gap-10' >
+
+                            <span className='flex flex-col'>
+                                <span className='flex items-center gap-1'>
+
+                                    <button onClick={() => setOpenInfoId(openInfoId === task.id ? null : task.id)}>
+                                        <MdOutlineInfo size={16} />
+                                    </button>
+
+                                    <span
+                                        style={{ textDecoration: task.completed ? 'line-through' : 'none' }}
+                                        className='text-[18px] font-bold flex-1 wrap-break-word mr-12.5'
+                                    >
+                                        {task.title}
+                                    </span>
+                                </span>
+
+                                {openInfoId === task.id && (
+                                    <p className='flex flex-col text-sm ml-5'>
+                                        Criada em <strong>{formatDate(task.created_at)}</strong>
+                                        Atualizada em <strong>{formatDate(task.updated_at)}</strong>
+                                    </p>
+                                )}
                             </span>
 
                             <span className='flex gap-3'>

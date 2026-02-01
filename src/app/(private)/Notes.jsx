@@ -1,9 +1,14 @@
 import { FaTrash, FaPencilAlt } from "react-icons/fa";
+import { MdOutlineInfo } from "react-icons/md";
 import { useState, useEffect } from "react";
 import CreateNoteModal from "../../components/CreateNoteModal";
 import EditNoteModal from "../../components/EditNoteModal";
 import { useTheme } from "../../context/ThemeContext";
 import api from "../../services/api";
+
+function formatDate(date) {
+    return new Date(date).toLocaleDateString("pt-BR");
+};
 
 export default function Notes() {
     const { theme } = useTheme();
@@ -17,6 +22,8 @@ export default function Notes() {
     const [editTitle, setEditTitle] = useState('');
     const [editContent, setEditContent] = useState('');
     const [editId, setEditId] = useState(null);
+
+    const [openInfoId, setOpenInfoId] = useState(false);
 
     const loadNotes = async () => {
         try {
@@ -87,12 +94,26 @@ export default function Notes() {
             ) : (
                 <ul>
                     {notes.map(note => (
-                        <li
-                            className='flex justify-between items-center p-1 gap-10'
-                            key={note.id}
-                        >
-                            <span className='text-[17px] font-bold flex-1 wrap-break-word mr-12.5'>
-                                {note.title} --- {note.content}
+                        <li key={note.id} className='flex justify-between items-center p-1 gap-10'>
+
+                            <span className="flex flex-col">
+                                <span className="flex items-center gap-1">
+
+                                    <button onClick={() => setOpenInfoId(openInfoId === note.id ? null : note.id)}>
+                                        <MdOutlineInfo size={16} />
+                                    </button>
+
+                                    <span className='text-[18px] font-bold flex-1 wrap-break-word mr-12.5'>
+                                        {note.title} --- {note.content}
+                                    </span>
+                                </span>
+
+                                {openInfoId === note.id && (
+                                    <p className='flex flex-col text-sm ml-5'>
+                                        Criada em <strong>{formatDate(note.created_at)}</strong>
+                                        Atualizada em <strong>{formatDate(note.updated_at)}</strong>
+                                    </p>
+                                )}
                             </span>
 
                             <span className="flex gap-3">
