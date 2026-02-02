@@ -29,12 +29,15 @@ export default function Cadastro() {
         e.preventDefault();
 
         try {
+            setLoading(true);
+
             await api.post("/auth/register", { nome, email, senha });
             navigate("/login");
 
         } catch (err) {
             console.log(err);
             alert("Erro ao cadastrar");
+            setLoading(false);
 
         } finally {
             setLoading(false);
@@ -81,7 +84,7 @@ export default function Cadastro() {
                 <button
                     disabled={isDisabled}
                     className={`text-white py-2 px-3 text-xl rounded-xl hover:shadow-md hover:shadow-gray-600
-                            ${isDisabled
+                            ${isDisabled || loading
                             ? "bg-gray-400 cursor-not-allowed pointer-events-none"
                             : "bg-green-700 hover:bg-green-600 hover:shadow-md hover:shadow-gray-600"}
                         `}
