@@ -18,6 +18,12 @@ export default function ChangeModalPass({ isOpen, onClose }) {
     async function handleChangePassword() {
         if (novaSenha !== confirmarSenha) {
             alert("As senhas não coincidem");
+            return;
+        };
+
+        if (novaSenha.length <= 6) {
+            alert("Nova senha tem que ser maior que 6 caracteres");
+            return;
         };
 
         try {
