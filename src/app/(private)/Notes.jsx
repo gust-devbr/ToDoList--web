@@ -5,6 +5,7 @@ import CreateNoteModal from "../../components/CreateNoteModal";
 import EditNoteModal from "../../components/EditNoteModal";
 import { useTheme } from "../../context/ThemeContext";
 import api from "../../services/api";
+import { Header } from "../../components/Header";
 
 function formatDate(date) {
     return new Date(date).toLocaleDateString("pt-BR");
@@ -52,6 +53,10 @@ export default function Notes() {
         loadNotes()
     };
 
+    function openModal() {
+        setIsModalCreateOpen(true)
+    };
+
     const openEditModal = (note) => {
         setEditId(note.id)
         setEditTitle(note.title)
@@ -83,28 +88,12 @@ export default function Notes() {
             className='flex flex-col px-4 py-5 shadow-2xl w-full min-w-screen min-h-screen'
             style={{ backgroundColor: theme.card, color: theme.text }}
         >
-            <p className='text-3xl text-center mb-8 font-bold mt-5'>
-                Lista de Notas
-            </p>
-
-            <button
-                className='text-xl w-full border-none rounded-[5px] py-2 px-8 bg-green-700 text-white hover:bg-green-600 mb-5'
-                onClick={() => setIsModalCreateOpen(true)}
-            >
-                Adicionar Nota
-            </button>
-
-            <input
-                type="text"
-                placeholder="Buscar por título ou conteúdo..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full mb-5 px-3 py-2 rounded border outline-none"
-                style={{
-                    backgroundColor: theme.background,
-                    color: theme.text,
-                    borderColor: theme.text
-                }}
+            <Header
+                title="Lista de Notas"
+                buttonLabel="Adicionar Nota"
+                onButtonClick={openModal}
+                searchValue={search}
+                onSearchChange={setSearch}
             />
 
             <hr />
