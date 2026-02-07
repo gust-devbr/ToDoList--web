@@ -24,9 +24,9 @@ export default function Settings() {
     };
 
     return (
-        <div className="px-3 py-5 w-full min-h-screen min-w-screen flex flex-col lg:w-screen" style={{ backgroundColor: theme.card, color: theme.text }}>
+        <div className="flex-1 p-6 min-h-screen min-w-screen ml-0 -mt-3" style={{ backgroundColor: theme.card, color: theme.text }}>
 
-            <div className="flex flex-row justify-between mt-2 rounded-xl p-3 items-center" style={{ backgroundColor: theme.background }}>
+            <div className="flex flex-row justify-between mt-10 rounded-xl p-3 items-center" style={{ backgroundColor: theme.background }}>
                 <label>Tema escuro</label>
                 <input
                     className="accent-indigo-600 w-5 h-5"
@@ -42,7 +42,7 @@ export default function Settings() {
                     <br />
                     <strong>Email:</strong> {user?.email}
                 </p>
-                <button 
+                <button
                     className="mt-2 border text-black font-semibold text-md bg-white px-2 py-1 rounded-md"
                     onClick={() => setIsModalChangePassOpen(true)}
                 >

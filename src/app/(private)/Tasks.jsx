@@ -24,7 +24,7 @@ export default function Tasks() {
 
     const [openInfoId, setOpenInfoId] = useState(false);
 
-    async function loadTasks() { 
+    async function loadTasks() {
         try {
             const res = await api.get('/tasks', {
                 params: { search: search }
@@ -84,11 +84,11 @@ export default function Tasks() {
 
     return (
         <div
-            className='flex flex-col px-4 py-5 shadow-2xl w-full min-w-screen min-h-screen'
+            className='flex-1 p-6 min-h-screen min-w-screen'
             style={{ backgroundColor: theme.card, color: theme.text }}
         >
 
-            <Header 
+            <Header
                 title="Lista de Tarefas"
                 buttonLabel="Adicionar Tarefa"
                 onButtonClick={openModal}

@@ -85,7 +85,7 @@ export default function Notes() {
 
     return (
         <div
-            className='flex flex-col px-4 py-5 shadow-2xl w-full min-w-screen min-h-screen'
+            className='flex-1 p-6 min-h-screen min-w-screen ml-0'
             style={{ backgroundColor: theme.card, color: theme.text }}
         >
             <Header
