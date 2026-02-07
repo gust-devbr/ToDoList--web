@@ -46,52 +46,67 @@ export default function ChangeModalPass({ isOpen, onClose }) {
     return (
         <div className='flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/30'>
             <div
-                className='p-5 rounded-xl w-80 min-h-20 shadow-white shadow-sm'
+                className='p-5 rounded-xl w-90 min-h-20 shadow-white shadow-sm'
                 style={{ backgroundColor: theme.background }}
             >
-                <h2 className="text-center mb-5 text-xl">
+                <h2 className="text-center mb-5 text-2xl font-bold">
                     Alterar senha
                 </h2>
 
-                <input
+                <Input
                     autoFocus
-                    className='border rounded-sm px-2 mb-2'
-                    placeholder="Senha atual:"
-                    onChange={(e) => setAtualSenha(e.target.value)}
+                    label="Senha atual:"
+                    onChangeValue={setAtualSenha}
                 />
 
-                <input
-                    className='border rounded-sm px-2 mb-2'
-                    placeholder="Nova senha:"
-                    onChange={(e) => setNovaSenha(e.target.value)}
+                <Input
+                    label="Nova senha:"
+                    onChangeValue={setNovaSenha}
                 />
 
-                <input
-                    className='border rounded-sm px-2'
-                    placeholder="Confirmar nova senha:"
-                    onChange={(e) => setConfirmarSenha(e.target.value)}
+                <Input
+                    label="Confirmar nova senha:"
+                    onChangeValue={setConfirmarSenha}
                 />
 
-                <div className="flex justify-end -mt-6 gap-2">
-                    <button
-                        className='border-none bg-transparent text-xl cursor-pointer'
+                <div className="flex justify-end -mt-8 gap-3">
+                    <Button
                         style={{ color: theme.text }}
                         title="Salvar"
                         onClick={handleChangePassword}
-                    >
-                        <FaSave />
-                    </button>
+                        label={<FaSave />}
+                    />
 
-                    <button
-                        className='border-none bg-transparent text-xl cursor-pointer'
+                    <Button
                         style={{ color: theme.text }}
                         title="Cancelar"
                         onClick={onClose}
-                    >
-                        <MdCancel />
-                    </button>
+                        label={<MdCancel />}
+                    />
                 </div>
             </div>
         </div>
+    )
+};
+
+function Input({ label, onChangeValue }) {
+    return (
+        <input
+            className='border rounded-sm py-2 px-2 mb-2 '
+            placeholder={label}
+            onChange={(e) => onChangeValue(e.target.value)}
+        />
+    )
+};
+
+function Button({ title, onClick, label }) {
+    return (
+        <button
+            className='border-none bg-transparent text-2xl cursor-pointer'
+            title={title}
+            onClick={onClick}
+        >
+            {label}
+        </button>
     )
 };

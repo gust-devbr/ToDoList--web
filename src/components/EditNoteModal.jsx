@@ -34,32 +34,41 @@ export default function EditNoteModal({
     if (!isOpen) return null;
 
     return (
-        <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/30-">
-            <div style={{ backgroundColor: theme.background }} className="p-5 rounded-xl w-80 min-h-20 shadow-white shadow-sm">
+        <div className="flex justify-center items-center fixed top-0 -mt-5 left-0 w-full h-full bg-black/30">
+            <div 
+            style={{ backgroundColor: theme.background }} 
+            className="p-5 rounded-xl w-90 min-h-20 shadow-white shadow-sm"
+            >
 
-                <h2 className="text-center mb-5 text-xl">Editar Nota</h2>
+                <h2 className="text-center mb-5 text-2xl font-bold">Editar Nota</h2>
 
                 <input
                     autoFocus
-                    className="border rounded-sm px-2"
+                    className="border rounded-sm px-2 py-2 w-full placeholder:text-xl"
                     placeholder="Título:"
                     value={titleValue}
                     onChange={(e) => setTitleValue(e.target.value)}
                 />
 
                 <textarea
-                    className="border rounded-sm pr-8 pl-1 mt-1 pb-8"
+                    className="border rounded-sm pb-8 mt-2 pt-1 px-1 w-62 placeholder:text-xl"
                     placeholder="Conteúdo:"
                     value={contentValue}
                     onChange={(e) => setContentValue(e.target.value)}
                 />
 
-                <div className="flex justify-end -mt-6 gap-2">
-                    <button className="border-none bg-transparent text-xl cursor-pointer" onClick={onEdit}>
+                <div className="flex justify-end -mt-8 gap-3">
+                    <button
+                        className="border-none bg-transparent text-2xl cursor-pointer"
+                        onClick={onEdit}
+                    >
                         <FaSave />
                     </button>
 
-                    <button className="border-none bg-transparent text-xl cursor-pointer" onClick={onClose}>
+                    <button
+                        className="border-none bg-transparent text-2xl cursor-pointer"
+                        onClick={onClose}
+                    >
                         <MdCancel />
                     </button>
                 </div>
