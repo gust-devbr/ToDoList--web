@@ -22,12 +22,15 @@ export default function Notes() {
     const [editTitle, setEditTitle] = useState('');
     const [editContent, setEditContent] = useState('');
     const [editId, setEditId] = useState(null);
+    const [search, setSearch] = useState("");
 
     const [openInfoId, setOpenInfoId] = useState(false);
 
     const loadNotes = async () => {
         try {
-            const res = await api.get('/notes')
+            const res = await api.get('/notes', {
+                params: { search: search }
+            })
             setNotes(Array.isArray(res.data) ? res.data : res.data.notes || [])
         } catch (err) {
             console.error("Erro ao carrgar notas", err)
@@ -68,8 +71,12 @@ export default function Notes() {
     };
 
     useEffect(() => {
-        loadNotes()
-    }, []);
+        const delay = setTimeout(() => {
+            loadNotes()
+        }, 400);
+
+        return () => clearTimeout(delay);
+    }, [search]);
 
     return (
         <div
@@ -86,6 +93,19 @@ export default function Notes() {
             >
                 Adicionar Nota
             </button>
+
+            <input
+                type="text"
+                placeholder="Buscar por título ou conteúdo..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full mb-5 px-3 py-2 rounded border outline-none"
+                style={{
+                    backgroundColor: theme.background,
+                    color: theme.text,
+                    borderColor: theme.text
+                }}
+            />
 
             <hr />
 

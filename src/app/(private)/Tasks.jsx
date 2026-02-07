@@ -19,12 +19,15 @@ export default function Tasks() {
     const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
     const [editTitle, setEditTitle] = useState('');
     const [editId, setEditId] = useState(null);
+    const [search, setSearch] = useState("");
 
     const [openInfoId, setOpenInfoId] = useState(false);
 
-    async function loadTasks() {
+    async function loadTasks() { 
         try {
-            const res = await api.get('/tasks');
+            const res = await api.get('/tasks', {
+                params: { search: search }
+            });
             setTasks(Array.isArray(res.data) ? res.data : res.data.tasks || [])
         } catch (err) {
             console.error('Erro ao carregar tarefas', err)
@@ -71,8 +74,12 @@ export default function Tasks() {
     }
 
     useEffect(() => {
-        loadTasks()
-    }, [])
+        const delay = setTimeout(() => {
+            loadTasks()
+        }, 400);
+
+        return () => clearTimeout(delay);
+    }, [search])
 
     return (
         <div
@@ -89,6 +96,19 @@ export default function Tasks() {
                 onClick={openModal}>
                 Adicionar Tarefa
             </button>
+
+            <input
+                type="text"
+                placeholder="Buscar por título ou conteúdo..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full mb-5 px-3 py-2 rounded border outline-none"
+                style={{
+                    backgroundColor: theme.background,
+                    color: theme.text,
+                    borderColor: theme.text
+                }}
+            />
 
             <hr />
 
