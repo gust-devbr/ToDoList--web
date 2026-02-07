@@ -25,7 +25,7 @@ export default function Notes() {
     const [editId, setEditId] = useState(null);
     const [search, setSearch] = useState("");
 
-    const [openInfoId, setOpenInfoId] = useState(false);
+    const [openInfoId, setOpenInfoId] = useState(null);
 
     const loadNotes = async () => {
         try {
@@ -85,9 +85,10 @@ export default function Notes() {
 
     return (
         <div
-            className='flex-1 p-6 min-h-screen min-w-screen ml-0'
+            className="flex flex-col flex-1 min-h-screen px-2"
             style={{ backgroundColor: theme.card, color: theme.text }}
         >
+
             <Header
                 title="Lista de Notas"
                 buttonLabel="Adicionar Nota"
@@ -96,7 +97,7 @@ export default function Notes() {
                 onSearchChange={setSearch}
             />
 
-            <hr />
+            <hr className="mb-5" />
 
             {notes.length === 0 ? (
                 <p className="text-center mt-3">Nenhuma nota encontrada</p>
@@ -108,9 +109,10 @@ export default function Notes() {
                             <span className="flex flex-col">
                                 <span className="flex items-center gap-1">
 
-                                    <button onClick={() => setOpenInfoId(openInfoId === note.id ? null : note.id)}>
-                                        <MdOutlineInfo size={16} />
-                                    </button>
+                                    <Button
+                                        onClick={() => setOpenInfoId(openInfoId === note.id ? null : note.id)}
+                                        label={<MdOutlineInfo size={16} />}
+                                    />
 
                                     <span className='text-[18px] font-bold flex-1 wrap-break-word mr-12.5'>
                                         {note.title} --- {note.content}
@@ -125,24 +127,20 @@ export default function Notes() {
                                 )}
                             </span>
 
-                            <span className="flex gap-3">
-                                <button
-                                    className='bg-transparent border-none cursor-pointer text-[20px]'
+                            <span className="flex gap-4">
+                                <Button
                                     onClick={() => openEditModal(note)}
                                     style={{ color: theme.text }}
                                     title="Editar"
-                                >
-                                    <FaPencilAlt />
-                                </button>
+                                    label={<FaPencilAlt />}
+                                />
 
-                                <button
-                                    className='bg-transparent border-none cursor-pointer text-[20px]'
+                                <Button
                                     onClick={() => deleteNote(note.id)}
                                     style={{ color: theme.icon }}
                                     title="Excluir"
-                                >
-                                    <FaTrash />
-                                </button>
+                                    label={<FaTrash />}
+                                />
                             </span>
                         </li>
                     ))}
@@ -170,10 +168,26 @@ export default function Notes() {
             />
 
             {notes.length > 0 && (
-                <div className='mt-auto mb-10 lg:mb-0 p-3 rounded-sm flex justify-between text-[14px]' style={{ backgroundColor: theme.background }}>
+                <div
+                    className='mt-auto mb-10 md:mb-2 p-3 rounded-sm flex justify-between text-[14px]'
+                    style={{ backgroundColor: theme.background }}
+                >
                     <span style={{ color: theme.text }}>Total: {notes.length}</span>
                 </div>
             )}
         </div>
+    )
+};
+
+function Button({ title, onClick, label, style }) {
+    return (
+        <button
+            style={style}
+            className='bg-transparent border-none cursor-pointer text-2xl'
+            title={title}
+            onClick={onClick}
+        >
+            {label}
+        </button>
     )
 };

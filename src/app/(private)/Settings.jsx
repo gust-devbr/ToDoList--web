@@ -24,9 +24,14 @@ export default function Settings() {
     };
 
     return (
-        <div className="flex-1 p-6 min-h-screen min-w-screen ml-0 -mt-3" style={{ backgroundColor: theme.card, color: theme.text }}>
-
-            <div className="flex flex-row justify-between mt-10 rounded-xl p-3 items-center" style={{ backgroundColor: theme.background }}>
+        <div
+            className="flex flex-col flex-1 min-h-screen px-2"
+            style={{ backgroundColor: theme.card, color: theme.text }}
+        >
+            <div
+                className="flex flex-row justify-between md:mt-4 py-5 px-4 mt-15 md:pt-6 rounded-xl items-center"
+                style={{ backgroundColor: theme.background }}
+            >
                 <label>Tema escuro</label>
                 <input
                     className="accent-indigo-600 w-5 h-5"
@@ -55,7 +60,10 @@ export default function Settings() {
                 onClose={() => setIsModalChangePassOpen(false)}
             />
 
-            <div className="p-2 rounded-sm mt-auto mb-8 lg:mb-0" style={{ backgroundColor: theme.card }}>
+            <div
+                className="p-2 rounded-sm mt-auto mb-8 md:mb-0"
+                style={{ backgroundColor: theme.card }}
+            >
                 <button
                     className="mb-1 w-full px-5 py-2 border-none rounded-sm cursor-pointer text-[1rem] text-white bg-red-600"
                     onClick={handleLogout}

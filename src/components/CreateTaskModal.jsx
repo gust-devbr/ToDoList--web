@@ -32,31 +32,33 @@ export default function CreateTaskModal({ isOpen, onClose, onCreate, value, setV
 
         <div className='flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/30'>
             <div
-                className='p-5 rounded-xl w-80 min-h-20 shadow-white shadow-sm'
+                className='p-5 rounded-xl w-90 min-h-33 shadow-white shadow-sm'
                 style={{ backgroundColor: theme.background }}
             >
-                <h2 className='text-center mb-5 text-xl'>Criar Tarefa</h2>
+                <h2 className='text-center mb-5 text-2xl font-bold'>
+                    Criar Tarefa
+                </h2>
 
-                <input
+                <textarea
                     autoFocus
-                    className='border rounded-sm px-2'
+                    className='border rounded-sm pb-15 px-2 py-1 w-60 placeholder:text-xl'
                     placeholder='Nova Tarefa:'
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                 />
 
-                <div className='flex justify-end -mt-6 gap-2'>
+                <div className='flex justify-end -mt-8 gap-4'>
                     <button
-                        className='border-none bg-transparent text-xl cursor-pointer'
+                        className='border-none bg-transparent text-2xl cursor-pointer'
                         style={{ color: theme.text }}
                         title='Criar'
                         onClick={onCreate}
                     >
                         <FaCheck />
                     </button>
-                    
+
                     <button
-                        className='border-none bg-transparent text-xl cursor-pointer'
+                        className='border-none bg-transparent text-2xl cursor-pointer'
                         style={{ color: theme.text }}
                         title='Cancelar'
                         onClick={onClose}

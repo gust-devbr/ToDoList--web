@@ -84,7 +84,7 @@ export default function Tasks() {
 
     return (
         <div
-            className='flex-1 p-6 min-h-screen min-w-screen'
+            className='flex flex-col flex-1 min-h-screen pb-16 px-2'
             style={{ backgroundColor: theme.card, color: theme.text }}
         >
 
@@ -96,10 +96,10 @@ export default function Tasks() {
                 onSearchChange={setSearch}
             />
 
-            <hr />
+            <hr className='mb-5' />
 
             {tasks.length === 0 ? (
-                <p className='text-center mt-3'>Nenhuma tarefa encontrada</p>
+                <p className='text-center mt-5'>Nenhuma tarefa encontrada</p>
             ) : (
                 <ul>
                     {tasks?.map(task => (
@@ -108,9 +108,10 @@ export default function Tasks() {
                             <span className='flex flex-col'>
                                 <span className='flex items-center gap-1'>
 
-                                    <button onClick={() => setOpenInfoId(openInfoId === task.id ? null : task.id)}>
-                                        <MdOutlineInfo size={16} />
-                                    </button>
+                                    <Button
+                                        onClick={() => setOpenInfoId(openInfoId === task.id ? null : task.id)}
+                                        label={<MdOutlineInfo size={16} />}
+                                    />
 
                                     <span
                                         style={{ textDecoration: task.completed ? 'line-through' : 'none' }}
@@ -128,33 +129,27 @@ export default function Tasks() {
                                 )}
                             </span>
 
-                            <span className='flex gap-3'>
-                                <button
-                                    className='bg-transparent border-none cursor-pointer text-[20px]'
+                            <span className='flex gap-4'>
+                                <Button
                                     style={{ color: theme.text }}
                                     title='Editar'
                                     onClick={() => openEditModal(task)}
-                                >
-                                    <FaPencilAlt />
-                                </button>
+                                    label={<FaPencilAlt />}
+                                />
 
-                                <button
-                                    className='bg-transparent border-none cursor-pointer text-[22px]'
+                                <Button
                                     style={{ color: theme.checkIcon }}
                                     title={task.completed ? 'Desmarcar' : 'Concluída'}
                                     onClick={() => toggleTasks(task.id)}
-                                >
-                                    {task.completed ? <FaReply /> : <FaCheck />}
-                                </button>
+                                    label={task.completed ? <FaReply /> : <FaCheck />}
+                                />
 
-                                <button
-                                    className='bg-transparent border-none cursor-pointer text-[20px]'
+                                <Button
                                     style={{ color: theme.icon }}
                                     title='Excluir'
                                     onClick={() => deleteTasks(task.id)}
-                                >
-                                    <FaTrash />
-                                </button>
+                                    label={<FaTrash />}
+                                />
                             </span>
                         </li>
                     ))}
@@ -179,7 +174,7 @@ export default function Tasks() {
 
             {tasks.length > 0 && (
                 <div
-                    className='mt-auto mb-10 lg:mb-0 p-3 rounded-sm flex justify-between text-[14px]'
+                    className='mt-auto lg:mb-0 p-3 rounded-sm flex justify-between text-[14px]'
                     style={{ backgroundColor: theme.background }}
                 >
                     <span style={{ color: theme.text }}>Total: {tasks.length}</span>
@@ -187,5 +182,18 @@ export default function Tasks() {
                 </div>
             )}
         </div>
+    )
+};
+
+function Button({ title, onClick, label, style }) {
+    return (
+        <button
+            style={style}
+            className='bg-transparent border-none cursor-pointer text-2xl'
+            title={title}
+            onClick={onClick}
+        >
+            {label}
+        </button>
     )
 };

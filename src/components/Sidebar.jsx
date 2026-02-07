@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useState } from 'react';
-import { FaAngleRight, FaCog, FaTasks } from 'react-icons/fa';
+import { FaCog, FaTasks } from 'react-icons/fa';
 import { GiNotebook } from 'react-icons/gi';
 
 export default function Sidebar() {
@@ -19,30 +19,17 @@ export default function Sidebar() {
 
     return (
         <>
-            <button
-                onClick={toggleSidebar}
-                className={`
-                fixed top-4 left-4 z-50 p-2 rounded text-black transition-all duration-300 text-xl
-                ${isOpen ? "ml-50 rotate-180" : "ml-0"}
-                `}
-                style={{ color: theme.text }}
-            >
-                <FaAngleRight />
-            </button>
-
             <div
-                className={`
-                top-0 left-0 h-full w-64 z-40 flex flex-col
-              bg-white shadow-lg border-r transition-transform duration-300
-                ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-                `}
+                className="h-screen flex flex-col border-r md:border-r-2 border-zinc-800"
                 style={{ background: theme.background }}
             >
-                <p style={{ color: theme.text }} className="ml-5 mt-10">
+                <p className="px-5 py-4 font-bold text-xl border-b-2 border-zinc-800"
+                    style={{ color: theme.text }}
+                >
                     Listas
                 </p>
 
-                <nav className="flex flex-col mt-2 gap-2 px-6 flex-1 mb-15">
+                <nav className="flex flex-col mt-2 gap-2 px-6 flex-1 md:mb-5 mb-17">
                     <NavLink onClick={toggleSidebar} to="/tasks" className={linkClass}>
                         <FaTasks />
                         Tarefas
