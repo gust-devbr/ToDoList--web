@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from '../../services/api';
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Cadastro() {
     const [nome, setNome] = useState('');
@@ -25,8 +26,18 @@ export default function Cadastro() {
         }
     }, [senha])
 
+    function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
+
     async function handleCadastro(e) {
         e.preventDefault();
+
+        if(!validateEmail(email)) {
+            alert("Digite um Email válido");
+            return;
+        };
 
         try {
             setLoading(true);
@@ -89,6 +100,7 @@ export default function Cadastro() {
                             : "bg-green-700 hover:bg-green-600 hover:shadow-md hover:shadow-gray-600"}
                         `}
                 >
+                    {loading && <Spinner className="ml-23 -mb-6 mt-2 size-6" />}
                     {loading ? "Cadastrando..." : "Cadastrar"}
                 </button>
             </div>

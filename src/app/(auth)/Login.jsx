@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Login() {
     const { login } = useAuth();
@@ -27,8 +28,18 @@ export default function Login() {
         }
     }, [senha])
 
+    function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
+
     async function handleLogin(e) {
         e.preventDefault();
+
+        if (!validateEmail(email)) {
+            alert("Digite um Email válido");
+            return;
+        };
 
         try {
             setLoading(true)
@@ -92,6 +103,7 @@ export default function Login() {
                             : "bg-green-700 hover:bg-green-600 hover:shadow-md hover:shadow-gray-600"}
                         `}
                 >
+                    {loading && <Spinner className="ml-23 -mb-6 mt-2 size-6" />}
                     {loading ? "Entrando..." : "Login"}
                 </button>
             </div>
