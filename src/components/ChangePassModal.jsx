@@ -5,6 +5,8 @@ import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { MdCancel } from "react-icons/md";
 import { FaSave } from "react-icons/fa";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 export default function ChangeModalPass({ isOpen, onClose }) {
     const navigate = useNavigate();
@@ -55,16 +57,19 @@ export default function ChangeModalPass({ isOpen, onClose }) {
 
                 <Input
                     autoFocus
+                    className='border rounded-sm py-2 px-2 mb-2'
                     label="Senha atual:"
                     onChangeValue={setAtualSenha}
                 />
 
                 <Input
+                    className='border rounded-sm py-2 px-2 mb-2'
                     label="Nova senha:"
                     onChangeValue={setNovaSenha}
                 />
 
                 <Input
+                    className='border rounded-sm w-60 py-2 px-2 mb-2'
                     label="Confirmar nova senha:"
                     onChangeValue={setConfirmarSenha}
                 />
@@ -74,39 +79,17 @@ export default function ChangeModalPass({ isOpen, onClose }) {
                         style={{ color: theme.text }}
                         title="Salvar"
                         onClick={handleChangePassword}
-                        label={<FaSave />}
+                        icon={FaSave}
                     />
 
                     <Button
                         style={{ color: theme.text }}
                         title="Cancelar"
                         onClick={onClose}
-                        label={<MdCancel />}
+                        icon={MdCancel}
                     />
                 </div>
             </div>
         </div>
-    )
-};
-
-function Input({ label, onChangeValue }) {
-    return (
-        <input
-            className='border rounded-sm py-2 px-2 mb-2 '
-            placeholder={label}
-            onChange={(e) => onChangeValue(e.target.value)}
-        />
-    )
-};
-
-function Button({ title, onClick, label }) {
-    return (
-        <button
-            className='border-none bg-transparent text-2xl cursor-pointer'
-            title={title}
-            onClick={onClick}
-        >
-            {label}
-        </button>
     )
 };

@@ -1,5 +1,7 @@
 import { useTheme } from "../context/ThemeContext"
 import { AiOutlineClose } from "react-icons/ai";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 export function Header({ title, onButtonClick, buttonLabel, searchValue, onSearchChange }) {
     const { theme } = useTheme();
@@ -10,20 +12,17 @@ export function Header({ title, onButtonClick, buttonLabel, searchValue, onSearc
                 {title}
             </p>
 
-            <button
-                className='text-xl w-full border-none rounded-[5px] py-2 px-8 bg-green-700 text-white hover:bg-green-600 mb-5'
-                onClick={onButtonClick}
-            >
+            <Button name="create" onClick={onButtonClick}>
                 {buttonLabel}
-            </button>
+            </Button>
 
             <div className="relative inline-block">
-                <input
+                <Input
                     type="text"
-                    placeholder="Buscar por título ou conteúdo..."
-                    value={searchValue}
-                    onChange={(e) => onSearchChange(e.target.value)}
-                    className="w-full mb-5 px-3 py-2 rounded border outline-none"
+                    name="search"
+                    label="Buscar por título ou conteúdo..."
+                    value={searchValue} 
+                    onChangeValue={onSearchChange}
                     style={{
                         backgroundColor: theme.background,
                         color: theme.text,
@@ -34,7 +33,7 @@ export function Header({ title, onButtonClick, buttonLabel, searchValue, onSearc
                     <AiOutlineClose
                         color="red"
                         size={25}
-                        className="absolute right-0 -translate-y-4 mr-1"
+                        className="absolute right-0 -translate-y-5 mr-1"
                     />
                 </button>
             </div>

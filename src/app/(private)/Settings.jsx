@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import ChangeModalPass from "../../components/ChangePassModal";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Settings() {
-
     const { user, logout, deleteAccount } = useAuth();
     const { darkMode, toggleTheme, theme } = useTheme();
     const [isModalChangePassOpen, setIsModalChangePassOpen] = useState(false);
@@ -24,20 +25,17 @@ export default function Settings() {
     };
 
     return (
-        <div
-            className="flex flex-col flex-1 min-h-screen px-2"
-            style={{ backgroundColor: theme.card, color: theme.text }}
-        >
+        <div className="flex flex-col flex-1 min-h-screen px-2" style={{ backgroundColor: theme.card, color: theme.text }}>
             <div
                 className="flex flex-row justify-between md:mt-4 py-5 px-4 mt-15 md:pt-6 rounded-xl items-center"
                 style={{ backgroundColor: theme.background }}
             >
                 <label>Tema escuro</label>
-                <input
-                    className="accent-indigo-600 w-5 h-5"
+                <Input
+                    name="check"
                     type="checkbox"
                     checked={darkMode}
-                    onChange={toggleTheme}
+                    onChangeValue={toggleTheme}
                 />
             </div>
 
@@ -47,12 +45,11 @@ export default function Settings() {
                     <br />
                     <strong>Email:</strong> {user?.email}
                 </p>
-                <button
-                    className="mt-2 border text-black font-semibold text-md bg-white px-2 py-1 rounded-md"
+                <Button
+                    name="change"
                     onClick={() => setIsModalChangePassOpen(true)}
-                >
-                    Alterar senha
-                </button>
+                    label="Alterar senha"
+                />
             </div>
 
             <ChangeModalPass
@@ -60,23 +57,19 @@ export default function Settings() {
                 onClose={() => setIsModalChangePassOpen(false)}
             />
 
-            <div
-                className="p-2 rounded-sm mt-auto mb-8 md:mb-0"
-                style={{ backgroundColor: theme.card }}
-            >
-                <button
-                    className="mb-1 w-full px-5 py-2 border-none rounded-sm cursor-pointer text-[1rem] text-white bg-red-600"
+            <div className="p-2 rounded-sm mt-auto mb-8 md:mb-0" style={{ backgroundColor: theme.card }}>
+                <Button
+                    name="warning"
                     onClick={handleLogout}
-                >
-                    Sair
-                </button>
+                    label="Sair da conta"
+                />
 
-                <button
-                    className="w-full px-5 py-2 border-none rounded-sm cursor-pointer text-[1rem] text-white bg-red-800"
+                <Button
+                    name="warning"
+                    className="bg-red-900"
                     onClick={handleDelete}
-                >
-                    Apagar Conta
-                </button>
+                    label="Apagar conta"
+                />
             </div>
         </div>
     );

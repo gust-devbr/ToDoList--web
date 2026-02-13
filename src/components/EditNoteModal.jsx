@@ -2,6 +2,7 @@ import { FaSave } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { useEffect } from "react";
 import { useTheme } from "../context/ThemeContext";
+import { Input, TextArea } from "./ui/input";
 
 export default function EditNoteModal({
     isOpen,
@@ -42,19 +43,17 @@ export default function EditNoteModal({
 
                 <h2 className="text-center mb-5 text-2xl font-bold">Editar Nota</h2>
 
-                <input
+                <Input
                     autoFocus
-                    className="border rounded-sm px-2 py-2 w-full placeholder:text-xl"
-                    placeholder="Título:"
+                    label="Título:"
                     value={titleValue}
-                    onChange={(e) => setTitleValue(e.target.value)}
+                    onChange={setTitleValue}
                 />
 
-                <textarea
-                    className="border rounded-sm pb-8 mt-2 pt-1 px-1 w-62 placeholder:text-xl"
-                    placeholder="Conteúdo:"
+                <TextArea
+                    label="Conteúdo:"
                     value={contentValue}
-                    onChange={(e) => setContentValue(e.target.value)}
+                    onChangeValue={setContentValue}
                 />
 
                 <div className="flex justify-end -mt-8 gap-3">

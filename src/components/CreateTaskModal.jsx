@@ -2,6 +2,8 @@ import { FaCheck } from 'react-icons/fa';
 import { MdCancel } from 'react-icons/md';
 import { useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { TextArea } from './ui/input';
+import { Button } from './ui/button';
 
 export default function CreateTaskModal({ isOpen, onClose, onCreate, value, setValue }) {
     const { theme } = useTheme();
@@ -39,34 +41,28 @@ export default function CreateTaskModal({ isOpen, onClose, onCreate, value, setV
                     Criar Tarefa
                 </h2>
 
-                <textarea
+                <TextArea
                     autoFocus
-                    className='border rounded-sm pb-15 px-2 py-1 w-60 placeholder:text-xl'
-                    placeholder='Nova Tarefa:'
+                    label='Nova Tarefa:'
                     value={value}
-                    onChange={(e) => setValue(e.target.value)}
+                    onChangeValue={setValue}
                 />
 
                 <div className='flex justify-end -mt-8 gap-4'>
-                    <button
-                        className='border-none bg-transparent text-2xl cursor-pointer'
+                    <Button
                         style={{ color: theme.text }}
                         title='Criar'
                         onClick={onCreate}
-                    >
-                        <FaCheck />
-                    </button>
+                        icon={FaCheck}
+                    />
 
-                    <button
-                        className='border-none bg-transparent text-2xl cursor-pointer'
+                    <Button
                         style={{ color: theme.text }}
                         title='Cancelar'
                         onClick={onClose}
-                    >
-                        <MdCancel />
-                    </button>
+                        icon={MdCancel}
+                    />
                 </div>
-
             </div>
         </div>
     )
