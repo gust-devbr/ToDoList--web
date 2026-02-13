@@ -1,15 +1,10 @@
-import { FaCheck, FaReply, FaTrash, FaPencilAlt } from 'react-icons/fa';
-import { MdOutlineInfo } from "react-icons/md";
 import { useEffect, useState } from 'react'
-import api from '../../services/api'
-import CreateTaskModal from '../../components/CreateTaskModal';
-import EditTaskModal from '../../components/EditTaskModal'
-import { useTheme } from '../../context/ThemeContext';
-import { Header } from '../../components/Header';
-
-function formatDate(date) {
-    return new Date(date).toLocaleDateString("pt-BR");
-};
+import api from '@/services/api'
+import CreateTaskModal from '@/components/CreateTaskModal';
+import EditTaskModal from '@/components/EditTaskModal'
+import { useTheme } from '@/context/ThemeContext';
+import { Header } from '@/components/Header';
+import { TableItem } from '@/components/TableItem';
 
 export default function Tasks() {
     const { theme } = useTheme();
@@ -21,8 +16,6 @@ export default function Tasks() {
     const [editTitle, setEditTitle] = useState('');
     const [editId, setEditId] = useState(null);
     const [search, setSearch] = useState("");
-
-    const [openInfoId, setOpenInfoId] = useState(false);
 
     async function loadTasks() {
         try {
@@ -80,6 +73,7 @@ export default function Tasks() {
         }, 400);
 
         return () => clearTimeout(delay);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search])
 
     return (
@@ -96,64 +90,17 @@ export default function Tasks() {
                 onSearchChange={setSearch}
             />
 
-            <hr className='mb-5' />
+            <hr className='mb-5 border-2' />
 
             {tasks.length === 0 ? (
-                <p className='text-center mt-5'>Nenhuma tarefa encontrada</p>
+                <h1 className="text-center text-lg font-semibold">Nenhuma tarefa encontrada</h1>
             ) : (
-                <ul>
-                    {tasks?.map(task => (
-                        <li key={task.id} className='flex justify-between items-center p-1 gap-10' >
-
-                            <span className='flex flex-col'>
-                                <span className='flex items-center gap-1'>
-
-                                    <Button
-                                        onClick={() => setOpenInfoId(openInfoId === task.id ? null : task.id)}
-                                        label={<MdOutlineInfo size={16} />}
-                                    />
-
-                                    <span
-                                        style={{ textDecoration: task.completed ? 'line-through' : 'none' }}
-                                        className='text-[18px] font-bold flex-1 wrap-break-word mr-12.5'
-                                    >
-                                        {task.title}
-                                    </span>
-                                </span>
-
-                                {openInfoId === task.id && (
-                                    <p className='flex flex-col text-sm ml-5'>
-                                        Criada em <strong>{formatDate(task.created_at)}</strong>
-                                        Atualizada em <strong>{formatDate(task.updated_at)}</strong>
-                                    </p>
-                                )}
-                            </span>
-
-                            <span className='flex gap-4'>
-                                <Button
-                                    style={{ color: theme.text }}
-                                    title='Editar'
-                                    onClick={() => openEditModal(task)}
-                                    label={<FaPencilAlt />}
-                                />
-
-                                <Button
-                                    style={{ color: theme.checkIcon }}
-                                    title={task.completed ? 'Desmarcar' : 'Concluída'}
-                                    onClick={() => toggleTasks(task.id)}
-                                    label={task.completed ? <FaReply /> : <FaCheck />}
-                                />
-
-                                <Button
-                                    style={{ color: theme.icon }}
-                                    title='Excluir'
-                                    onClick={() => deleteTasks(task.id)}
-                                    label={<FaTrash />}
-                                />
-                            </span>
-                        </li>
-                    ))}
-                </ul>
+                <TableItem
+                    data={tasks}
+                    open={openEditModal}
+                    toggle={toggleTasks}
+                    deleteItem={deleteTasks}
+                />
             )}
 
             <CreateTaskModal
@@ -182,18 +129,5 @@ export default function Tasks() {
                 </div>
             )}
         </div>
-    )
-};
-
-function Button({ title, onClick, label, style }) {
-    return (
-        <button
-            style={style}
-            className='bg-transparent border-none cursor-pointer text-2xl'
-            title={title}
-            onClick={onClick}
-        >
-            {label}
-        </button>
     )
 };

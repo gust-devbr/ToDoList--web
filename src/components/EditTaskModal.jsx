@@ -2,6 +2,7 @@ import { FaSave } from 'react-icons/fa';
 import { MdCancel } from 'react-icons/md';
 import { useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { TextArea } from './ui/input';
 
 export default function EditTaskModal({ isOpen, onClose, onRename, value, setValue }) {
     const { theme } = useTheme();
@@ -37,12 +38,11 @@ export default function EditTaskModal({ isOpen, onClose, onRename, value, setVal
                     Editar Tarefa
                 </h2>
 
-                <textarea
+                <TextArea
                     autoFocus
-                    className='border rounded-sm pb-15 px-2 py-1 w-60 placeholder:text-xl'
-                    placeholder='Editar Tarefa:'
+                    label='Editar Tarefa:'
                     value={value}
-                    onChange={(e) => setValue(e.target.value)}
+                    onChangeValue={setValue}
                 />
 
                 <div className='flex justify-end -mt-8 gap-3'>

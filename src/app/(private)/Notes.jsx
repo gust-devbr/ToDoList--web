@@ -1,15 +1,10 @@
-import { FaTrash, FaPencilAlt } from "react-icons/fa";
-import { MdOutlineInfo } from "react-icons/md";
 import { useState, useEffect } from "react";
-import CreateNoteModal from "../../components/CreateNoteModal";
-import EditNoteModal from "../../components/EditNoteModal";
-import { useTheme } from "../../context/ThemeContext";
-import api from "../../services/api";
-import { Header } from "../../components/Header";
-
-function formatDate(date) {
-    return new Date(date).toLocaleDateString("pt-BR");
-};
+import CreateNoteModal from "@/components/CreateNoteModal";
+import EditNoteModal from "@/components/EditNoteModal";
+import { useTheme } from "@/context/ThemeContext";
+import api from "@/services/api";
+import { Header } from "@/components/Header";
+import { TableItem } from "@/components/TableItem";
 
 export default function Notes() {
     const { theme } = useTheme();
@@ -24,8 +19,6 @@ export default function Notes() {
     const [editContent, setEditContent] = useState('');
     const [editId, setEditId] = useState(null);
     const [search, setSearch] = useState("");
-
-    const [openInfoId, setOpenInfoId] = useState(null);
 
     const loadNotes = async () => {
         try {
@@ -81,6 +74,7 @@ export default function Notes() {
         }, 400);
 
         return () => clearTimeout(delay);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search]);
 
     return (
@@ -97,54 +91,16 @@ export default function Notes() {
                 onSearchChange={setSearch}
             />
 
-            <hr className="mb-5" />
+            <hr className="mb-5 border-2" />
 
             {notes.length === 0 ? (
-                <p className="text-center mt-3">Nenhuma nota encontrada</p>
+                <h1 className="text-center text-lg font-semibold">Nenhuma nota encontrada</h1>
             ) : (
-                <ul>
-                    {notes.map(note => (
-                        <li key={note.id} className='flex justify-between items-center p-1 gap-10'>
-
-                            <span className="flex flex-col">
-                                <span className="flex items-center gap-1">
-
-                                    <Button
-                                        onClick={() => setOpenInfoId(openInfoId === note.id ? null : note.id)}
-                                        label={<MdOutlineInfo size={16} />}
-                                    />
-
-                                    <span className='text-[18px] font-bold flex-1 wrap-break-word mr-12.5'>
-                                        {note.title} --- {note.content}
-                                    </span>
-                                </span>
-
-                                {openInfoId === note.id && (
-                                    <p className='flex flex-col text-sm ml-5'>
-                                        Criada em <strong>{formatDate(note.created_at)}</strong>
-                                        Atualizada em <strong>{formatDate(note.updated_at)}</strong>
-                                    </p>
-                                )}
-                            </span>
-
-                            <span className="flex gap-4">
-                                <Button
-                                    onClick={() => openEditModal(note)}
-                                    style={{ color: theme.text }}
-                                    title="Editar"
-                                    label={<FaPencilAlt />}
-                                />
-
-                                <Button
-                                    onClick={() => deleteNote(note.id)}
-                                    style={{ color: theme.icon }}
-                                    title="Excluir"
-                                    label={<FaTrash />}
-                                />
-                            </span>
-                        </li>
-                    ))}
-                </ul>
+                <TableItem
+                    data={notes}
+                    deleteItem={deleteNote}
+                    open={openEditModal}
+                />
             )}
 
             <CreateNoteModal
@@ -176,18 +132,5 @@ export default function Notes() {
                 </div>
             )}
         </div>
-    )
-};
-
-function Button({ title, onClick, label, style }) {
-    return (
-        <button
-            style={style}
-            className='bg-transparent border-none cursor-pointer text-2xl'
-            title={title}
-            onClick={onClick}
-        >
-            {label}
-        </button>
     )
 };
