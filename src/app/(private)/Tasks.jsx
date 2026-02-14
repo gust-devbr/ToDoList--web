@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react'
 import api from '@/services/api'
-import CreateTaskModal from '@/components/CreateTaskModal';
-import EditTaskModal from '@/components/EditTaskModal'
 import { useTheme } from '@/context/ThemeContext';
 import { Header } from '@/components/Header';
 import { TableItem } from '@/components/TableItem';
+import { TaskModal } from '@/components/TaskModal';
 
 export default function Tasks() {
     const { theme } = useTheme();
 
-    const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState([]);
-    const [isModalEditOpen, setIsModalEditOpen] = useState(false);
-    const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
-    const [editTitle, setEditTitle] = useState('');
-    const [editId, setEditId] = useState(null);
+    const [modalMode, setModalMode] = useState(null)
+    const [currentTask, setCurrentTask] = useState({
+        id: null,
+        title: ""
+    });
+
     const [search, setSearch] = useState("");
 
     async function loadTasks() {
@@ -29,14 +29,6 @@ export default function Tasks() {
         }
     }
 
-    async function createTasks() {
-        if (!title) return;
-
-        await api.post('/tasks', { title })
-        setTitle('')
-        loadTasks()
-    }
-
     async function toggleTasks(id) {
         await api.patch(`/tasks/${id}`)
         loadTasks()
@@ -47,24 +39,37 @@ export default function Tasks() {
         loadTasks()
     }
 
-    function openModal() {
-        setIsModalCreateOpen(true)
+    function openCreateModal() {
+        setCurrentTask({ id: null, title: "" });
+        setModalMode("create");
+    }
+
+    async function handleSubmit() {
+        if (!currentTask.title.trim()) return;
+
+        if (modalMode === "create") {
+            await api.post('/tasks', {
+                title: currentTask.title
+            });
+        }
+
+        if (modalMode === "edit" && currentTask.id) {
+            await api.put(`/tasks/${currentTask.id}`, {
+                title: currentTask.title
+            });
+        }
+
+        setModalMode(null);
+        loadTasks();
     }
 
     function openEditModal(task) {
-        setEditId(task.id)
-        setEditTitle(task.title)
-        setIsModalEditOpen(true)
-    }
-
-    async function saveEdit() {
-        if (!editTitle.trim()) return;
-
-        await api.put(`/tasks/${editId}`, {
-            title: editTitle
+        setCurrentTask({
+            id: task.id,
+            title: task.title
         });
-        setIsModalEditOpen(false)
-        loadTasks()
+
+        setModalMode("edit");
     }
 
     useEffect(() => {
@@ -85,7 +90,7 @@ export default function Tasks() {
             <Header
                 title="Lista de Tarefas"
                 buttonLabel="Adicionar Tarefa"
-                onButtonClick={openModal}
+                onButtonClick={openCreateModal}
                 searchValue={search}
                 onSearchChange={setSearch}
             />
@@ -103,20 +108,13 @@ export default function Tasks() {
                 />
             )}
 
-            <CreateTaskModal
-                isOpen={isModalCreateOpen}
-                onClose={() => setIsModalCreateOpen(false)}
-                onCreate={createTasks}
-                value={title}
-                setValue={setTitle}
-            />
-
-            <EditTaskModal
-                isOpen={isModalEditOpen}
-                onClose={() => setIsModalEditOpen(false)}
-                onRename={saveEdit}
-                value={editTitle}
-                setValue={setEditTitle}
+            <TaskModal
+                isOpen={modalMode !== null}
+                onClose={() => setModalMode(null)}
+                onSubmit={handleSubmit}
+                value={currentTask.title}
+                setValue={(value) => setCurrentTask((prev) => ({ ...prev, title: value }))}
+                mode={modalMode ?? "create"}
             />
 
             {tasks.length > 0 && (

@@ -13,23 +13,27 @@ export function TableItem({
     open,
     deleteItem
 }) {
+
+    const safeData = Array.isArray(data) ? data : [];
     const { theme } = useTheme();
-    const existContent = data.some(i => i.content);
+
+    const isNote = safeData.length > 0 && "content" in safeData[0];
+    const isTask = safeData.length > 0 && "completed" in safeData[0];
 
     return (
         <div className="border-2">
             <Table>
                 <Table.Header>
                     <Table.Row>
-                        <Table.Head className={`md:w-60 ${!existContent ? "w-40" : "w-26"}`}>Info</Table.Head>
+                        <Table.Head className='md:w-60 w-40'>Info</Table.Head>
                         <Table.Head>Título</Table.Head>
-                        {existContent && <Table.Head className='md:table-cell'>Conteúdo</Table.Head>}
+                        {isNote && <Table.Head className='md:table-cell'>Conteúdo</Table.Head>}
                         <Table.Head className='text-right'>Ações</Table.Head>
                     </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
-                    {data.map(u => (
+                    {safeData.map(u => (
                         <Table.Row key={u.id}>
                             <Table.Cell className="max-w-50">
                                 <div className="flex flex-col text-xs md:text-sm">
@@ -42,7 +46,7 @@ export function TableItem({
                                     {u.title}
                                 </div>
                             </Table.Cell>
-                            {existContent && (
+                            {isNote && (
                                 <Table.Cell className='md:table-cell'>
                                     <div className='wrap-break-word whitespace-normal text-sm'>
                                         {u.content}
@@ -58,7 +62,7 @@ export function TableItem({
                                         icon={FaPencilAlt}
                                     />
 
-                                    {!existContent && (<Button
+                                    {isTask && (<Button
                                         style={{ color: theme.checkIcon }}
                                         title={u.completed ? 'Desmarcar' : 'Concluída'}
                                         onClick={() => toggle(u.id)}

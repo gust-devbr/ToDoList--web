@@ -5,33 +5,36 @@ import { useTheme } from "../context/ThemeContext";
 import { Input, TextArea } from "./ui/input";
 import { Button } from "./ui/button";
 
-export default function CreateNoteModal({
+export function NoteModal({
     isOpen,
     onClose,
-    onCreate,
+    onSubmit,
     titleValue,
     setTitleValue,
     contentValue,
-    setContentValue
+    setContentValue,
+    mode
 }) {
     const { theme } = useTheme();
+    const isCreate = mode === "create";
 
     useEffect(() => {
         function handleKeyDown(e) {
-            if (e.key === 'Escape') {
-                onClose()
+            if (e.key === "Escape") {
+                onClose();
             }
-            if (e.key === 'Enter') {
-                e.preventDefault()
 
-                onCreate()
-                onClose()
+            if (e.key === "Enter" && e.ctrlKey) {
+                e.preventDefault();
+                onSubmit();
+                onClose();
             }
         }
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
 
-    }, [isOpen, onClose, onCreate]);
+        if (isOpen) window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+
+    }, [isOpen, onClose, onSubmit]);
 
     if (!isOpen) return null;
 
@@ -41,28 +44,29 @@ export default function CreateNoteModal({
                 style={{ backgroundColor: theme.background }}
                 className="p-5 rounded-xl w-90 min-h-20 shadow-white shadow-sm"
             >
-
-                <h2 className="text-center mb-5 text-2xl font-bold">Criar Nota</h2>
+                <h2 className="text-center mb-5 text-2xl font-bold">
+                    {isCreate ? "Criar Nota" : "Editar Nota"}
+                </h2>
 
                 <Input
                     autoFocus
-                    name="createInput"
+                    name="noteTitle"
                     label="Título:"
-                    value={titleValue}
+                    value={titleValue ?? ""}
                     onChangeValue={setTitleValue}
                 />
 
                 <TextArea
                     label="Conteúdo:"
-                    value={contentValue}
+                    value={contentValue ?? ""}
                     onChangeValue={setContentValue}
                 />
 
                 <div className="flex justify-end items-center -mt-8 gap-3">
                     <Button
                         style={{ color: theme.text }}
-                        title="Criar"
-                        onClick={onCreate}
+                        title={isCreate ? "Criar" : "Salvar"}
+                        onClick={onSubmit}
                         icon={FaCheck}
                     />
 
