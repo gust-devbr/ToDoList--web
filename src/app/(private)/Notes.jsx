@@ -20,10 +20,7 @@ export default function Notes() {
     async function loadNotes() {
         try {
             const res = await api.get('/notes', {
-                params: {
-                    search: search,
-                    _t: Date.now()  
-                },
+                params: { search: search, },
             })
             setNotes(Array.isArray(res.data) ? res.data : res.data.notes || [])
         } catch (err) {
@@ -84,7 +81,7 @@ export default function Notes() {
         setModalMode("edit");
     };
 
-    
+
 
     useEffect(() => {
         const delay = setTimeout(loadNotes, 400);

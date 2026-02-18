@@ -3,6 +3,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useState } from 'react';
 import { FaCog, FaTasks } from 'react-icons/fa';
 import { GiNotebook } from 'react-icons/gi';
+import { IoMdContact } from "react-icons/io";
 
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -37,6 +38,10 @@ export default function Sidebar() {
                     <NavLink onClick={toggleSidebar} to="/notes" className={linkClass}>
                         <GiNotebook />
                         Notas
+                    </NavLink>
+                    <NavLink onClick={toggleSidebar} to="/contacts" className={linkClass}>
+                        <IoMdContact />
+                        Contatos
                     </NavLink>
                     <div className="mt-auto flex">
                         <NavLink onClick={toggleSidebar} to="/settings" className={linkClass}>
