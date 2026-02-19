@@ -95,8 +95,6 @@ export default function Tasks() {
                 onSearchChange={setSearch}
             />
 
-            <hr className='mb-5 border-2' />
-
             {tasks.length === 0 ? (
                 <h1 className="text-center text-lg font-semibold">Nenhuma tarefa encontrada</h1>
             ) : (

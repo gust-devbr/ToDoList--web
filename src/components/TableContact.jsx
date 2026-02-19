@@ -19,10 +19,12 @@ export function TableContacts({
                         <>
                             <Table.Cell>
 
-                                <div className="flex flex-col gap-1">
-                                    {u.name}
+                                <div className="flex flex-col gap-1 text">
+                                    <div className="text-2xl font-semibold">
+                                        {u.name}
+                                    </div>
 
-                                    <div className="flex flex-row gap-5 items-center">
+                                    <div className="flex flex-col gap-1 md:flex-row md:gap-10 md:items-center">
                                         <span>{u.email}</span>
                                         <span>{u.tel}</span>
                                         <span>{u.category}</span>

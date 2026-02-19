@@ -21,17 +21,8 @@ export function TableItem({
     const isTask = safeData.length > 0 && "completed" in safeData[0];
 
     return (
-        <div className="border-2">
+        <div>
             <Table>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.Head className='md:w-60 w-40'>Info</Table.Head>
-                        <Table.Head>Título</Table.Head>
-                        {isNote && <Table.Head className='md:table-cell'>Conteúdo</Table.Head>}
-                        <Table.Head className='text-right'>Ações</Table.Head>
-                    </Table.Row>
-                </Table.Header>
-
                 <Table.Body>
                     {safeData.map(u => (
                         <Table.Row key={u.id}>
@@ -42,16 +33,16 @@ export function TableItem({
                                 </div>
                             </Table.Cell>
                             <Table.Cell className='flex w-full -ml-28 md:m-0'>
-                                <div className='flex w-full ml-28 md:m-0' style={{ textDecoration: u.completed ? 'line-through' : 'none' }}>
+                                <div className='flex w-full ml-28 md:m-0 md:text-xl mt-3 md:mt-5' style={{ textDecoration: u.completed ? 'line-through' : 'none' }}>
                                     {u.title}
                                 </div>
                             </Table.Cell>
                             {isNote && (
                                 <Table.Cell className='md:table-cell'>
-                                    <div className='wrap-break-word whitespace-normal text-sm'>
+                                    <div className='wrap-break-word whitespace-normal text-sm md:text-lg -mt-3'>
                                         {u.content}
                                     </div>
-                                    </Table.Cell>
+                                </Table.Cell>
                             )}
                             <Table.Cell>
                                 <div className='flex justify-end gap-2'>
@@ -72,7 +63,7 @@ export function TableItem({
                                     <Button
                                         style={{ color: theme.icon }}
                                         title='Excluir'
-                                        onClick={() => deleteItem (u.id)}
+                                        onClick={() => deleteItem(u.id)}
                                         icon={FaTrash}
                                     />
                                 </div>
