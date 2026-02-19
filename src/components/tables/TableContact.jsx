@@ -1,10 +1,11 @@
-import { FaPencilAlt, FaTrash } from "@/components/icons";
+import { FaPencilAlt, FaTrash, FaStar, FaRegStar } from "@/components/icons";
 import { Button, Table } from "@/components";
 import { useTheme } from "@/context";
 
 export default function TableContacts({
     data,
     open,
+    toggle,
     onDelete
 }) {
     const { theme } = useTheme();
@@ -39,6 +40,13 @@ export default function TableContacts({
                                         title='Editar'
                                         onClick={() => open(u)}
                                         icon={FaPencilAlt}
+                                    />
+
+                                    <Button
+                                        style={{ color: "yellow" }}
+                                        title='Favoritar'
+                                        onClick={() => toggle(u.id)}
+                                        icon={u.favorite ? FaStar : FaRegStar}
                                     />
 
                                     <Button

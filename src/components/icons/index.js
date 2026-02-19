@@ -11,5 +11,7 @@ export {
     FaPencilAlt,
     FaTrash,
     FaReply,
-    FaAngleRight
+    FaAngleRight,
+    FaStar,
+    FaRegStar,
 } from "react-icons/fa";

@@ -53,6 +53,24 @@ export default function Contacts() {
         }
     }
 
+    async function favoriteContact(id) {
+        try {
+            const contact = contacts.find(c => c.id === id);
+            if (!contact) return;
+
+            const newFavorite = typeof contact.favorite === "boolean" ? !contact.favorite : true;
+
+            await api.patch(`/contacts/${id}`, { favorite: newFavorite });
+
+            setContacts(prev =>
+                prev.map(c => c.id === id ? { ...c, favorite: newFavorite } : c)
+                    .sort((a, b) => (b.favorite === true) - (a.favorite === true))
+            );
+        } catch (err) {
+            console.error("Erro ao favoritar", err);
+        }
+    }
+
     async function handleSave(contactData, id) {
         try {
             if (modalMode === "edit" && id) {
@@ -93,6 +111,7 @@ export default function Contacts() {
                 <TableContact
                     data={contacts}
                     open={openEditModal}
+                    toggle={favoriteContact}
                     onDelete={deleteContact}
                 />
             )}
