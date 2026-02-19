@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import api from '../../services/api';
-import { useAuth } from '../../context/AuthContext';
-import { Spinner } from "@/components/ui/spinner";
-import { Input } from "@/components/ui/input";
-import { AuthButton } from "@/components/ui/button";
+import api from '@/services/api';
+import { useAuth } from '@/context';
+import { Spinner, Input, AuthButton } from "@/components";
 
 export default function Login() {
     const { login } = useAuth();

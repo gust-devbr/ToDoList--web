@@ -1,9 +1,8 @@
-import { useTheme } from "../context/ThemeContext"
-import { AiOutlineClose } from "react-icons/ai";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { useTheme } from "@/context/ThemeContext"
+import { AiOutlineClose } from "@/components/icons";
+import { Input, Button } from "@/components";
 
-export function Header({ title, onButtonClick, buttonLabel, searchValue, onSearchChange }) {
+export default function Header({ title, onButtonClick, buttonLabel, searchValue, onSearchChange }) {
     const { theme } = useTheme();
 
     return (

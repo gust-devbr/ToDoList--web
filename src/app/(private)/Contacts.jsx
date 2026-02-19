@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { Header } from "@/components/Header";
-import { TableContacts } from "@/components/TableContact";
-import { ContactModal } from "@/components/ContactModal";
-import { useTheme } from "@/context/ThemeContext";
+import { Header, TableContact, ContactModal } from "@/components";
+import { useTheme } from "@/context";
 import api from "@/services/api";
 
 export default function Contacts() {
@@ -92,7 +90,7 @@ export default function Contacts() {
                     Nenhum contato encontrado
                 </h1>
             ) : (
-                <TableContacts
+                <TableContact
                     data={contacts}
                     open={openEditModal}
                     onDelete={deleteContact}

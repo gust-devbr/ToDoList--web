@@ -1,11 +1,9 @@
-import { FaCheck } from "react-icons/fa";
-import { MdCancel } from "react-icons/md";
 import { useEffect, useState } from "react";
-import { useTheme } from "../context/ThemeContext";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { useTheme } from "@/context/ThemeContext";
+import { FaCheck, MdCancel } from '@/components/icons';
+import { Input, Button } from '@/components';
 
-export function ContactModal({
+export default function ContactModal({
     isOpen,
     mode,
     contact,

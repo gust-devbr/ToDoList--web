@@ -1,8 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext';
-import { FaChartBar, FaCog, FaTasks } from 'react-icons/fa';
-import { GiNotebook } from 'react-icons/gi';
-import { IoMdContact } from "react-icons/io";
+import { FaChartBar, FaCog, FaTasks, GiNotebook, IoMdContact } from '@/components/icons';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function Sidebar() {
     const { theme } = useTheme();

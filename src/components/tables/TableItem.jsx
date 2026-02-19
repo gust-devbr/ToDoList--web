@@ -1,13 +1,12 @@
-import { FaCheck, FaReply, FaTrash, FaPencilAlt } from 'react-icons/fa';
-import { Button } from "./ui/button";
-import { useTheme } from '@/context/ThemeContext';
-import { Table } from "./ui/table";
+import { FaCheck, FaReply, FaTrash, FaPencilAlt } from '@/components/icons';
+import { Table, Button } from "@/components";
+import { useTheme } from '@/context';
 
 function formatDate(date) {
     return new Date(date).toLocaleDateString("pt-BR");
 };
 
-export function TableItem({
+export default function TableItem({
     data,
     toggle,
     open,

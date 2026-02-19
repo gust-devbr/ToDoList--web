@@ -1,11 +1,9 @@
-import { FaCheck } from "react-icons/fa";
-import { MdCancel } from "react-icons/md";
 import { useEffect } from "react";
-import { useTheme } from "../context/ThemeContext";
-import { Input, TextArea } from "./ui/input";
-import { Button } from "./ui/button";
+import { useTheme } from "@/context";
+import { FaCheck, MdCancel } from '@/components/icons'
+import { Input, TextArea, Button } from "@/components";
 
-export function NoteModal({
+export default function NoteModal({
     isOpen,
     onClose,
     onSubmit,

@@ -1,11 +1,9 @@
-import { FaCheck } from 'react-icons/fa';
-import { MdCancel } from 'react-icons/md';
 import { useEffect } from 'react';
-import { useTheme } from '@/context/ThemeContext';
-import { TextArea } from './ui/input';
-import { Button } from './ui/button';
+import { useTheme } from '@/context';
+import { FaCheck, MdCancel } from '@/components/icons';
+import { TextArea, Button } from '@/components';
 
-export function TaskModal({
+export default function TaskModal({
     isOpen,
     onClose,
     onSubmit,

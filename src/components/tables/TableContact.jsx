@@ -1,9 +1,8 @@
-import { FaPencilAlt, FaTrash } from "react-icons/fa";
-import { Table } from "./ui/table";
-import { useTheme } from "@/context/ThemeContext";
-import { Button } from "./ui/button";
+import { FaPencilAlt, FaTrash } from "@/components/icons";
+import { Button, Table } from "@/components";
+import { useTheme } from "@/context";
 
-export function TableContacts({
+export default function TableContacts({
     data,
     open,
     onDelete
