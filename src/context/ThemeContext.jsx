@@ -25,6 +25,7 @@ export function ThemeProvider({ children }) {
 
     useEffect(() => {
         const saved = localStorage.getItem("theme");
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         if (saved === 'dark') setDarkMode(true);
     }, []);
 
@@ -54,8 +55,11 @@ export function ThemeProvider({ children }) {
     )
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTheme() {
     const context = useContext(ThemeContext);
     if (!context) throw new Error("useTheme fora do provider");
     return context;
 };
+
+export { ThemeContext };

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import api from '../services/api';
+import api from '@/services/api';
 
 const AuthContext = createContext(null);
 
@@ -13,6 +13,7 @@ export function AuthProvider({ children }) {
 
         if (token && storedUser) {
             api.defaults.headers.common.Authorization = `Bearer ${token}`;
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setUser(JSON.parse(storedUser));
         }
         setLoading(false);
@@ -43,8 +44,11 @@ export function AuthProvider({ children }) {
     )
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
     const context = useContext(AuthContext);
     if (!context) throw new Error("useAuth fora do provider");
     return context;
 };
+
+export { AuthContext };

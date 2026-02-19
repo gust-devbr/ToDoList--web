@@ -42,10 +42,12 @@ function Cell({ children, className = "" }) {
     )
 };
 
-export const Table = Object.assign(TableRoot, {
+const Table = Object.assign(TableRoot, {
     Header,
     Body,
     Row,
     Head,
     Cell
 });
+
+export default Table;

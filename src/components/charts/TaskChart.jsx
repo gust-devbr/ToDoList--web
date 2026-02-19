@@ -1,6 +1,6 @@
 import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-export function TaskChart({ tasks }) {
+export default function TaskChart({ tasks }) {
     const completed = tasks.filter(t => t.completed).length;
     const notCompleted = tasks.length - completed;
 

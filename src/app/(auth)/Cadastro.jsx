@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from '../../services/api';
-import { Spinner } from "@/components/ui/spinner";
-import { Input } from "@/components/ui/input";
-import { AuthButton } from "@/components/ui/button";
+import api from '@/services/api';
+import { Spinner, Input, AuthButton } from "@/components";
 
 export default function Cadastro() {
     const [nome, setNome] = useState('');

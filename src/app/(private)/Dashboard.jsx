@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "@/services/api";
 import { useTheme } from "@/context/ThemeContext";
-import { TaskChart } from "@/components/TaskChart";
+import { TaskChart } from "@/components";
 
 export default function Dashboard() {
     const { theme } = useTheme();

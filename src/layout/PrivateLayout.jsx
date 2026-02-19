@@ -1,8 +1,8 @@
-import { useState } from "react";
-import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
-import { FaAngleRight } from 'react-icons/fa';
-import { useTheme } from "../context/ThemeContext";
+import { useState } from "react";
+import { FaAngleRight } from '@/components/icons';
+import { Sidebar } from "@/components";
+import { useTheme } from "@/context";
 
 export default function PrivateLayout() {
     const { theme } = useTheme();

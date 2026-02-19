@@ -1,9 +1,6 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
-import { useTheme } from "../../context/ThemeContext";
-import ChangeModalPass from "../../components/ChangePassModal";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useAuth, useTheme } from "@/context";
+import { Button, Input, ChangePassModal } from "@/components";
 
 export default function Settings() {
     const { user, logout, deleteAccount } = useAuth();
@@ -52,7 +49,7 @@ export default function Settings() {
                 />
             </div>
 
-            <ChangeModalPass
+            <ChangePassModal
                 isOpen={isModalChangePassOpen}
                 onClose={() => setIsModalChangePassOpen(false)}
             />

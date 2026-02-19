@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
+import { Header, TaskModal, TableItem } from '@/components';
+import { useTheme } from '@/context';
 import api from '@/services/api'
-import { useTheme } from '@/context/ThemeContext';
-import { Header } from '@/components/Header';
-import { TableItem } from '@/components/TableItem';
-import { TaskModal } from '@/components/TaskModal';
 
 export default function Tasks() {
     const { theme } = useTheme();

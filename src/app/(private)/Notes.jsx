@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import { useTheme } from "@/context/ThemeContext";
-import { Header } from "@/components/Header";
-import { TableItem } from "@/components/TableItem";
-import { NoteModal } from "@/components/NoteModal";
+import { useTheme } from "@/context";
+import { TableItem, NoteModal, Header } from "@/components";
 import api from "@/services/api";
 
 export default function Notes() {

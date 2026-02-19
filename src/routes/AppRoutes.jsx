@@ -1,16 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 
-//PAGES
-import Login from '../app/(auth)/Login';
-import Cadastro from '../app/(auth)/Cadastro';
-import Tasks from '../app/(private)/Tasks';
-import Notes from "../app/(private)/Notes";
-import Settings from '../app/(private)/Settings';
-import Contacts from "@/app/(private)/Contacts";
-import Dashboard from "@/app/(private)/Dashboard";
+import { Login, Cadastro } from '@/app/(auth)';
+import { Tasks, Notes, Settings, Contacts, Dashboard } from '@/app/(private)'
 
-import PrivateLayout from "../layout/PrivateLayout";
+import PrivateLayout from "@/layout/PrivateLayout";
 
 export default function AppRoutes() {
     const { user, loading } = useAuth();

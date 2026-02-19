@@ -1,14 +1,11 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import api from "../services/api";
-import { useAuth } from "../context/AuthContext";
-import { useTheme } from "../context/ThemeContext";
-import { MdCancel } from "react-icons/md";
-import { FaSave } from "react-icons/fa";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
+import { useAuth, useTheme } from "@/context";
+import { FaSave, MdCancel } from '@/components/icons';
+import { Input, Button } from "@/components";
+import api from "@/services/api";
 
-export default function ChangeModalPass({ isOpen, onClose }) {
+export default function ChangePassModal({ isOpen, onClose }) {
     const navigate = useNavigate();
     const { theme } = useTheme();
 
