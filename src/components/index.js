@@ -1,8 +1,8 @@
 // UI Components
-export { Button, AuthButton } from './ui/Button';
-export { Input, TextArea } from './ui/Input';
-export { Spinner } from './ui/Spinner';
-export { default as Table } from './ui/Table';
+export { Button, AuthButton } from './ui/button';
+export { Input, TextArea } from './ui/input';
+export { Spinner } from './ui/spinner';
+export { default as Table } from './ui/table';
 
 // Layout
 export { default as Header } from './layout/Header';
