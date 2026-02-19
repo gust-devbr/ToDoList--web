@@ -1,15 +1,19 @@
 import { NavLink } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { useState } from 'react';
-import { FaCog, FaTasks } from 'react-icons/fa';
+import { FaChartBar, FaCog, FaTasks } from 'react-icons/fa';
 import { GiNotebook } from 'react-icons/gi';
 import { IoMdContact } from "react-icons/io";
 
 export default function Sidebar() {
-    const [isOpen, setIsOpen] = useState(false);
     const { theme } = useTheme();
 
-    const toggleSidebar = () => setIsOpen(!isOpen);
+    const links = [
+        { to: '/tasks', label: 'Tarefas', icon: <FaTasks /> },
+        { to: '/notes', label: 'Notas', icon: <GiNotebook /> },
+        { to: '/contacts', label: 'Contatos', icon: <IoMdContact /> },
+        { to: '/dashboard', label: 'Dashboard', icon: <FaChartBar />, isFooter: true },
+        { to: '/settings', label: 'Configurações', icon: <FaCog />, isFooter: true }
+    ];
 
     const linkClass = ({ isActive }) =>
         `block uppercase text-md pb-1 transition flex flex-row gap-2 items-center
@@ -31,26 +35,23 @@ export default function Sidebar() {
                 </p>
 
                 <nav className="flex flex-col mt-2 gap-2 px-6 flex-1 md:mb-5 mb-17">
-                    <NavLink onClick={toggleSidebar} to="/tasks" className={linkClass}>
-                        <FaTasks />
-                        Tarefas
-                    </NavLink>
-                    <NavLink onClick={toggleSidebar} to="/notes" className={linkClass}>
-                        <GiNotebook />
-                        Notas
-                    </NavLink>
-                    <NavLink onClick={toggleSidebar} to="/contacts" className={linkClass}>
-                        <IoMdContact />
-                        Contatos
-                    </NavLink>
-                    <div className="mt-auto flex">
-                        <NavLink onClick={toggleSidebar} to="/settings" className={linkClass}>
-                            <FaCog />
-                            Configurações
+                    {links.filter(l => !l.isFooter).map(link => (
+                        <NavLink key={link.to} to={link.to} className={linkClass}>
+                            {link.icon}
+                            {link.label}
                         </NavLink>
+                    ))}
+
+                    <div className="mt-auto flex flex-col gap-1">
+                        {links.filter(l => l.isFooter).map(link => (
+                            <NavLink key={link.to} to={link.to} className={linkClass}>
+                                {link.icon}
+                                {link.label}
+                            </NavLink>
+                        ))}
                     </div>
                 </nav>
             </div>
         </>
-    );
-}
+    )
+};

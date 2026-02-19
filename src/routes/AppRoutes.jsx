@@ -8,6 +8,7 @@ import Tasks from '../app/(private)/Tasks';
 import Notes from "../app/(private)/Notes";
 import Settings from '../app/(private)/Settings';
 import Contacts from "@/app/(private)/Contacts";
+import Dashboard from "@/app/(private)/Dashboard";
 
 import PrivateLayout from "../layout/PrivateLayout";
 
@@ -31,6 +32,7 @@ export default function AppRoutes() {
                         <Route path="/tasks" element={<Tasks />} />
                         <Route path="/notes" element={<Notes />} />
                         <Route path="/contacts" element={<Contacts />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="*" element={<Navigate to="/tasks" />} />
                     </Route>
