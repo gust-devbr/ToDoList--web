@@ -104,8 +104,6 @@ export default function Notes() {
                 onSearchChange={setSearch}
             />
 
-            <hr className="mb-5 border-2" />
-
             {notes.length === 0 ? (
                 <h1 className="text-center text-lg font-semibold">Nenhuma nota encontrada</h1>
             ) : (
