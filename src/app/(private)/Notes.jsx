@@ -122,15 +122,6 @@ export default function Notes() {
                 setContentValue={(v) => setCurrentNote(prev => ({ ...prev, content: v }))}
                 mode={modalMode ?? "create"}
             />
-
-            {notes.length > 0 && (
-                <div
-                    className='mt-auto mb-10 md:mb-2 p-3 rounded-sm flex justify-between text-[14px]'
-                    style={{ backgroundColor: theme.background }}
-                >
-                    <span style={{ color: theme.text }}>Total: {notes.length}</span>
-                </div>
-            )}
         </div>
     )
 };

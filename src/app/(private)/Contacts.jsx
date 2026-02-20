@@ -64,7 +64,6 @@ export default function Contacts() {
 
             setContacts(prev =>
                 prev.map(c => c.id === id ? { ...c, favorite: newFavorite } : c)
-                    .sort((a, b) => (b.favorite === true) - (a.favorite === true))
             );
         } catch (err) {
             console.error("Erro ao favoritar", err);
@@ -124,5 +123,5 @@ export default function Contacts() {
                 onSave={handleSave}
             />
         </div>
-    );
-}
+    )
+};

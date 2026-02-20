@@ -2,39 +2,77 @@ import { useEffect, useState } from "react";
 import api from "@/services/api";
 import { useTheme } from "@/context/ThemeContext";
 import { TaskChart } from "@/components";
+import ContactChart from "@/components/charts/ContactChart";
 
 export default function Dashboard() {
     const { theme } = useTheme();
     const [tasks, setTasks] = useState([]);
+    const [contacts, setContacts] = useState([]);
+    const [selectChart, setSelectChart] = useState("tasks");
 
-    async function loadTasks() {
+    async function loadData() {
         try {
-            const res = await api.get("/tasks");
-            setTasks(Array.isArray(res.data) ? res.data : res.data.tasks || []);
+            if (selectChart === "tasks") {
+                const res = await api.get("/tasks");
+                const data = Array.isArray(res.data) ? res.data : res.data.tasks || [];
+                setTasks(data);
+            } else if (selectChart === "contacts") {
+                const res = await api.get("/contacts");
+                const data = Array.isArray(res.data)
+                    ? res.data
+                    : res.data.contacts || [];
+                setContacts(data);
+            }
         } catch (error) {
-            console.error("Erro ao carregar tarefas", error);
-            setTasks([]);
+            console.error("Erro ao carregar", error);
+            if (selectChart === "tasks") {
+                setTasks([]);
+            } else if (selectChart === "contacts") {
+                setContacts([]);
+            }
         }
-    }
+    };
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        loadTasks();
-    }, []);
+        if (selectChart) loadData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectChart]);
 
+    //Tasks
     const completed = tasks.filter(t => t.completed).length;
     const notCompleted = tasks.length - completed;
+
+    //Contacts
+    const favorite = contacts.filter(c => c.favorite).length;
+    const notFavorite = contacts.length - favorite;
+
+    //Select
+    const handleSelect = (event) => setSelectChart(event.target.value);
 
     return (
         <div
             className="min-h-screen px-4 py-6"
             style={{ backgroundColor: theme.card, color: theme.text }}
         >
-            <p className="text-3xl text-center mb-10 font-bold mt-5">
-                Dashboard de Terafas
-            </p>
+            <header className="flex flex-col gap-7 items-center justify-center">
 
-            <hr className="border-2" />
+                <p className="text-3xl text-center mb-5 font-bold mt-5">
+                    {selectChart === "tasks"
+                        ? "Dashboard de Tarefas"
+                        : "Dashboard de Contatos"
+                    }
+                </p>
+
+                <select
+                    className="text-center w-50 text-xl border-2"
+                    style={{ backgroundColor: theme.card }}
+                    value={selectChart}
+                    onChange={handleSelect}
+                >
+                    <option value="tasks">Tarefas</option>
+                    <option value="contacts">Contatos</option>
+                </select>
+            </header>
 
             <div className="mt-10 max-w-4xl mx-auto space-y-8">
 
@@ -43,33 +81,34 @@ export default function Dashboard() {
                     <Card
                         cardTheme={theme.background}
                         label="Total"
-                        children={tasks.length}
+                        children={selectChart === "tasks" ? tasks.length : contacts.length}
                     />
 
                     <Card
                         cardTheme={theme.background}
                         textColor="text-green-500"
-                        label="Concluídas"
-                        children={completed}
+                        label={selectChart === "tasks" ? "Concluídas" : "Favoritos"}
+                        children={selectChart === "tasks" ? completed : favorite}
                     />
 
                     <Card
                         cardTheme={theme.background}
                         textColor="text-red-500"
-                        label="Não Concluídas"
-                        children={notCompleted}
+                        label={selectChart === "tasks" ? "Não Concluídas" : "Não Favoritos"}
+                        children={selectChart === "tasks" ? notCompleted : notFavorite}
                     />
                 </div>
 
                 <div
                     className="p-6 rounded-xl shadow"
-                    style={{ backgroundColor: theme.background }}
+                    style={{ backgroundColor: theme.background, minHeight: 320 }}
                 >
-                    <TaskChart tasks={tasks} />
+                    {selectChart === "contacts"
+                        ? <ContactChart contacts={contacts} />
+                        : <TaskChart tasks={tasks} />}
                 </div>
-
             </div>
-        </div >
+        </div>
     )
 };
 

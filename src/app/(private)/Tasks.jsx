@@ -112,16 +112,6 @@ export default function Tasks() {
                 setValue={(value) => setCurrentTask((prev) => ({ ...prev, title: value }))}
                 mode={modalMode ?? "create"}
             />
-
-            {tasks.length > 0 && (
-                <div
-                    className='mt-auto lg:mb-0 p-3 rounded-sm flex justify-between text-[14px]'
-                    style={{ backgroundColor: theme.background }}
-                >
-                    <span style={{ color: theme.text }}>Total: {tasks.length}</span>
-                    <span style={{ color: theme.text }}>Concluídas: {tasks.filter((t) => t.completed).length}</span>
-                </div>
-            )}
         </div>
     )
 };
