@@ -1,3 +1,5 @@
+'use client'
+
 export { MdCancel } from "react-icons/md";
 export { GiNotebook } from 'react-icons/gi';
 export { IoMdContact } from "react-icons/io";
