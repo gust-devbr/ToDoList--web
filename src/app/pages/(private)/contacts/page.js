@@ -70,9 +70,7 @@ export default function Contacts() {
                 body: JSON.stringify({ favorite: newFavorite })
             });
 
-            setContacts(prev =>
-                prev.map(c => c.id === id ? { ...c, favorite: newFavorite } : c)
-            );
+            loadContacts();
         } catch (err) {
             console.error("Erro ao favoritar", err);
         }
@@ -88,17 +86,15 @@ export default function Contacts() {
                     body: JSON.stringify(contactData)
                 });
 
-                setContacts(prev =>
-                    prev.map(c => c.id === id ? { ...c, ...contactData } : c)
-                );
+                loadContacts();
             } else {
-                const res = await fetch("/api/private/contacts", {
+                await fetch("/api/private/contacts", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
                     body: JSON.stringify(contactData)
                 });
-                setContacts(prev => [...prev, res.data]);
+                loadContacts();
             }
 
             setModalMode(null);

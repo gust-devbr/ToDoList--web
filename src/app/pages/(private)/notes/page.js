@@ -44,11 +44,7 @@ export default function Notes() {
                     body: JSON.stringify({ title, content })
                 });
 
-                setNotes(prevNotes =>
-                    prevNotes.map(note =>
-                        note.id === id ? { ...note, title, content } : note
-                    )
-                );
+                loadNotes();
             } else if (modalMode === "create") {
                 await fetch("/api/private/notes", {
                     method: "POST",
