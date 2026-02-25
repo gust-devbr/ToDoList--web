@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -29,7 +30,7 @@ export default function Tasks() {
             console.error('Erro ao carregar tarefas', err)
             setTasks([])
         }
-    }
+    };
 
     async function toggleTasks(id) {
         await fetch(`/api/private/tasks/${id}`, {
@@ -37,7 +38,7 @@ export default function Tasks() {
             headers: { "Content-Type": "application/json" },
             credentials: "include",
         });
-        loadTasks()
+        loadTasks();
     };
 
     async function deleteTasks(id) {
@@ -46,7 +47,7 @@ export default function Tasks() {
             headers: { "Content-Type": "application/json" },
             credentials: "include",
         });
-        loadTasks()
+        loadTasks();
     };
 
     function openCreateModal() {
@@ -63,8 +64,8 @@ export default function Tasks() {
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
                 body: JSON.stringify({ title: currentTask.title })
-            });
-        }
+            })
+        };
 
         if (modalMode === "edit" && currentTask.id) {
             await fetch(`/api/private/tasks/${currentTask.id}`, {
@@ -77,7 +78,7 @@ export default function Tasks() {
 
         setModalMode(null);
         loadTasks();
-    }
+    };
 
     function openEditModal(task) {
         setCurrentTask({
@@ -86,16 +87,12 @@ export default function Tasks() {
         });
 
         setModalMode("edit");
-    }
+    };
 
     useEffect(() => {
-        const delay = setTimeout(() => {
-            loadTasks()
-        }, 400);
-
+        const delay = setTimeout(() => loadTasks(), 400);
         return () => clearTimeout(delay);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [search])
+    }, [search]);
 
     return (
         <div

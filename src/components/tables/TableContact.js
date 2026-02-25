@@ -17,22 +17,20 @@ export function TableContact({
         <Table>
             <Table.Body>
                 {safeData.map(u => (
-                    <Table.Row key={u.id ?? `contact-${u.email}`}>
+                    <Table.Row key={u.id}>
                         <>
                             <Table.Cell>
-
                                 <div className="flex flex-col gap-1 text">
                                     <div className="text-2xl font-semibold">
-                                        {u.name}
+                                        {u?.name}
                                     </div>
 
                                     <div className="flex flex-col gap-1 md:flex-row md:gap-10 md:items-center">
-                                        <span>{u.email}</span>
-                                        <span>{u.tel}</span>
-                                        <span>{u.category}</span>
+                                        <span>{u?.email}</span>
+                                        <span>{u?.tel}</span>
+                                        <span>{u?.category}</span>
                                     </div>
                                 </div>
-
                             </Table.Cell>
 
                             <Table.Cell>
