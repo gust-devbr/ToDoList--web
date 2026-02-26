@@ -4,19 +4,19 @@ import { getUserFromToken } from "@/lib/auth";
 
 export async function DELETE(req, context) {
     try {
-        const user = await getUserFromToken();
         const { id } = await context.params;
+
+        const user = await getUserFromToken();
+        if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const task = await prisma.task.findFirst({
             where: { id, userId: user.id }
         });
-        if (!task) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
+        if (!task) return NextResponse.json({ error: "Tarefa não encontrada" }, { status: 404 });
 
         const deleted = await prisma.task.delete({
             where: { id }
         });
-
-        if (deleted.count === 0) return NextResponse.json({ message: "Tarefa não encontrada" }, { status: 404 });
 
         return NextResponse.json(deleted, { status: 200 });
     } catch (error) {
@@ -27,23 +27,23 @@ export async function DELETE(req, context) {
 
 export async function PUT(req, context) {
     try {
-        const { title } = await req.json();
-        const user = await getUserFromToken();
         const { id } = await context.params;
+
+        const { title } = await req.json();
+        if (!title) return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
+
+        const user = await getUserFromToken();
+        if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const task = await prisma.task.findFirst({
             where: { id, userId: user.id }
         });
         if (!task) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
-        if (!title) return NextResponse.json({ error: "Título obrigatório" }, { status: 400 });
-
         const renamed = await prisma.task.update({
             where: { id },
             data: { ...(title && { title }) }
         });
-
-        if (renamed.count === 0) return NextResponse.json({ message: "Tarefa não encontrada" }, { status: 404 });
 
         return NextResponse.json(renamed, { status: 200 });
     } catch (error) {
@@ -54,20 +54,20 @@ export async function PUT(req, context) {
 
 export async function PATCH(req, context) {
     try {
-        const user = await getUserFromToken();
         const { id } = await context.params;
+
+        const user = await getUserFromToken();
+        if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const task = await prisma.task.findFirst({
             where: { id, userId: user.id }
         });
-        if (!task) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
+        if (!task) return NextResponse.json({ error: "Tarefa não encontrada" }, { status: 404 });
 
         const updated = await prisma.task.update({
             where: { id },
             data: { completed: !task.completed }
         });
-
-        if (updated.count === 0) return NextResponse.json({ message: "Tarefa não encontrada" }, { status: 404 });
 
         return NextResponse.json(updated, { status: 200 });
     } catch (error) {
