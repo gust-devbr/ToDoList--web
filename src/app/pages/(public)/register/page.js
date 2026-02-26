@@ -1,68 +1,73 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { Spinner, Input, AuthButton, apiFetch } from "@/components";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import {
+    Spinner,
+    Input,
+    AuthButton,
+    ValidateUsername,
+    ValidateEmail,
+    ValidatePassword
+} from "@/components";
 
 export default function RegisterPage() {
+    const router = useRouter();
+
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [loading, setLoading] = useState(false);
-    const [aviso, setAviso] = useState('');
-    const [senhaAlert, setSenhaAlert] = useState(null)
-
-    const router = useRouter();
+    const [errors, setErrors] = useState({
+        nome: "",
+        email: "",
+        senha: ""
+    });
 
     useEffect(() => {
-        if (senha.length === 0) {
-            setAviso('')
-            setSenhaAlert(false)
-        } else if (senha.length <= 6) {
-            setAviso('Senha maior que 6 caracteres')
-            setSenhaAlert(true)
-        } else {
-            setAviso('')
-            setSenhaAlert(false)
-        }
-    }, [senha])
+        setErrors(prev => ({ ...prev, nome: ValidateUsername(nome) }));
+    }, [nome]);
 
-    function validateEmail(email) {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    };
+    useEffect(() => {
+        setErrors(prev => ({ ...prev, email: ValidateEmail(email) }));
+    }, [email]);
+
+    useEffect(() => {
+        setErrors(prev => ({ ...prev, senha: ValidatePassword(senha) }));
+    }, [senha]);
 
     async function handleCadastro(e) {
         e.preventDefault();
 
-        if (!validateEmail(email)) {
-            alert("Digite um Email válido");
-            return;
-        };
-
+        if (errors.nome || errors.email || errors.senha) return;
+        
         try {
             setLoading(true);
 
-            const res = await fetch("/api/public/register", {
+            await fetch("/api/public/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ nome, email, senha }),
             });
-            alert("Cadastro realizado!" || res?.data?.error);
-            router.replace("/");
-
+            alert("Cadastro realizado!");
+            setTimeout(() => router.replace("/"), 800);
         } catch (err) {
-            console.log(err);
+            console.error(err);
             alert("Erro ao cadastrar");
             setLoading(false);
-
         } finally {
             setLoading(false);
         }
     };
 
-    const isDisabled = !nome || !email || !senha || senha.length <= 6;
+    const isDisabled =
+        !nome ||
+        !email ||
+        !senha ||
+        errors.nome ||
+        errors.email ||
+        errors.senha;
 
     return (
         <form onSubmit={handleCadastro}>
@@ -76,14 +81,22 @@ export default function RegisterPage() {
                     value={nome}
                     onChangeValue={setNome}
                 />
-
+                {errors.nome && (
+                    <span className="text-sm text-red-500">
+                        {errors.nome}
+                    </span>
+                )}
                 <Input
                     name="auth"
                     label="Email"
                     value={email}
                     onChangeValue={setEmail}
                 />
-
+                {errors.email && (
+                    <span className="text-sm text-red-500">
+                        {errors.email}
+                    </span>
+                )}
                 <Input
                     name="auth"
                     className={`${senhaAlert ? "border-red-500 border-2" : "border"}`}
@@ -91,9 +104,11 @@ export default function RegisterPage() {
                     value={senha}
                     onChangeValue={setSenha}
                 />
-                <span className={`text-sm ${senhaAlert && "text-red-500"}`}>
-                    {aviso}
-                </span>
+                {errors.senha && (
+                    <span className="text-sm text-red-500">
+                        {errors.senha}
+                    </span>
+                )}
 
                 <span className="flex flex-row justify-between mt-3 mb-3 text-md py-1 px-2 rounded-xl">
                     <span>Já tem conta?</span>

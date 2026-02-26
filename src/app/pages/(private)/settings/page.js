@@ -11,16 +11,12 @@ export default function Settings() {
 
     function handleLogout() {
         const confirmed = window.confirm("Realmente deseja sair?")
-        if (confirmed) {
-            logout();
-        }
+        if (confirmed) logout();
     };
 
     function handleDelete() {
         const confirmed = window.confirm("Deseja realmente deletar conta?")
-        if (confirmed) {
-            deleteAccount();
-        }
+        if (confirmed) deleteAccount();
     };
 
     return (
@@ -62,7 +58,6 @@ export default function Settings() {
                     onClick={handleLogout}
                     label="Sair da conta"
                 />
-
                 <Button
                     name="warning"
                     className="bg-red-900"

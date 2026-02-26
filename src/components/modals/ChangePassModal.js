@@ -3,11 +3,9 @@
 import { useState } from "react";
 import { useAuth, useTheme } from "@/context";
 import { FaSave, MdCancel } from '@/components/icons';
-import { Input, Button } from "@/components";
-import { useRouter } from "next/navigation";
+import { Input, Button, ValidatePassword } from "@/components";
 
 export function ChangePassModal({ isOpen, onClose }) {
-    const router = useRouter();
     const { theme } = useTheme();
 
     const [atualSenha, setAtualSenha] = useState('');
@@ -16,15 +14,8 @@ export function ChangePassModal({ isOpen, onClose }) {
     const { logout } = useAuth();
 
     async function handleChangePassword() {
-        if (novaSenha !== confirmarSenha) {
-            alert("As senhas não coincidem");
-            return;
-        };
-
-        if (novaSenha.length <= 6) {
-            alert("Nova senha tem que ser maior que 6 caracteres");
-            return;
-        };
+        if (novaSenha !== confirmarSenha) return alert("As senhas não coincidem");
+        if (ValidatePassword(novaSenha)) return alert("Nova senha deve ser maior que 6 caracteres");
 
         try {
             await fetch('/api/private/user', {
@@ -43,12 +34,12 @@ export function ChangePassModal({ isOpen, onClose }) {
             setConfirmarSenha('');
 
             await logout();
-            router.replace('/');
         } catch (err) {
-            console.log(err)
+            console.error(err);
             alert(err.response?.data?.error || "Erro ao mudar senha");
         }
     };
+
     if (!isOpen) return null;
 
     return (
@@ -67,13 +58,11 @@ export function ChangePassModal({ isOpen, onClose }) {
                     label="Senha atual:"
                     onChangeValue={setAtualSenha}
                 />
-
                 <Input
                     className='border rounded-sm py-2 px-2 mb-2'
                     label="Nova senha:"
                     onChangeValue={setNovaSenha}
                 />
-
                 <Input
                     className='border rounded-sm w-60 py-2 px-2 mb-2'
                     label="Confirmar nova senha:"
@@ -87,7 +76,6 @@ export function ChangePassModal({ isOpen, onClose }) {
                         onClick={handleChangePassword}
                         icon={FaSave}
                     />
-
                     <Button
                         style={{ color: theme.text }}
                         title="Cancelar"
