@@ -8,6 +8,7 @@ export async function GET(req) {
         const search = url.searchParams.get("search") || "";
 
         const user = await getUserFromToken();
+        if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const contacts = await prisma.contact.findMany({
             where: {
@@ -24,6 +25,7 @@ export async function GET(req) {
                 { createdAt: "desc" },
             ]
         });
+        if (!contacts) return NextResponse.json({ error: "Contato não encontrado" }, { status: 404 });
 
         return NextResponse.json(contacts, { status: 200 });
     } catch (error) {
@@ -34,20 +36,23 @@ export async function GET(req) {
 
 export async function POST(req) {
     try {
-        const user = await getUserFromToken();
         const { name, email, tel, category } = await req.json();
+        if (!name || !email || !tel || !category) return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
 
-        if (!name
-            || !email
-            || !tel
-            || !category
-        ) return NextResponse.json({ error: "Campos obrigatórios" }, { status: 400 });
+        const user = await getUserFromToken();
+        if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
-        const created = await prisma.contact.create({
-            data: { userId: user.id, name, email, tel, category }
+        const contact = await prisma.contact.create({
+            data: {
+                userId: user.id,
+                name,
+                email,
+                tel,
+                category
+            }
         });
 
-        return NextResponse.json(created, { status: 201 });
+        return NextResponse.json(contact, { status: 201 });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "Erro ao criar contato" }, { status: 500 });

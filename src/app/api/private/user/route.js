@@ -5,8 +5,11 @@ import { getUserFromToken } from "@/lib/auth";
 
 export async function PUT(req) {
     try {
-        const user = await getUserFromToken();
         const { atualSenha, novaSenha } = await req.json();
+        if (!atualSenha || !novaSenha) return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
+
+        const user = await getUserFromToken();
+        if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const findUser = await prisma.user.findFirst({ where: { id: user.id } });
         if (!findUser) return NextResponse.json({ error: "Usuário não encontrado" }, { status: 404 });
@@ -28,7 +31,7 @@ export async function PUT(req) {
     }
 };
 
-export async function DELETE(req) {
+export async function DELETE() {
     try {
         const user = await getUserFromToken();
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });

@@ -8,6 +8,7 @@ export async function GET(req) {
         const search = url.searchParams.get("search") || "";
 
         const user = await getUserFromToken();
+        if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const tasks = await prisma.note.findMany({
             where: {
@@ -22,6 +23,7 @@ export async function GET(req) {
                 { createdAt: "desc" }
             ]
         });
+        if (!tasks) return NextResponse.json({ error: "Nota não encontrada" }, { status: 404 });
 
         return NextResponse.json(tasks, { status: 200 });
     } catch (error) {
@@ -32,10 +34,11 @@ export async function GET(req) {
 
 export async function POST(req) {
     try {
-        const user = await getUserFromToken();
         const { title, content } = await req.json();
+        if (!title || !content) return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
 
-        if (!title && !content) return NextResponse.json({ error: "Título ou conteúdo obrigatório" }, { status: 400 });
+        const user = await getUserFromToken();
+        if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const created = await prisma.note.create({
             data: { userId: user.id, title, content }

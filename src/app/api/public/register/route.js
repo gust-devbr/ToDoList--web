@@ -6,8 +6,7 @@ import bcrypt from 'bcrypt';
 export async function POST(req) {
     try {
         const { nome, email, senha } = await req.json();
-
-        if (!nome || !email || !senha) return NextResponse.json({ error: "Campos obrigatórios" }, { status: 400 });
+        if (!nome || !email || !senha) return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
 
         const userExist = await prisma.user.findUnique({
             where: { email },
@@ -25,16 +24,12 @@ export async function POST(req) {
         const user = await prisma.user.create({
             data: {
                 name: nome,
-                email,
+                email: email,
                 password: hashedPassword
             }
         });
 
-        return NextResponse.json(
-            { message: "Usuário cadastrado com sucesso", userId: user.id },
-            { status: 201 }
-        );
-
+        return NextResponse.json({ message: "Usuário cadastrado com sucesso", userId: user.id }, { status: 201 });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "Erro ao cadastrar usuário" }, { status: 500 });
