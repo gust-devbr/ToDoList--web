@@ -19,10 +19,10 @@ export { TableContact } from './tables/TableContact';
 export { TableItem } from './tables/TableItem';
 
 // Gráficos
-export { TaskChart } from './charts/TaskChart';
-export { ContactChart } from './charts/ContactChart';
+export { StatusPieChart } from './charts/StatusPieChart';
 
 //Utils
+export { ChartConfig } from './utils/ChartConfig';
 export * from './utils/ValidateUser';
 export * from './utils/VariantStyles';
 export * from './utils/Themes';
