@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/no-children-prop */
 'use client'
 
-/* eslint-disable react/no-children-prop */
 import { useEffect, useState } from "react";
 import { useTheme } from "@/context";
 import { TaskChart, ContactChart } from "@/components";
@@ -12,37 +13,39 @@ export default function Dashboard() {
     const [selectChart, setSelectChart] = useState("tasks");
 
     async function loadData() {
+        let data;
+        let res;
+
         try {
-            if (selectChart === "tasks") {
-                const res = await fetch("/api/private/tasks", {
-                    method: "GET",
-                    headers: { "Content-Type": "application/json" },
-                });
-                const data = await res.json();
-
-                setTasks(Array.isArray(data) ? data : data.tasks || []);
-            } else if (selectChart === "contacts") {
-                const res = await fetch("/api/private/contacts", {
-                    method: "GET",
-                    headers: { "Content-Type": "application/json" },
-                });
-                const data = await res.json();
-
-                setContacts(Array.isArray(data) ? data : data.contacts || []);
+            switch (selectChart) {
+                case "tasks":
+                    res = await fetch("/api/private/tasks", {
+                        method: "GET",
+                        headers: { "Content-Type": "application/json" },
+                    });
+                    data = await res.json();
+                    setTasks(Array.isArray(data) ? data : data.tasks || []);
+                    break;
+                case "contacts":
+                    res = await fetch("/api/private/contacts", {
+                        method: "GET",
+                        headers: { "Content-Type": "application/json" },
+                    });
+                    data = await res.json();
+                    setContacts(Array.isArray(data) ? data : data.contacts || []);
+                    break;
             }
         } catch (error) {
-            console.error("Erro ao carregar", error);
-            if (selectChart === "tasks") {
-                setTasks([]);
-            } else if (selectChart === "contacts") {
-                setContacts([]);
+            console.error("Erro ao carregar dados", error);
+            switch (selectChart) {
+                case "tasks": setTasks([]); break;
+                case "contacts": setContacts([]); break;
             }
         }
     };
 
     useEffect(() => {
         if (selectChart) loadData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectChart]);
 
     //Tasks
@@ -82,22 +85,18 @@ export default function Dashboard() {
             </header>
 
             <div className="mt-10 max-w-4xl mx-auto space-y-8">
-
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
                     <Card
                         cardTheme={theme.background}
                         label="Total"
                         children={selectChart === "tasks" ? tasks.length : contacts.length}
                     />
-
                     <Card
                         cardTheme={theme.background}
                         textColor="text-green-500"
                         label={selectChart === "tasks" ? "Concluídas" : "Favoritos"}
                         children={selectChart === "tasks" ? completed : favorite}
                     />
-
                     <Card
                         cardTheme={theme.background}
                         textColor="text-red-500"

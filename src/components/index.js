@@ -21,3 +21,8 @@ export { TableItem } from './tables/TableItem';
 // Gráficos
 export { TaskChart } from './charts/TaskChart';
 export { ContactChart } from './charts/ContactChart';
+
+//Utils
+export * from './utils/ValidateUser';
+export * from './utils/VariantStyles';
+export * from './utils/Themes';

@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useTheme } from "@/context";
 import { Header, TableContact, ContactModal } from "@/components";
@@ -13,34 +13,25 @@ export default function Contacts() {
     const [selectedContact, setSelectedContact] = useState(null);
     const [search, setSearch] = useState("");
 
+    function openCreateModal() {
+        setSelectedContact(null);
+        setModalMode("create");
+    };
+    function openEditModal(contact) {
+        setSelectedContact(contact);
+        setModalMode("edit");
+    };
+
     async function loadContacts() {
         try {
-            const res = await fetch(`/api/private/contacts?search=${search}`, {
-                credentials: "include"
-            });
+            const res = await fetch(`/api/private/contacts?search=${search}`, {credentials: "include"});
             const data = await res.json();
-
             setContacts(Array.isArray(data) ? data : data.contacts || []);
         } catch (err) {
             console.error("Erro ao carregar contatos", err);
             setContacts([]);
         }
-    }
-
-    useEffect(() => {
-        const delay = setTimeout(loadContacts, 100);
-        return () => clearTimeout(delay);
-    }, [search]);
-
-    function openCreateModal() {
-        setSelectedContact(null);
-        setModalMode("create");
-    }
-
-    function openEditModal(contact) {
-        setSelectedContact(contact);
-        setModalMode("edit");
-    }
+    };
 
     async function deleteContact(id) {
         try {
@@ -49,8 +40,7 @@ export default function Contacts() {
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
             });
-
-            setContacts(prev => prev.filter(c => c.id !== id));
+            loadContacts();
         } catch (err) {
             console.error("Erro ao deletar contato", err);
         }
@@ -61,47 +51,49 @@ export default function Contacts() {
             const contact = contacts.find(c => c.id === id);
             if (!contact) return;
 
-            const newFavorite = typeof contact.favorite === "boolean" ? !contact.favorite : true;
-
             await fetch(`/api/private/contacts/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({ favorite: newFavorite })
+                body: JSON.stringify({ favorite: !contact.favorite })
             });
-
             loadContacts();
         } catch (err) {
             console.error("Erro ao favoritar", err);
         }
-    }
+    };
 
     async function handleSave(contactData, id) {
         try {
-            if (modalMode === "edit" && id) {
-                await fetch(`/api/private/contacts/${id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify(contactData)
-                });
-
-                loadContacts();
-            } else {
-                await fetch("/api/private/contacts", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify(contactData)
-                });
-                loadContacts();
-            }
-
+            switch (modalMode) {
+                case "create":
+                    await fetch("/api/private/contacts", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: "include",
+                        body: JSON.stringify(contactData)
+                    });
+                    break;
+                case "edit":
+                    await fetch(`/api/private/contacts/${id}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: "include",
+                        body: JSON.stringify(contactData)
+                    });
+                    break;
+            };
             setModalMode(null);
+            loadContacts();
         } catch (err) {
             console.error("Erro ao salvar", err);
         }
-    }
+    };
+
+    useEffect(() => {
+        const delay = setTimeout(loadContacts, 100);
+        return () => clearTimeout(delay);
+    }, [search]);
 
     return (
         <div
