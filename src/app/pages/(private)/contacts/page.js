@@ -1,7 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client'
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "@/context";
 import { Header, TableContact, ContactModal } from "@/components";
 
@@ -22,16 +22,20 @@ export default function Contacts() {
         setModalMode("edit");
     };
 
-    async function loadContacts() {
+    const loadContacts = useCallback(async () => {
         try {
-            const res = await fetch(`/api/private/contacts?search=${search}`, {credentials: "include"});
+            const res = await fetch(`/api/private/contacts?search=${search}`, { credentials: "include" });
             const data = await res.json();
             setContacts(Array.isArray(data) ? data : data.contacts || []);
         } catch (err) {
             console.error("Erro ao carregar contatos", err);
             setContacts([]);
         }
-    };
+    }, [search]);
+
+    useEffect(() => {
+        loadContacts();
+    }, [loadContacts]);
 
     async function deleteContact(id) {
         try {
@@ -40,7 +44,8 @@ export default function Contacts() {
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
             });
-            loadContacts();
+
+            loadContacts()
         } catch (err) {
             console.error("Erro ao deletar contato", err);
         }
@@ -57,7 +62,7 @@ export default function Contacts() {
                 credentials: "include",
                 body: JSON.stringify({ favorite: !contact.favorite })
             });
-            loadContacts();
+            await loadContacts();
         } catch (err) {
             console.error("Erro ao favoritar", err);
         }
@@ -84,16 +89,11 @@ export default function Contacts() {
                     break;
             };
             setModalMode(null);
-            loadContacts();
+            await loadContacts();
         } catch (err) {
             console.error("Erro ao salvar", err);
         }
     };
-
-    useEffect(() => {
-        const delay = setTimeout(loadContacts, 100);
-        return () => clearTimeout(delay);
-    }, [search]);
 
     return (
         <div

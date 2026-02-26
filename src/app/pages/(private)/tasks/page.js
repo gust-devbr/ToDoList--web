@@ -1,7 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Header, TaskModal, TableItem, apiFetch } from '@/components';
 import { useTheme } from '@/context';
 
@@ -22,7 +22,7 @@ export default function Tasks() {
         setModalMode("edit");
     };
 
-    async function loadTasks() {
+    const loadTasks = useCallback(async () => {
         try {
             const res = await fetch(`/api/private/tasks?search=${search}`, { credentials: "include" });
             const data = await res.json();
@@ -32,7 +32,11 @@ export default function Tasks() {
             console.error('Erro ao carregar tarefas', err)
             setTasks([])
         }
-    };
+    }, [search]);
+
+    useEffect(() => {
+        loadTasks();
+    }, [loadTasks]);
 
     async function toggleTasks(id) {
         await fetch(`/api/private/tasks/${id}`, {
@@ -40,7 +44,7 @@ export default function Tasks() {
             headers: { "Content-Type": "application/json" },
             credentials: "include",
         });
-        loadTasks();
+        await loadTasks();
     };
 
     async function deleteTasks(id) {
@@ -49,7 +53,7 @@ export default function Tasks() {
             headers: { "Content-Type": "application/json" },
             credentials: "include",
         });
-        loadTasks();
+        await loadTasks();
     };
 
     async function handleSubmit() {
@@ -73,13 +77,8 @@ export default function Tasks() {
                 });
         };
         setModalMode(null);
-        loadTasks();
+        await loadTasks();
     };
-
-    useEffect(() => {
-        const delay = setTimeout(() => loadTasks(), 400);
-        return () => clearTimeout(delay);
-    }, [search]);
 
     return (
         <div

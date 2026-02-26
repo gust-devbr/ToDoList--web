@@ -1,7 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTheme } from "@/context";
 import { TableItem, NoteModal, Header } from "@/components";
 
@@ -32,7 +32,7 @@ export default function Notes() {
         setModalMode("edit");
     };
 
-    async function loadNotes() {
+    const loadNotes = useCallback(async () => {
         try {
             const res = await fetch(`/api/private/notes?search=${search}`, { credentials: "include" });
             const data = await res.json();
@@ -42,7 +42,11 @@ export default function Notes() {
             console.error("Erro ao carrgar notas", err)
             setNotes([])
         }
-    };
+    }, [search]);
+
+    useEffect(() => {
+        loadNotes();
+    }, [loadNotes]);
 
     async function handleSubmit() {
         try {
@@ -67,7 +71,7 @@ export default function Notes() {
                     });
             }
             setModalMode(null);
-            loadNotes();
+            await loadNotes();
         } catch (err) {
             console.error("Erro ao salvar", err);
         }
@@ -79,13 +83,8 @@ export default function Notes() {
             headers: { "Content-Type": "application/json" },
             credentials: "include",
         });
-        loadNotes();
+        await loadNotes();
     };
-
-    useEffect(() => {
-        const delay = setTimeout(loadNotes, 400);
-        return () => clearTimeout(delay);
-    }, [search]);
 
     return (
         <div
