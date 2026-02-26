@@ -17,7 +17,10 @@ export async function GET(req) {
                     { content: { contains: search, mode: "insensitive" } },
                 ]
             },
-            orderBy: { createdAt: "desc" }
+            orderBy: [
+                { pinned: "desc" },
+                { createdAt: "desc" }
+            ]
         });
 
         return NextResponse.json(tasks, { status: 200 });

@@ -1,6 +1,6 @@
 'use client'
 
-import { FaCheck, FaReply, FaTrash, FaPencilAlt } from '@/components/icons';
+import { FaCheck, FaReply, FaTrash, FaPencilAlt, TbPinnedOff, TbPinned } from '@/components/icons';
 import { Table, Button } from "@/components";
 import { useTheme } from '@/context';
 
@@ -16,7 +16,7 @@ export function TableItem({
     const safeData = Array.isArray(data) ? data : [];
     const { theme } = useTheme();
 
-    const isNote = safeData.length > 0 && "content" in safeData[0];
+    const isNote = safeData.length > 0 && "pinned" in safeData[0];
     const isTask = safeData.length > 0 && "completed" in safeData[0];
 
     return (
@@ -57,6 +57,13 @@ export function TableItem({
                                         title={u.completed ? 'Desmarcar' : 'Concluída'}
                                         onClick={() => toggle(u.id)}
                                         icon={u.completed ? FaReply : FaCheck}
+                                    />)}
+
+                                    {isNote && (<Button
+                                        style={{ color: theme.text }}
+                                        title={u.pinned ? "Desfixar" : "Fixar"}
+                                        onClick={() => toggle(u.id)}
+                                        icon={u.pinned ? TbPinnedOff : TbPinned}
                                     />)}
 
                                     <Button
