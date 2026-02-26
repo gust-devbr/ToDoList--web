@@ -9,20 +9,22 @@ export default function Tasks() {
     const { theme } = useTheme();
 
     const [tasks, setTasks] = useState([]);
-    const [modalMode, setModalMode] = useState(null)
-    const [currentTask, setCurrentTask] = useState({
-        id: null,
-        title: ""
-    });
-
     const [search, setSearch] = useState("");
+    const [modalMode, setModalMode] = useState(null)
+    const [currentTask, setCurrentTask] = useState({ id: null, title: "" });
+
+    function openCreateModal() {
+        setCurrentTask({ id: null, title: "" });
+        setModalMode("create");
+    };
+    function openEditModal(task) {
+        setCurrentTask({ id: task.id, title: task.title });
+        setModalMode("edit");
+    };
 
     async function loadTasks() {
         try {
-            const res = await fetch(`/api/private/tasks?search=${search}`, {
-                credentials: "include"
-            });
-
+            const res = await fetch(`/api/private/tasks?search=${search}`, { credentials: "include" });
             const data = await res.json();
 
             setTasks(Array.isArray(data) ? data : data.tasks || []);
@@ -50,43 +52,28 @@ export default function Tasks() {
         loadTasks();
     };
 
-    function openCreateModal() {
-        setCurrentTask({ id: null, title: "" });
-        setModalMode("create");
-    };
-
     async function handleSubmit() {
         if (!currentTask.title.trim()) return;
 
-        if (modalMode === "create") {
-            await fetch('/api/private/tasks', {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ title: currentTask.title })
-            })
+        switch (modalMode) {
+            case "create":
+                await fetch('/api/private/tasks', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ title: currentTask.title })
+                });
+                break;
+            case "edit":
+                await fetch(`/api/private/tasks/${currentTask.id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ title: currentTask.title })
+                });
         };
-
-        if (modalMode === "edit" && currentTask.id) {
-            await fetch(`/api/private/tasks/${currentTask.id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ title: currentTask.title })
-            });
-        }
-
         setModalMode(null);
         loadTasks();
-    };
-
-    function openEditModal(task) {
-        setCurrentTask({
-            id: task.id,
-            title: task.title
-        });
-
-        setModalMode("edit");
     };
 
     useEffect(() => {
@@ -99,7 +86,6 @@ export default function Tasks() {
             className='flex flex-col flex-1 min-h-screen pb-16 px-2'
             style={{ backgroundColor: theme.card, color: theme.text }}
         >
-
             <Header
                 title="Lista de Tarefas"
                 buttonLabel="Adicionar Tarefa"

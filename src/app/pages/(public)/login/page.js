@@ -75,7 +75,7 @@ export default function LoginPage() {
                 )}
                 <Input
                     name="auth"
-                    className={`${senhaAlert ? "border-red-500 border-2" : "border"}`}
+                    className="border"
                     label="Senha"
                     value={senha}
                     onChangeValue={setSenha}

@@ -17,46 +17,59 @@ export default function Notes() {
         content: ""
     });
 
+    function openCreateModal() {
+        setCurrentNote({ id: null, title: "", content: "" });
+        setModalMode("create");
+    };
+    function openEditModal(note) {
+        if (!note.id) return;
+
+        setCurrentNote({
+            id: note.id ?? "",
+            title: note.title ?? "",
+            content: note.content ?? ""
+        });
+        setModalMode("edit");
+    };
+
     async function loadNotes() {
         try {
-            const res = await fetch(`/api/private/notes?search=${search}`, {
-                credentials: "include"
-            });
+            const res = await fetch(`/api/private/notes?search=${search}`, { credentials: "include" });
             const data = await res.json();
 
-            setNotes(Array.isArray(data) ? data : data.notes || [])
+            setNotes(Array.isArray(data) ? data : data.notes || []);
         } catch (err) {
             console.error("Erro ao carrgar notas", err)
             setNotes([])
         }
-    }
+    };
 
     async function handleSubmit() {
-        const { id, title, content } = currentNote;
-        if (!title.trim() || !content.trim()) return;
-
         try {
-            if (modalMode === "edit" && id) {
-                await fetch(`/api/private/notes/${id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({ title, content })
-                });
+            const { id, title, content } = currentNote;
+            if (!title.trim() || !content.trim()) return;
 
-                loadNotes();
-            } else if (modalMode === "create") {
-                await fetch("/api/private/notes", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({ title, content })
-                });
+            switch (modalMode) {
+                case "create":
+                    await fetch("/api/private/notes", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: "include",
+                        body: JSON.stringify({ title, content })
+                    });
+                    break;
+                case "edit":
+                    await fetch(`/api/private/notes/${id}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: "include",
+                        body: JSON.stringify({ title, content })
+                    });
             }
             setModalMode(null);
             loadNotes();
         } catch (err) {
-            console.error("Erro ao salvar:", err);
+            console.error("Erro ao salvar", err);
         }
     };
 
@@ -66,29 +79,7 @@ export default function Notes() {
             headers: { "Content-Type": "application/json" },
             credentials: "include",
         });
-        loadNotes()
-    };
-
-    function openCreateModal() {
-        setCurrentNote({
-            id: null,
-            title: "",
-            content: ""
-        });
-
-        setModalMode("create");
-    };
-
-    function openEditModal(note) {
-        if (!note.id) return;
-
-        setCurrentNote({
-            id: note.id ?? "",
-            title: note.title ?? "",
-            content: note.content ?? ""
-        });
-
-        setModalMode("edit");
+        loadNotes();
     };
 
     useEffect(() => {
@@ -101,7 +92,6 @@ export default function Notes() {
             className="flex flex-col flex-1 min-h-screen px-2"
             style={{ backgroundColor: theme.card, color: theme.text }}
         >
-
             <Header
                 title="Lista de Notas"
                 buttonLabel="Adicionar Nota"

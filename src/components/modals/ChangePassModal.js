@@ -85,5 +85,6 @@ export function ChangePassModal({ isOpen, onClose }) {
                 </div>
             </div>
         </div>
+        
     )
 };

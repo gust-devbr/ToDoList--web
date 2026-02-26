@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import { useEffect, useState } from "react";
@@ -47,27 +48,29 @@ export function ContactModal({
             ...prev,
             [field]: value
         }));
-    }
+    };
 
     function onSubmit() {
         if (!form.name.trim()) return;
         onSave(form, contact?.id);
         onClose();
-    }
+    };
 
     useEffect(() => {
         function handleKeyDown(e) {
-            if (e.key === "Escape") onClose();
-
-            if (e.key === "Enter" && e.ctrlKey) {
-                e.preventDefault();
-                onSubmit();
+            switch (e.key) {
+                case "Escape":
+                    onClose();
+                    break;
+                case "Enter":
+                    e.preventDefault();
+                    onSubmit();
+                    break;
             }
-        }
+        };
 
         if (isOpen) window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, onClose, form]);
 
     if (!isOpen) return null;
@@ -109,7 +112,6 @@ export function ContactModal({
                         onClick={onSubmit}
                         icon={FaCheck}
                     />
-
                     <Button
                         style={{ color: theme.text }}
                         title="Cancelar"

@@ -1,25 +1,11 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client'
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { lightTheme, darkTheme } from "@/components/utils/Themes";
 import { useAuth } from "./AuthContext";
 
 const ThemeContext = createContext();
-
-const lightTheme = {
-    background: "#FFF",
-    text: "#000",
-    card: "#F2F2F2",
-    icon: "#da0000",
-    checkIcon: "#0127bd",
-};
-
-const darkTheme = {
-    background: "#121212",
-    text: "#FFF",
-    card: "#1E1E1E",
-    icon: "#ff1a1a",
-    checkIcon: "#224eff",
-};
 
 export function ThemeProvider({ children }) {
     const [darkMode, setDarkMode] = useState(false);
@@ -27,7 +13,6 @@ export function ThemeProvider({ children }) {
 
     useEffect(() => {
         const saved = localStorage.getItem("theme");
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         if (saved === 'dark') setDarkMode(true);
     }, []);
 
@@ -46,9 +31,7 @@ export function ThemeProvider({ children }) {
         }
     }, [theme, user])
 
-    function toggleTheme() {
-        setDarkMode(prev => !prev);
-    };
+    const toggleTheme = () => setDarkMode(prev => !prev);
 
     return (
         <ThemeContext.Provider value={{ theme, darkMode, toggleTheme }}>

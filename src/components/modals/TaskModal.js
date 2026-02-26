@@ -14,33 +14,27 @@ export function TaskModal({
     mode
 }) {
     const { theme } = useTheme();
+    const isCreate = mode === "create";
 
     useEffect(() => {
         function handleKeyDown(e) {
-            if (e.key === 'Escape') {
-                onClose();
+            switch (e.key) {
+                case "Escape":
+                    onClose();
+                    break;
+                case "Enter":
+                    e.preventDefault();
+                    onSubmit();
+                    break
             }
-
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                onSubmit();
-                onClose();
-            }
-        }
-
-        if (isOpen) {
-            window.addEventListener('keydown', handleKeyDown);
-        }
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
         };
+
+        if (isOpen) window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
 
     }, [isOpen, onClose, onSubmit]);
 
     if (!isOpen) return null;
-
-    const isCreate = mode === "create";
 
     return (
         <div className='flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/30'>
@@ -66,7 +60,6 @@ export function TaskModal({
                         onClick={onSubmit}
                         icon={FaCheck}
                     />
-
                     <Button
                         style={{ color: theme.text }}
                         title='Cancelar'

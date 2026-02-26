@@ -20,16 +20,16 @@ export function NoteModal({
 
     useEffect(() => {
         function handleKeyDown(e) {
-            if (e.key === "Escape") {
-                onClose();
+            switch (e.key) {
+                case "Escape":
+                    onClose();
+                    break;
+                case "Enter":
+                    e.preventDefault();
+                    onSubmit();
+                    break;
             }
-
-            if (e.key === "Enter" && e.ctrlKey) {
-                e.preventDefault();
-                onSubmit();
-                onClose();
-            }
-        }
+        };
 
         if (isOpen) window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
