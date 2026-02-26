@@ -2,7 +2,7 @@
 /* eslint-disable react/no-children-prop */
 'use client'
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "@/context";
 import { TaskChart, ContactChart } from "@/components";
 
@@ -12,7 +12,7 @@ export default function Dashboard() {
     const [contacts, setContacts] = useState([]);
     const [selectChart, setSelectChart] = useState("tasks");
 
-    async function loadData() {
+    const loadData = useCallback(async () =>  {
         let data;
         let res;
 
@@ -42,11 +42,11 @@ export default function Dashboard() {
                 case "contacts": setContacts([]); break;
             }
         }
-    };
+    }, [selectChart]);
 
     useEffect(() => {
         if (selectChart) loadData();
-    }, [selectChart]);
+    }, [loadData]);
 
     //Tasks
     const completed = tasks.filter(t => t.completed).length;
