@@ -77,6 +77,15 @@ export default function Notes() {
         }
     };
 
+    async function toggleNotes(id) {
+        await fetch(`/api/private/notes/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+        });
+        await loadNotes();
+    };
+
     async function deleteNote(id) {
         await fetch(`/api/private/notes/${id}`, {
             method: "DELETE",
@@ -105,6 +114,7 @@ export default function Notes() {
                 <TableItem
                     data={notes}
                     deleteItem={deleteNote}
+                    toggle={toggleNotes}
                     open={openEditModal}
                 />
             )}

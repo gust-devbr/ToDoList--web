@@ -4,8 +4,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "@/context";
-import { StatusPieChart } from "@/components";
-import { ChartConfig } from "@/components";
+import { StatusPieChart, ChartConfig } from "@/components";
 
 export default function Dashboard() {
     const { theme } = useTheme();

@@ -1,5 +1,6 @@
 'use client'
 
+export { TbPinned, TbPinnedOff } from "react-icons/tb";
 export { MdCancel } from "react-icons/md";
 export { GiNotebook } from 'react-icons/gi';
 export { IoMdContact } from "react-icons/io";
