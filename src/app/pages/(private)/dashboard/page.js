@@ -4,7 +4,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "@/context";
-import { TaskChart, ContactChart } from "@/components";
+import { StatusPieChart } from "@/components";
+import { ChartConfig } from "@/components";
 
 export default function Dashboard() {
     const { theme } = useTheme();
@@ -12,7 +13,7 @@ export default function Dashboard() {
     const [contacts, setContacts] = useState([]);
     const [selectChart, setSelectChart] = useState("tasks");
 
-    const loadData = useCallback(async () =>  {
+    const loadData = useCallback(async () => {
         let data;
         let res;
 
@@ -58,6 +59,8 @@ export default function Dashboard() {
 
     //Select
     const handleSelect = (event) => setSelectChart(event.target.value);
+
+    const config = ChartConfig[selectChart];
 
     return (
         <div
@@ -105,13 +108,13 @@ export default function Dashboard() {
                     />
                 </div>
 
-                <div
-                    className="p-6 rounded-xl shadow"
-                    style={{ backgroundColor: theme.background, minHeight: 320 }}
-                >
-                    {selectChart === "contacts"
-                        ? <ContactChart contacts={contacts} />
-                        : <TaskChart tasks={tasks} />}
+                <div className="p-6 rounded-xl shadow" style={{ backgroundColor: theme.background, minHeight: 320 }}>
+                    <StatusPieChart
+                        items={selectChart === "tasks" ? tasks : contacts}
+                        booleanKey={config.booleanKey}
+                        positiveLabel={config.positiveLabel}
+                        negativeLabel={config.negativeLabel}
+                    />
                 </div>
             </div>
         </div>

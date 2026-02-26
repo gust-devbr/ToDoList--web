@@ -1,17 +1,22 @@
-import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-export function ContactChart({ contacts }) {
-    const favorite = contacts.filter(t => t.favorite).length;
-    const notFavorite = contacts.length - favorite;
+export function StatusPieChart({
+    items,
+    booleanKey,
+    positiveLabel,
+    negativeLabel,
+}) {
+    const positive = items.filter(item => item[booleanKey]).length;
+    const negative = items.length - positive;
 
     const data = [
-        { name: "Favoritos", value: favorite, fill: "#22c55e" },
-        { name: "Não Favoritos", value: notFavorite, fill: "#ef4444" },
+        { name: positiveLabel, value: positive, fill: "#22c55e" },
+        { name: negativeLabel, value: negative, fill: "#ef4444" },
     ];
 
     return (
         <div className="w-full h-80">
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                     <Pie
                         data={data}
@@ -25,5 +30,5 @@ export function ContactChart({ contacts }) {
                 </PieChart>
             </ResponsiveContainer>
         </div>
-    )
-};  
+    );
+}
