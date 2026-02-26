@@ -18,7 +18,7 @@ model User {
   name      String
   email     String   @unique
   password  String
-  createdAt DateTime? @default(now())
+  createdAt DateTime @default(now())
 
   contacts Contact[]
   notes    Note[]
@@ -32,9 +32,9 @@ model Contact {
   email     String
   tel       String
   category  String
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-  favorite  Boolean?  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  favorite  Boolean  @default(false)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -42,10 +42,10 @@ model Contact {
 model Note {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   userId    String   @db.ObjectId
-  title     String?
-  content   String?
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -55,8 +55,8 @@ model Task {
   userId    String   @db.ObjectId
   title     String
   completed Boolean   @default(false)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
