@@ -1,9 +1,5 @@
-import LoginPage from "./pages/(public)/login/page";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <>
-      <LoginPage />
-    </>
-  )
+  redirect("/pages/login");
 };
