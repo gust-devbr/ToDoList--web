@@ -2,7 +2,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { Header, TaskModal, TableItem, apiFetch } from '@/components';
+import { Header, TaskModal, TableItem } from '@/components';
 import { useTheme } from '@/context';
 
 export default function Tasks() {
