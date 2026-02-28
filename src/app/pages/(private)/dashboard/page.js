@@ -10,6 +10,7 @@ export default function Dashboard() {
     const { theme } = useTheme();
     const [tasks, setTasks] = useState([]);
     const [contacts, setContacts] = useState([]);
+    const [notes, setNotes] = useState([]);
     const [selectChart, setSelectChart] = useState("tasks");
 
     const loadData = useCallback(async () => {
@@ -34,12 +35,21 @@ export default function Dashboard() {
                     data = await res.json();
                     setContacts(Array.isArray(data) ? data : data.contacts || []);
                     break;
+                case "notes":
+                    res = await fetch("/api/private/notes", {
+                        method: "GET",
+                        headers: { "Content-Type": "application/json" }
+                    });
+                    data = await res.json();
+                    setNotes(Array.isArray(data) ? data : data.notes || []);
+                    break;
             }
         } catch (error) {
             console.error("Erro ao carregar dados", error);
             switch (selectChart) {
                 case "tasks": setTasks([]); break;
                 case "contacts": setContacts([]); break;
+                case "notes": setNotes([]); break;
             }
         }
     }, [selectChart]);
@@ -56,10 +66,17 @@ export default function Dashboard() {
     const favorite = contacts.filter(c => c.favorite).length;
     const notFavorite = contacts.length - favorite;
 
+    //Notes
+    const pinned = notes.filter(n => n.pinned).length;
+    const notPinned = notes.length - pinned;
+
     //Select
     const handleSelect = (event) => setSelectChart(event.target.value);
 
     const config = ChartConfig[selectChart];
+
+    const isTask = selectChart === 'tasks';
+    const isNote = selectChart === 'notes';
 
     return (
         <div
@@ -69,10 +86,7 @@ export default function Dashboard() {
             <header className="flex flex-col gap-7 items-center justify-center">
 
                 <p className="text-3xl text-center mb-5 font-bold mt-5">
-                    {selectChart === "tasks"
-                        ? "Dashboard de Tarefas"
-                        : "Dashboard de Contatos"
-                    }
+                    Dashboard de {isTask ? "Tarefas" : (isNote ? "Notas" : "Contatos")}
                 </p>
 
                 <select
@@ -83,6 +97,7 @@ export default function Dashboard() {
                 >
                     <option value="tasks">Tarefas</option>
                     <option value="contacts">Contatos</option>
+                    <option value="notes">Notas</option>
                 </select>
             </header>
 
@@ -91,25 +106,25 @@ export default function Dashboard() {
                     <Card
                         cardTheme={theme.background}
                         label="Total"
-                        children={selectChart === "tasks" ? tasks.length : contacts.length}
+                        children={isTask ? tasks.length : (isNote ? notes.length : contacts.length)}
                     />
                     <Card
                         cardTheme={theme.background}
                         textColor="text-green-500"
-                        label={selectChart === "tasks" ? "Concluídas" : "Favoritos"}
-                        children={selectChart === "tasks" ? completed : favorite}
+                        label={isTask ? "Concluídas" : (isNote ? "Fixadas" : "Favoritos")}
+                        children={isTask ? completed : (isNote ? pinned : favorite)}
                     />
                     <Card
                         cardTheme={theme.background}
                         textColor="text-red-500"
-                        label={selectChart === "tasks" ? "Não Concluídas" : "Não Favoritos"}
-                        children={selectChart === "tasks" ? notCompleted : notFavorite}
+                        label={isTask ? "Não Concluídas" : (isNote ? "Não Fixadas" : "Não Favoritos")}
+                        children={isTask ? notCompleted : (isNote ? notPinned : notFavorite)}
                     />
                 </div>
 
                 <div className="p-6 rounded-xl shadow" style={{ backgroundColor: theme.background, minHeight: 320 }}>
                     <StatusPieChart
-                        items={selectChart === "tasks" ? tasks : contacts}
+                        items={isTask ? tasks : (isNote ? notes : contacts)}
                         booleanKey={config.booleanKey}
                         positiveLabel={config.positiveLabel}
                         negativeLabel={config.negativeLabel}
