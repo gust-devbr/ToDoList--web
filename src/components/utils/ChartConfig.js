@@ -11,4 +11,10 @@ export const ChartConfig = {
         positiveLabel: "Favoritos",
         negativeLabel: "Não Favoritos",
     },
+    notes: {
+        itemsKey: "notes",
+        booleanKey: "pinned",
+        positiveLabel: "Fixadas",
+        negativeLabel: "Não Fixadas",
+    },
 };
