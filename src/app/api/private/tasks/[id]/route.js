@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUserFromToken } from "@/lib/auth";
 
-export async function DELETE(req, context) {
+export async function DELETE(req, { params }) {
     try {
-        const { id } = await context.params;
+        const { id } = await params;
 
         const user = await getUserFromToken();
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
@@ -25,9 +25,9 @@ export async function DELETE(req, context) {
     }
 };
 
-export async function PUT(req, context) {
+export async function PUT(req, { params }) {
     try {
-        const { id } = await context.params;
+        const { id } = await params;
 
         const { title } = await req.json();
         if (!title) return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
@@ -52,9 +52,9 @@ export async function PUT(req, context) {
     }
 };
 
-export async function PATCH(req, context) {
+export async function PATCH(req, { params }) {
     try {
-        const { id } = await context.params;
+        const { id } = await params;
 
         const user = await getUserFromToken();
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
