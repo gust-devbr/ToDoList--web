@@ -1,12 +1,16 @@
 'use client'
 
 import { useState } from "react";
-import { useAuth, useTheme } from "@/context";
-import { Button, Input, ChangePassModal } from "@/components";
+import { useAuth } from "@/context/AuthContext";
+import { ChangePassModal } from "@/components";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Field } from "@/components/ui/field";
+import { ThemeToggle } from "@/context/ThemeToggle";
+import { Label } from "@/components/ui/label";
 
 export default function Settings() {
     const { user, logout, deleteAccount } = useAuth();
-    const { darkMode, toggleTheme, theme } = useTheme();
     const [isModalChangePassOpen, setIsModalChangePassOpen] = useState(false);
 
     function handleLogout() {
@@ -20,51 +24,43 @@ export default function Settings() {
     };
 
     return (
-        <div className="flex flex-col flex-1 min-h-screen px-2" style={{ backgroundColor: theme.card, color: theme.text }}>
-            <div
-                className="flex flex-row justify-between md:mt-4 py-5 px-4 mt-15 md:pt-6 rounded-xl items-center"
-                style={{ backgroundColor: theme.background }}
-            >
-                <label>Tema escuro</label>
-                <Input
-                    name="check"
-                    type="checkbox"
-                    checked={darkMode}
-                    onChangeValue={toggleTheme}
-                />
-            </div>
+        <Card className="h-screen px-4 -mt-14 md:-mt-4 rounded-none border-zinc-600 bg-background text-foreground">
+            <Field orientation="horizontal" className="flex justify-between bg-card text p-3 mt-5 rounded-xl">
+                <Label className="text-md">
+                    Mudar tema
+                </Label>
+                <ThemeToggle />
+            </Field>
 
-            <div className="p-3 mb-3 mt-3 rounded-xl" style={{ backgroundColor: theme.background }}>
+            <CardContent className="p-3 mb-3 mt-3 rounded-xl bg-card">
                 <p className="text-md text-left">
                     <strong>Usuário:</strong> {user?.name}
                     <br />
                     <strong>Email:</strong> {user?.email}
                 </p>
                 <Button
+                    className="mt-3 bg-background text-foreground"
                     name="change"
                     onClick={() => setIsModalChangePassOpen(true)}
-                    label="Alterar senha"
-                />
-            </div>
+                >
+                    ALTERAR SENHA
+                </Button>
+            </CardContent>
 
             <ChangePassModal
                 isOpen={isModalChangePassOpen}
                 onClose={() => setIsModalChangePassOpen(false)}
             />
 
-            <div className="p-2 rounded-sm mt-auto mb-8 md:mb-0" style={{ backgroundColor: theme.card }}>
-                <Button
-                    name="warning"
-                    onClick={handleLogout}
-                    label="Sair da conta"
-                />
-                <Button
-                    name="warning"
-                    className="bg-red-900"
-                    onClick={handleDelete}
-                    label="Apagar conta"
-                />
-            </div>
-        </div>
+            <CardFooter className="flex flex-col gap-2 mt-auto md:mb-0">
+                <Button className="w-full py-6" onClick={handleLogout}>
+                    SAIR DA CONTA
+                </Button>
+
+                <Button className="w-full py-6" variant="destructive" onClick={handleDelete}>
+                    APAGAR CONTA
+                </Button>
+            </CardFooter>
+        </Card>
     );
 };

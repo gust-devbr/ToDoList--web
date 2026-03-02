@@ -2,12 +2,9 @@
 'use client'
 
 import { useState, useEffect, useCallback } from "react";
-import { useTheme } from "@/context";
 import { TableItem, NoteModal, Header } from "@/components";
 
 export default function Notes() {
-    const { theme } = useTheme();
-
     const [notes, setNotes] = useState([]);
     const [search, setSearch] = useState("");
     const [modalMode, setModalMode] = useState(null);
@@ -96,10 +93,7 @@ export default function Notes() {
     };
 
     return (
-        <div
-            className="flex flex-col flex-1 min-h-screen px-2"
-            style={{ backgroundColor: theme.card, color: theme.text }}
-        >
+        <div className="flex-1 min-h-screen px-3 md:mt-0 -mt-14 bg-card text-foreground">
             <Header
                 title="Lista de Notas"
                 buttonLabel="Adicionar Nota"

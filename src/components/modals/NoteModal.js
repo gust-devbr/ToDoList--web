@@ -1,9 +1,11 @@
 'use client'
 
 import { useEffect } from "react";
-import { useTheme } from "@/context";
 import { FaCheck, MdCancel } from '@/components/icons'
-import { Input, TextArea, Button } from "@/components";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
 
 export function NoteModal({
     isOpen,
@@ -15,7 +17,6 @@ export function NoteModal({
     setContentValue,
     mode
 }) {
-    const { theme } = useTheme();
     const isCreate = mode === "create";
 
     useEffect(() => {
@@ -39,45 +40,39 @@ export function NoteModal({
     if (!isOpen) return null;
 
     return (
-        <div className="flex justify-center items-center fixed top-0 -mt-6 left-0 w-full h-full bg-black/30">
-            <div
-                style={{ backgroundColor: theme.background }}
-                className="p-5 rounded-xl w-90 min-h-20 shadow-white shadow-sm"
-            >
-                <h2 className="text-center mb-5 text-2xl font-bold">
-                    {isCreate ? "Criar Nota" : "Editar Nota"}
-                </h2>
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent >
+                <DialogHeader>
+                    <DialogTitle className="text-xl">
+                        {isCreate ? "Criar Nota" : "Editar Nota"}
+                    </DialogTitle>
+                </DialogHeader>
 
                 <Input
                     autoFocus
-                    name="noteTitle"
-                    label="Título:"
+                    placeholder="Título:"
                     value={titleValue ?? ""}
-                    onChangeValue={setTitleValue}
+                    onChange={(e) => setTitleValue(e.target.value)}
                 />
 
-                <TextArea
-                    label="Conteúdo:"
+                <Textarea
+                    placeholder="Conteúdo:"
                     value={contentValue ?? ""}
-                    onChangeValue={setContentValue}
+                    onChange={(e) => setContentValue(e.target.value)}
                 />
 
-                <div className="flex justify-end items-center -mt-8 gap-3">
-                    <Button
-                        style={{ color: theme.text }}
-                        title={isCreate ? "Criar" : "Salvar"}
-                        onClick={onSubmit}
-                        icon={FaCheck}
-                    />
+                <DialogFooter>
+                    <Button onClick={onSubmit}>
+                        <FaCheck className="mr-1 h-4 w-4" />
+                        {isCreate ? "Criar" : "Salvar"}
+                    </Button>
 
-                    <Button
-                        style={{ color: theme.text }}
-                        title="Cancelar"
-                        onClick={onClose}
-                        icon={MdCancel}
-                    />
-                </div>
-            </div>
-        </div>
+                    <Button variant="outline" onClick={onClose}>
+                        <MdCancel className="mr-1 h-4 w-4" />
+                        Cancelar
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     )
 };

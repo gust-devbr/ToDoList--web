@@ -1,10 +1,11 @@
 'use client'
 
 import { FaCheck, FaReply, FaTrash, FaPencilAlt, TbPinnedOff, TbPinned } from '@/components/icons';
-import { Table, Button } from "@/components";
-import { useTheme } from '@/context';
+import { Table, TableBody, TableCell, TableRow } from "../ui/table";
+import { Button } from '../ui/button';
+import { Field } from '../ui/field';
 
-const formatDate = (date) => new Date(date).toLocaleDateString("pt-BR");
+// const formatDate = (date) => new Date(date).toLocaleDateString("pt-BR");
 
 export function TableItem({
     data,
@@ -14,70 +15,66 @@ export function TableItem({
 }) {
 
     const safeData = Array.isArray(data) ? data : [];
-    const { theme } = useTheme();
 
     const isNote = safeData.length > 0 && "pinned" in safeData[0];
     const isTask = safeData.length > 0 && "completed" in safeData[0];
 
     return (
-        <div>
-            <Table>
-                <Table.Body>
-                    {safeData.map(u => (
-                        <Table.Row key={u.id}>
-                            <Table.Cell className="max-w-50">
-                                <div className="flex flex-col text-xs md:text-sm">
-                                    Criada<strong>{formatDate(u.createdAt)}</strong>
-                                    Atualizada<strong>{formatDate(u.updatedAt)}</strong>
-                                </div>
-                            </Table.Cell>
-                            <Table.Cell className='flex w-full -ml-28 md:m-0'>
-                                <div className='flex w-full ml-28 md:m-0 md:text-xl mt-3 md:mt-5' style={{ textDecoration: u.completed ? 'line-through' : 'none' }}>
-                                    {u.title}
-                                </div>
-                            </Table.Cell>
-                            {isNote && (
-                                <Table.Cell className='md:table-cell'>
-                                    <div className='wrap-break-word whitespace-normal text-sm md:text-lg -mt-3'>
-                                        {u.content}
-                                    </div>
-                                </Table.Cell>
-                            )}
-                            <Table.Cell>
-                                <div className='flex justify-end gap-2'>
-                                    <Button
-                                        style={{ color: theme.text }}
-                                        title='Editar'
-                                        onClick={() => open(u)}
-                                        icon={FaPencilAlt}
-                                    />
+        <Table>
+            <TableBody>
+                {safeData.map(u => (
+                    <TableRow key={u.id}>
+                        <TableCell className='flex w-full -ml-28 md:m-0'>
+                            <p
+                                className='flex w-full ml-28 md:m-0 text-lg md:text-2xl md:mt-5 font-bold'
+                                style={{ textDecoration: u.completed ? 'line-through' : 'none' }}
+                            >
+                                {u.title}
+                            </p>
+                        </TableCell>
+                        {isNote && (<TableCell>
+                            <div className='wrap-break-word whitespace-normal text-[16px] md:text-lg -mt-1 md:mt-6'>
+                                {u.content}
+                            </div>
+                        </TableCell>)}
+                        <TableCell>
+                            <div className='flex justify-end gap-4'>
+                                <Button
+                                    variant='ghost'
+                                    className="text-primary w-1"
+                                    onClick={() => open(u)}
+                                >
+                                    <FaPencilAlt className="h-6! w-6!" />
+                                </Button>
 
-                                    {isTask && (<Button
-                                        style={{ color: theme.checkIcon }}
-                                        title={u.completed ? 'Desmarcar' : 'Concluída'}
-                                        onClick={() => toggle(u.id)}
-                                        icon={u.completed ? FaReply : FaCheck}
-                                    />)}
+                                {isTask && (<Button
+                                    variant='ghost'
+                                    className="text-primary w-1"
+                                    onClick={() => toggle(u.id)}
+                                >
+                                    {u.completed ? <FaReply className="h-6! w-6!" /> : <FaCheck className="h-6! w-6!" />}
+                                </Button>)}
 
-                                    {isNote && (<Button
-                                        style={{ color: theme.text }}
-                                        title={u.pinned ? "Desfixar" : "Fixar"}
-                                        onClick={() => toggle(u.id)}
-                                        icon={u.pinned ? TbPinnedOff : TbPinned}
-                                    />)}
+                                {isNote && (<Button
+                                    variant='ghost'
+                                    className="text-primary w-1"
+                                    onClick={() => toggle(u.id)}
+                                >
+                                    {u.pinned ? <TbPinnedOff className="h-7! w-7!" /> : <TbPinned className="h-7! w-7!" />}
+                                </Button>)}
 
-                                    <Button
-                                        style={{ color: theme.icon }}
-                                        title='Excluir'
-                                        onClick={() => deleteItem(u.id)}
-                                        icon={FaTrash}
-                                    />
-                                </div>
-                            </Table.Cell>
-                        </Table.Row>
-                    ))}
-                </Table.Body>
-            </Table>
-        </div>
+                                <Button
+                                    variant='ghost'
+                                    className="text-red-500 w-1"
+                                    onClick={() => deleteItem(u.id)}
+                                >
+                                    <FaTrash className="h-6! w-6!" />
+                                </Button>
+                            </div>
+                        </TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
     )
 };

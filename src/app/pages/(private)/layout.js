@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { ThemeProvider } from '@/context';
+import { ThemeProvider } from '@/context/ThemeProvider';
 import PrivateStructure from './PrivateStructure';
 import { getUserFromToken } from '@/lib/auth';
 

@@ -2,12 +2,9 @@
 'use client'
 
 import { useCallback, useEffect, useState } from "react";
-import { useTheme } from "@/context";
 import { Header, TableContact, ContactModal } from "@/components";
 
 export default function Contacts() {
-    const { theme } = useTheme();
-
     const [contacts, setContacts] = useState([]);
     const [modalMode, setModalMode] = useState(null);
     const [selectedContact, setSelectedContact] = useState(null);
@@ -89,17 +86,14 @@ export default function Contacts() {
                     break;
             };
             setModalMode(null);
-            await loadContacts();
+            await loadContacts();''
         } catch (err) {
             console.error("Erro ao salvar", err);
         }
     };
 
     return (
-        <div
-            className="flex flex-col flex-1 min-h-screen px-2"
-            style={{ backgroundColor: theme.card, color: theme.text }}
-        >
+        <div className="flex-1 h-screen px-3 md:mt-0 -mt-14 bg-card text-foreground">
             <Header
                 title="Lista de Contatos"
                 buttonLabel="Adicionar Contato"

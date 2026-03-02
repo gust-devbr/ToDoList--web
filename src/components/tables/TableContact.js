@@ -1,8 +1,9 @@
 'use client'
 
 import { FaPencilAlt, FaTrash, FaStar, FaRegStar } from "@/components/icons";
-import { Button, Table } from "@/components";
-import { useTheme } from "@/context";
+import { Button } from "../ui/button";
+import { Table, TableBody, TableCell, TableRow } from "../ui/table";
+import { Field, FieldGroup } from "../ui/field";
 
 export function TableContact({
     data,
@@ -10,51 +11,53 @@ export function TableContact({
     toggle,
     onDelete
 }) {
-    const { theme } = useTheme();
     const safeData = Array.isArray(data) ? data : [];
 
     return (
         <Table>
-            <Table.Body>
+            <TableBody>
                 {safeData.map(u => (
-                    <Table.Row key={u.id}>
-                        <Table.Cell>
-                            <div className="flex flex-col gap-1 text">
-                                <div className="text-2xl font-semibold">
+                    <TableRow key={u.id}>
+                        <TableCell>
+                            <FieldGroup className="flex flex-col gap-1 mt-2">
+                                <Field className="text-2xl font-semibold">
                                     {u.name}
-                                </div>
-                                <div className="flex flex-col gap-1 md:flex-row md:gap-10 md:items-center">
+                                </Field>
+                                <Field className="flex flex-col gap-1 text-[16px] md:text-[18px] md:flex-row md:gap-10 md:items-center">
                                     <span>{u.email}</span>
                                     <span>{u.tel}</span>
                                     <span>{u.category}</span>
-                                </div>
-                            </div>
-                        </Table.Cell>
-                        <Table.Cell>
+                                </Field>
+                            </FieldGroup>
+                        </TableCell>
+                        <TableCell>
                             <div className='flex justify-end gap-2'>
                                 <Button
-                                    style={{ color: theme.text }}
-                                    title='Editar'
+                                    variant="ghost"
+                                    className="text-white w-1"
                                     onClick={() => open(u)}
-                                    icon={FaPencilAlt}
-                                />
+                                >
+                                    <FaPencilAlt className="h-6! w-6!" />
+                                </Button>
                                 <Button
-                                    style={{ color: "yellow" }}
-                                    title='Favoritar'
+                                    variant="ghost"
+                                    className="text-yellow-500 w-1"
                                     onClick={() => toggle(u.id)}
-                                    icon={u.favorite ? FaStar : FaRegStar}
-                                />
+                                >
+                                    {u.favorite ? <FaStar className="h-7! w-7!" /> : <FaRegStar className="h-7! w-7!" />}
+                                </Button>
                                 <Button
-                                    style={{ color: theme.icon }}
-                                    title='Excluir'
+                                    variant="ghost"
+                                    className="text-red-500 w-1"
                                     onClick={() => onDelete(u.id)}
-                                    icon={FaTrash}
-                                />
+                                >
+                                    <FaTrash className="h-6! w-6!" />
+                                </Button>
                             </div>
-                        </Table.Cell>
-                    </Table.Row>
+                        </TableCell>
+                    </TableRow>
                 ))}
-            </Table.Body>
+            </TableBody>
         </Table>
     )
 };
