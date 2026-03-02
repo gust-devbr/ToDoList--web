@@ -10,6 +10,7 @@ export { ChangePassModal } from './modals/ChangePassModal';
 export { ContactModal } from './modals/ContactModal';
 export { NoteModal } from './modals/NoteModal';
 export { TaskModal } from './modals/TaskModal';
+export { ConfirmDialog } from './modals/ConfirmDialog';
 
 // Tabelas específicas
 export { TableContact } from './tables/TableContact';

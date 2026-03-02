@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { ChangePassModal } from "@/components";
+import { ChangePassModal, ConfirmDialog } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Field } from "@/components/ui/field";
@@ -12,16 +12,6 @@ import { Label } from "@/components/ui/label";
 export default function Settings() {
     const { user, logout, deleteAccount } = useAuth();
     const [isModalChangePassOpen, setIsModalChangePassOpen] = useState(false);
-
-    function handleLogout() {
-        const confirmed = window.confirm("Realmente deseja sair?")
-        if (confirmed) logout();
-    };
-
-    function handleDelete() {
-        const confirmed = window.confirm("Deseja realmente deletar conta?")
-        if (confirmed) deleteAccount();
-    };
 
     return (
         <Card className="h-screen px-4 -mt-14 md:-mt-4 rounded-none border-zinc-600 bg-background text-foreground">
@@ -53,13 +43,22 @@ export default function Settings() {
             />
 
             <CardFooter className="flex flex-col gap-2 mt-auto md:mb-0">
-                <Button className="w-full py-6" onClick={handleLogout}>
-                    SAIR DA CONTA
-                </Button>
+                <ConfirmDialog
+                    trigger={<Button className="w-full py-6">SAIR DA CONTA</Button>}
+                    title="Sair da conta"
+                    description="Tem certeza que deseja sair da conta?"
+                    onConfirm={logout}
+                    confirmText="Sair"
+                />
 
-                <Button className="w-full py-6" variant="destructive" onClick={handleDelete}>
-                    APAGAR CONTA
-                </Button>
+                <ConfirmDialog
+                    trigger={<Button className="w-full py-6" variant="destructive">APAGAR CONTA</Button>}
+                    title="Apagar conta"
+                    description="Deseja realmente deletar sua conta? Esta ação não pode ser desfeita."
+                    onConfirm={deleteAccount}
+                    confirmText="Apagar"
+                    cancelText="Cancelar"
+                />
             </CardFooter>
         </Card>
     );
