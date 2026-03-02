@@ -3,14 +3,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from '@/context';
-import {
-    Spinner,
-    Input,
-    AuthButton,
-    ValidatePassword,
-    ValidateEmail
-} from "@/components";
+import { useAuth } from '@/context/AuthContext';
+import { Spinner, ValidatePassword, ValidateEmail } from "@/components";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -39,7 +36,7 @@ export default function LoginPage() {
 
         try {
             setLoading(true);
-            
+
             await login({ email, senha });
             setTimeout(() => router.replace("/pages/tasks"), 800);
         } catch (err) {
@@ -58,48 +55,48 @@ export default function LoginPage() {
 
     return (
         <form onSubmit={handleLogin}>
-            <div className="flex flex-col bg-gray-100 border-none rounded-3xl p-3.5 shadow-md shadow-gray-800 min-w-100 max-w-120">
-                <h1 className="text-center text-3xl mb-5 mt-2">Login</h1>
+            <div className="flex min-h-screen items-center justify-center">
+                <Card className="flex flex-col bg-gray-100 border-none rounded-3xl p-3.5 shadow-md shadow-gray-800 w-100">
+                    <CardTitle className="text-center text-3xl mb-5 mt-2">Login</CardTitle>
 
-                <Input
-                    name="auth"
-                    autoFocus
-                    label="Email"
-                    value={email}
-                    onChangeValue={setEmail}
-                />
-                {errors.email && (
-                    <span className="text-sm text-red-500">
-                        {errors.email}
+                    <CardContent className="flex flex-col items-center gap-4">
+                        <Input
+                            autoFocus
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="py-6 text-xl md:text-lg w-90"
+                        />
+                        {errors.email && (
+                            <span className="text-sm text-red-500">
+                                {errors.email}
+                            </span>
+                        )}
+                        <Input
+                            placeholder="Senha"
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
+                            className="py-6 text-xl md:text-lg w-90"
+                        />
+                        {errors.senha && (
+                            <span className="text-sm text-red-500">
+                                {errors.senha}
+                            </span>
+                        )}
+                    </CardContent>
+
+                    <span className="flex flex-row justify-between text-md py-1 px-2 rounded-xl">
+                        <span>Não tem conta?</span>
+
+                        <Link href={"/pages/register"}>
+                            <span className="text-blue-600 hover:underline">Cadastre-se</span>
+                        </Link>
                     </span>
-                )}
-                <Input
-                    name="auth"
-                    className="border"
-                    label="Senha"
-                    value={senha}
-                    onChangeValue={setSenha}
-                />
-                {errors.senha && (
-                    <span className="text-sm text-red-500">
-                        {errors.senha}
-                    </span>
-                )}
-                <span className="flex flex-row justify-between mt-3 mb-3 text-md py-1 px-2 rounded-xl">
-                    <span>Não tem conta?</span>
 
-                    <Link href={"/pages/register"}>
-                        <span className="text-blue-600 hover:underline">Cadastre-se</span>
-                    </Link>
-                </span>
-
-                <AuthButton
-                    disabled={isDisabled}
-                    condition={isDisabled || loading}
-                    icon={loading && Spinner}
-                >
-                    {loading ? "Entrando..." : "Login"}
-                </AuthButton>
+                    <Button disabled={isDisabled}>
+                        {loading ? <Spinner /> : "Login"}
+                    </Button>
+                </Card>
             </div>
         </form>
     )

@@ -3,11 +3,8 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { Header, TaskModal, TableItem } from '@/components';
-import { useTheme } from '@/context';
 
 export default function Tasks() {
-    const { theme } = useTheme();
-
     const [tasks, setTasks] = useState([]);
     const [search, setSearch] = useState("");
     const [modalMode, setModalMode] = useState(null)
@@ -81,10 +78,7 @@ export default function Tasks() {
     };
 
     return (
-        <div
-            className='flex flex-col flex-1 min-h-screen pb-16 px-2'
-            style={{ backgroundColor: theme.card, color: theme.text }}
-        >
+        <div className='flex-1 min-h-screen pb-16 px-3 md:mt-0 -mt-14  bg-card text-foreground'>
             <Header
                 title="Lista de Tarefas"
                 buttonLabel="Adicionar Tarefa"

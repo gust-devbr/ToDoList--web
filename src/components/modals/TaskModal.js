@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect } from 'react';
-import { useTheme } from '@/context';
-import { FaCheck, MdCancel } from '@/components/icons';
-import { TextArea, Button } from '@/components';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+import { FaCheck, MdCancel } from "@/components/icons"
 
 export function TaskModal({
     isOpen,
@@ -13,61 +13,36 @@ export function TaskModal({
     setValue,
     mode
 }) {
-    const { theme } = useTheme();
-    const isCreate = mode === "create";
-
-    useEffect(() => {
-        function handleKeyDown(e) {
-            switch (e.key) {
-                case "Escape":
-                    onClose();
-                    break;
-                case "Enter":
-                    e.preventDefault();
-                    onSubmit();
-                    break
-            }
-        };
-
-        if (isOpen) window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-
-    }, [isOpen, onClose, onSubmit]);
-
-    if (!isOpen) return null;
+    const isCreate = mode === "create"
 
     return (
-        <div className='flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/30'>
-            <div
-                className='p-5 rounded-xl w-90 min-h-33 shadow-white shadow-sm'
-                style={{ backgroundColor: theme.background }}
-            >
-                <h2 className='text-center mb-5 text-2xl font-bold'>
-                    {isCreate ? "Criar Tarefa" : "Editar Tarefa"}
-                </h2>
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle className="text-xl">
+                        {isCreate ? "Criar Tarefa" : "Editar Tarefa"}
+                    </DialogTitle>
+                </DialogHeader>
 
-                <TextArea
+                <Textarea
                     autoFocus
-                    label={isCreate ? "Nova Tarefa:" : "Editar Tarefa:"}
                     value={value}
-                    onChangeValue={setValue}
+                    onChange={(e) => setValue(e.target.value)}
+                    placeholder={isCreate ? "Nova tarefa..." : "Editar tarefa..."}
                 />
 
-                <div className='flex justify-end -mt-8 gap-4'>
-                    <Button
-                        style={{ color: theme.text }}
-                        title={isCreate ? "Criar" : "Salvar"}
-                        onClick={onSubmit}
-                        icon={FaCheck}
-                    />
-                    <Button
-                        style={{ color: theme.text }}
-                        title='Cancelar'
-                        onClick={onClose}
-                        icon={MdCancel}
-                    />
-                </div>
-            </div>
-        </div>
+                <DialogFooter>
+                    <Button onClick={onSubmit}>
+                        <FaCheck className="mr-1 h-4 w-4" />
+                        {isCreate ? "Criar" : "Salvar"}
+                    </Button>
+
+                    <Button variant="outline" onClick={onClose}>
+                        <MdCancel className="mr-1 h-4 w-4" />
+                        Cancelar
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     )
 };

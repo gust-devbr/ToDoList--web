@@ -1,12 +1,9 @@
-// UI Components
-export * from './ui/button';
-export * from './ui/input';
+// Ícones
 export { Spinner } from './ui/spinner';
-export { Table } from './ui/table';
 
 // Layout
 export { Header } from './layout/Header';
-export { Sidebar } from './layout/Sidebar';
+export { AppSidebar } from './layout/AppSidebar';
 
 // Modals
 export { ChangePassModal } from './modals/ChangePassModal';

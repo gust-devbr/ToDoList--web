@@ -1,4 +1,5 @@
-import { AuthProvider, ThemeProvider } from "@/context";
+import { AuthProvider } from "@/context/AuthContext";
+import { Toaster } from "sonner";
 import "../styles/globals.css";
 
 export const metadata = {
@@ -8,12 +9,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <AuthProvider>
-          <ThemeProvider>
             {children}
-          </ThemeProvider>
+            <Toaster richColors />
         </AuthProvider>
       </body>
     </html>
