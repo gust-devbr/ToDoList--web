@@ -2,11 +2,12 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { Header, TaskModal, TableItem } from '@/components';
+import { Header, TaskModal, TableItem, TableFilter } from '@/components';
 
 export default function Tasks() {
     const [tasks, setTasks] = useState([]);
     const [search, setSearch] = useState("");
+    const [filter, setFilter] = useState("all");
     const [modalMode, setModalMode] = useState(null)
     const [currentTask, setCurrentTask] = useState({ id: null, title: "" });
 
@@ -21,7 +22,7 @@ export default function Tasks() {
 
     const loadTasks = useCallback(async () => {
         try {
-            const res = await fetch(`/api/private/tasks?search=${search}`, { credentials: "include" });
+            const res = await fetch(`/api/private/tasks?search=${search}&status=${filter}`, { credentials: "include" });
             const data = await res.json();
 
             setTasks(Array.isArray(data) ? data : data.tasks || []);
@@ -29,7 +30,7 @@ export default function Tasks() {
             console.error('Erro ao carregar tarefas', err)
             setTasks([])
         }
-    }, [search]);
+    }, [filter, search]);
 
     useEffect(() => {
         loadTasks();
@@ -85,6 +86,11 @@ export default function Tasks() {
                 onButtonClick={openCreateModal}
                 searchValue={search}
                 onSearchChange={setSearch}
+            />
+
+            <TableFilter
+                selectedPage="tasks"
+                setFilter={setFilter}
             />
 
             {tasks.length === 0 ? (

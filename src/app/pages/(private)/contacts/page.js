@@ -2,13 +2,14 @@
 'use client'
 
 import { useCallback, useEffect, useState } from "react";
-import { Header, TableContact, ContactModal } from "@/components";
+import { Header, TableContact, ContactModal, TableFilter } from "@/components";
 
 export default function Contacts() {
     const [contacts, setContacts] = useState([]);
     const [modalMode, setModalMode] = useState(null);
     const [selectedContact, setSelectedContact] = useState(null);
     const [search, setSearch] = useState("");
+    const [filter, setFilter] = useState("all");
 
     function openCreateModal() {
         setSelectedContact(null);
@@ -21,14 +22,14 @@ export default function Contacts() {
 
     const loadContacts = useCallback(async () => {
         try {
-            const res = await fetch(`/api/private/contacts?search=${search}`, { credentials: "include" });
+            const res = await fetch(`/api/private/contacts?search=${search}&status=${filter}`, { credentials: "include" });
             const data = await res.json();
             setContacts(Array.isArray(data) ? data : data.contacts || []);
         } catch (err) {
             console.error("Erro ao carregar contatos", err);
             setContacts([]);
         }
-    }, [search]);
+    }, [search, filter]);
 
     useEffect(() => {
         loadContacts();
@@ -86,7 +87,7 @@ export default function Contacts() {
                     break;
             };
             setModalMode(null);
-            await loadContacts();''
+            await loadContacts(); ''
         } catch (err) {
             console.error("Erro ao salvar", err);
         }
@@ -100,6 +101,11 @@ export default function Contacts() {
                 onButtonClick={openCreateModal}
                 searchValue={search}
                 onSearchChange={setSearch}
+            />
+
+            <TableFilter
+                selectedPage="contacts"
+                setFilter={setFilter}
             />
 
             {contacts.length === 0 ? (

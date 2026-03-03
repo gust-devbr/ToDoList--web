@@ -6,20 +6,27 @@ export async function GET(req) {
     try {
         const url = new URL(req.url);
         const search = url.searchParams.get("search") || "";
+        const status = url.searchParams.get("status");
+
 
         const user = await getUserFromToken();
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
+        const where = {
+            userId: user.id,
+            OR: [
+                { name: { contains: search, mode: "insensitive" } },
+                { email: { contains: search, mode: "insensitive" } },
+                { tel: { contains: search, mode: "insensitive" } },
+                { category: { contains: search, mode: "insensitive" } },
+            ]
+        };
+
+        if (status === "favorite") where.favorite = true;
+        if (status === "unfavorite") where.favorite = false;
+
         const contacts = await prisma.contact.findMany({
-            where: {
-                userId: user.id,
-                OR: [
-                    { name: { contains: search, mode: "insensitive" } },
-                    { email: { contains: search, mode: "insensitive" } },
-                    { tel: { contains: search, mode: "insensitive" } },
-                    { category: { contains: search, mode: "insensitive" } },
-                ]
-            },
+            where,
             orderBy: [
                 { favorite: "desc" },
                 { createdAt: "desc" },

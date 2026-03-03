@@ -6,15 +6,21 @@ export async function GET(req) {
     try {
         const url = new URL(req.url);
         const search = url.searchParams.get("search") || "";
+        const status = url.searchParams.get("status");
 
         const user = await getUserFromToken();
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
+        const where = {
+            userId: user.id,
+            title: { contains: search, mode: "insensitive" }
+        };
+
+        if (status === "completed") where.completed = true;
+        if (status === "pending") where.completed = false;
+
         const tasks = await prisma.task.findMany({
-            where: {
-                userId: user.id,
-                title: { contains: search, mode: "insensitive" }
-            },
+            where,
             orderBy: [
                 { completed: "desc" },
                 { createdAt: "desc" }

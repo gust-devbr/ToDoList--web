@@ -6,18 +6,24 @@ export async function GET(req) {
     try {
         const url = new URL(req.url);
         const search = url.searchParams.get("search") || "";
+        const status = url.searchParams.get("status");
 
         const user = await getUserFromToken();
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
+        const where = {
+            userId: user.id,
+            OR: [
+                { title: { contains: search, mode: "insensitive" } },
+                { content: { contains: search, mode: "insensitive" } },
+            ]
+        };
+
+        if (status === "pinned") where.pinned = true;
+        if (status === "unpinned") where.pinned = false;
+
         const tasks = await prisma.note.findMany({
-            where: {
-                userId: user.id,
-                OR: [
-                    { title: { contains: search, mode: "insensitive" } },
-                    { content: { contains: search, mode: "insensitive" } },
-                ]
-            },
+            where,
             orderBy: [
                 { pinned: "desc" },
                 { createdAt: "desc" }

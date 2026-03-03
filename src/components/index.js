@@ -15,10 +15,12 @@ export { ConfirmDialog } from './modals/ConfirmDialog';
 // Tabelas específicas
 export { TableContact } from './tables/TableContact';
 export { TableItem } from './tables/TableItem';
+export { TableFilter } from './tables/TableFilter';
 
 // Gráficos
 export { StatusPieChart } from './charts/StatusPieChart';
 
 //Utils
+export { filterConfig } from './utils/filters-config';
 export { chartConfig } from './utils/chart-config';
 export * from './utils/validator';
