@@ -20,7 +20,5 @@ export { TableItem } from './tables/TableItem';
 export { StatusPieChart } from './charts/StatusPieChart';
 
 //Utils
-export { ChartConfig } from './utils/ChartConfig';
-export * from './utils/ValidateUser';
-export * from './utils/VariantStyles';
-export * from './utils/Themes';
+export { chartConfig } from './utils/chart-config';
+export * from './utils/validator';

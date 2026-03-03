@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { ThemeProvider } from '@/context/ThemeProvider';
 import PrivateStructure from './PrivateStructure';
-import { getUserFromToken } from '@/lib/auth';
+import { getUserFromToken } from '@/components/utils/auth';
 
 export default async function PrivateLayout({ children }) {
     const user = await getUserFromToken();

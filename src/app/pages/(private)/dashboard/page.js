@@ -2,7 +2,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from "react";
-import { StatusPieChart, ChartConfig } from "@/components";
+import { StatusPieChart, chartConfig } from "@/components";
 import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -69,7 +69,7 @@ export default function Dashboard() {
     const pinned = notes.filter(n => n.pinned).length;
     const notPinned = notes.length - pinned;
 
-    const config = ChartConfig[selectChart];
+    const config = chartConfig[selectChart];
 
     const isTask = selectChart === 'tasks';
     const isNote = selectChart === 'notes';
