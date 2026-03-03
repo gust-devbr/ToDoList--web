@@ -2,11 +2,12 @@
 'use client'
 
 import { useState, useEffect, useCallback } from "react";
-import { TableItem, NoteModal, Header } from "@/components";
+import { TableItem, NoteModal, Header, TableFilter } from "@/components";
 
 export default function Notes() {
     const [notes, setNotes] = useState([]);
     const [search, setSearch] = useState("");
+    const [filter, setFilter] = useState("all");
     const [modalMode, setModalMode] = useState(null);
     const [currentNote, setCurrentNote] = useState({
         id: null,
@@ -31,7 +32,7 @@ export default function Notes() {
 
     const loadNotes = useCallback(async () => {
         try {
-            const res = await fetch(`/api/private/notes?search=${search}`, { credentials: "include" });
+            const res = await fetch(`/api/private/notes?search=${search}&status=${filter}`, { credentials: "include" });
             const data = await res.json();
 
             setNotes(Array.isArray(data) ? data : data.notes || []);
@@ -39,7 +40,7 @@ export default function Notes() {
             console.error("Erro ao carrgar notas", err)
             setNotes([])
         }
-    }, [search]);
+    }, [search, filter]);
 
     useEffect(() => {
         loadNotes();
@@ -100,6 +101,11 @@ export default function Notes() {
                 onButtonClick={openCreateModal}
                 searchValue={search}
                 onSearchChange={setSearch}
+            />
+
+            <TableFilter
+                selectedPage="notes"
+                setFilter={setFilter}
             />
 
             {notes.length === 0 ? (
