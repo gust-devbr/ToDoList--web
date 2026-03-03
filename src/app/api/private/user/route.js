@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from 'bcrypt';
-import { getUserFromToken } from "@/lib/auth";
+import { getUserFromToken } from "@/components/utils/auth";
 
 export async function PUT(req) {
     try {

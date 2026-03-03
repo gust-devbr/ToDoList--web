@@ -172,10 +172,10 @@ A estrutura privada é montada via `PrivateStructure` + `AppSidebar` + `Header`.
 
 ## 10) Utilitários e libs internas
 - `src/lib/prisma.js`: singleton do Prisma Client.
-- `src/lib/auth.js`: resolução do usuário pelo token em cookie.
-- `src/lib/validators.js`: validações de formulário (nome, email, senha).
-- `src/lib/chart-config.js`: configuração de labels/chaves para dashboard.
 - `src/lib/utils.js`: utilitário de classes CSS (`cn`).
+- `src/utils/auth.js`: resolução do usuário pelo token em cookie.
+- `src/utils/validator.js`: validações de formulário (nome, email, senha).
+- `src/utils/chart-config.js`: configuração de labels/chaves para dashboard.
 
 ---
 

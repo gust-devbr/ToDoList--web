@@ -1,4 +1,4 @@
-export const ChartConfig = {
+export const chartConfig = {
     tasks: {
         itemsKey: "tasks",
         booleanKey: "completed",

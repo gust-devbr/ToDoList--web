@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getUserFromToken } from "@/lib/auth";
+import { getUserFromToken } from "@/components/utils/auth";
 
 export async function GET() {
     const user = await getUserFromToken();
