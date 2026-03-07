@@ -163,7 +163,7 @@ A estrutura privada é montada via `PrivateStructure` + `AppSidebar` + `Header`.
 
 ## 9) Componentes principais
 - **Layout**: `Header`, `AppSidebar`
-- **Modais**: `TaskModal`, `NoteModal`, `ContactModal`, `ChangePassModal`, `ConfirmDialog`
+- **Modais**: `ItemModal`, `ChangePassModal`, `ConfirmDialog`
 - **Tabelas**: `TableItem`, `TableContact`, `TableFilter`
 - **Gráficos**: `StatusPieChart`
 - **UI base**: pasta `src/components/ui` (button, input, dialog, card, etc.)
@@ -176,7 +176,8 @@ A estrutura privada é montada via `PrivateStructure` + `AppSidebar` + `Header`.
 - `src/utils/auth.js`: resolução do usuário pelo token em cookie.
 - `src/utils/validator.js`: validações de formulário (nome, email, senha).
 - `src/utils/chart-config.js`: configuração de labels/chaves para dashboard.
-- `src/utils/filters-config.js`: configuração de valores/labels/chaves para tabela de filtros.
+- `src/utils/filters-config.js`: configuração de valores/labels/ícones para tabela de filtros.
+- `src/utils/modal-config.js`: configuração de títulos/ações/campos para modais de criação e edição.
 
 ---
 
