@@ -45,6 +45,7 @@ src/
     page.js
     middleware.js
   components/
+    cards/
     charts/
     icons/
     layout/
@@ -164,7 +165,8 @@ A estrutura privada é montada via `PrivateStructure` + `AppSidebar` + `Header`.
 ## 9) Componentes principais
 - **Layout**: `Header`, `AppSidebar`
 - **Modais**: `ItemModal`, `ChangePassModal`, `ConfirmDialog`
-- **Tabelas**: `TableItem`, `TableContact`, `TableFilter`
+- **Tabelas**: `TableFilter`
+- **Cards**: `CardList`
 - **Gráficos**: `StatusPieChart`
 - **UI base**: pasta `src/components/ui` (button, input, dialog, card, etc.)
 

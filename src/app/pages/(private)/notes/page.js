@@ -2,7 +2,8 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { TableItem, ItemModal, Header, TableFilter } from '@/components'
+import { ItemModal, Header, TableFilter, CardList } from '@/components'
+import { TbPinnedOff, TbPinned } from "@/components/icons";
 
 export default function Notes() {
     const [notes, setNotes] = useState([])
@@ -115,12 +116,23 @@ export default function Notes() {
             {notes.length === 0 ? (
                 <h1 className='text-center text-lg font-semibold'>Nenhuma nota encontrada</h1>
             ) : (
-                <TableItem
-                    data={notes}
-                    deleteItem={deleteNote}
-                    toggle={toggleNotes}
-                    open={openEditModal}
-                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {notes.map((note) => (
+                        <CardList
+                            key={note.id}
+                            title={note.title}
+                            createdAt={note.createdAt}
+                            updatedAt={note.updatedAt}
+                            onRename={() => openEditModal(note)}
+                            onUpdate={() => toggleNotes(note.id)}
+                            onDelete={() => deleteNote(note.id)}
+                            MarkIcon={note.pinned ? TbPinnedOff : TbPinned}
+                            MarkText={note.pinned ? "Desfixar" : "Fixar"}
+                        >
+                            <p>{note.content}</p>
+                        </CardList>
+                    ))}
+                </div>
             )}
 
             <ItemModal

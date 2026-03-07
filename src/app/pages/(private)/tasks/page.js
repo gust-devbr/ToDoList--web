@@ -2,7 +2,8 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { Header, ItemModal, TableItem, TableFilter } from '@/components'
+import { Header, ItemModal, TableFilter, CardList } from '@/components'
+import { FaCheck, FaReply } from 'react-icons/fa'
 
 export default function Tasks() {
     const [tasks, setTasks] = useState([])
@@ -84,7 +85,7 @@ export default function Tasks() {
 
 
     return (
-        <div className='flex-1 min-h-screen pb-16 px-3 md:mt-0 -mt-14  bg-card text-foreground'>
+        <div className='flex-1 min-h-screen pb-16 px-3 md:mt-0 -mt-14 bg-card text-foreground'>
             <Header
                 title='Lista de Tarefas'
                 buttonLabel='Adicionar Tarefa'
@@ -101,12 +102,21 @@ export default function Tasks() {
             {tasks.length === 0 ? (
                 <h1 className='text-center text-lg font-semibold'>Nenhuma tarefa encontrada</h1>
             ) : (
-                <TableItem
-                    data={tasks}
-                    open={openEditModal}
-                    toggle={toggleTasks}
-                    deleteItem={deleteTasks}
-                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {tasks.map((task) => (
+                        <CardList
+                            key={task.id}
+                            title={task.title}
+                            createdAt={task.createdAt}
+                            updatedAt={task.updatedAt}
+                            onRename={() => openEditModal(task)}
+                            onUpdate={() => toggleTasks(task.id)}
+                            onDelete={() => deleteTasks(task.id)}
+                            MarkIcon={task.completed ? FaReply : FaCheck}
+                            MarkText={task.completed ? "Desmarcar" : "Marcar"}
+                        />
+                    ))}
+                </div>
             )}
 
             <ItemModal
