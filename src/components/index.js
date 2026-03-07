@@ -10,10 +10,9 @@ export { ChangePassModal } from './modals/ChangePassModal';
 export { ConfirmDialog } from './modals/ConfirmDialog';
 export { ItemModal } from './modals/ItemModal';
 
-// Tabelas específicas
-export { TableContact } from './tables/TableContact';
-export { TableItem } from './tables/TableItem';
+// Listas de Itens
 export { TableFilter } from './tables/TableFilter';
+export { CardList } from './cards/CardList';
 
 // Gráficos
 export { StatusPieChart } from './charts/StatusPieChart';

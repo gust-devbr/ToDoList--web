@@ -2,7 +2,8 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { Header, TableContact, ItemModal, TableFilter } from '@/components'
+import { Header, ItemModal, TableFilter, CardList } from '@/components'
+import { FaStar, FaRegStar } from "@/components/icons";
 
 const emptyContact = {
     id: null,
@@ -139,12 +140,25 @@ export default function Contacts() {
                     Nenhum contato encontrado
                 </h1>
             ) : (
-                <TableContact
-                    data={contacts}
-                    open={openEditModal}
-                    toggle={favoriteContact}
-                    onDelete={deleteContact}
-                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {contacts.map((contact) => (
+                        <CardList
+                            key={contact.id}
+                            title={contact.name}
+                            createdAt={contact.createdAt}
+                            updatedAt={contact.updatedAt}
+                            onRename={() => openEditModal(contact)}
+                            onUpdate={() => favoriteContact(contact.id)}
+                            onDelete={() => deleteContact(contact.id)}
+                            MarkIcon={contact.favorite ? FaStar : FaRegStar}
+                            MarkText={contact.favorite ? "Desfavoritar" : "Favoritar"}
+                        >
+                            <p>{contact.email}</p>
+                            <p>{contact.tel}</p>
+                            <p>{contact.category}</p>
+                        </CardList>
+                    ))}
+                </div>
             )}
 
             <ItemModal
