@@ -1,115 +1,119 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 'use client'
 
-import { useState, useEffect, useCallback } from "react";
-import { TableItem, NoteModal, Header, TableFilter } from "@/components";
+import { useState, useEffect, useCallback } from 'react'
+import { TableItem, ItemModal, Header, TableFilter } from '@/components'
 
 export default function Notes() {
-    const [notes, setNotes] = useState([]);
-    const [search, setSearch] = useState("");
-    const [filter, setFilter] = useState("all");
-    const [modalMode, setModalMode] = useState(null);
+    const [notes, setNotes] = useState([])
+    const [search, setSearch] = useState('')
+    const [filter, setFilter] = useState('all')
+    const [modalMode, setModalMode] = useState(null)
     const [currentNote, setCurrentNote] = useState({
         id: null,
-        title: "",
-        content: ""
-    });
+        title: '',
+        content: ''
+    })
 
     function openCreateModal() {
-        setCurrentNote({ id: null, title: "", content: "" });
-        setModalMode("create");
-    };
+        setCurrentNote({ id: null, title: '', content: '' })
+        setModalMode('create')
+    }
+
     function openEditModal(note) {
-        if (!note.id) return;
+        if (!note.id) return
 
         setCurrentNote({
-            id: note.id ?? "",
-            title: note.title ?? "",
-            content: note.content ?? ""
-        });
-        setModalMode("edit");
-    };
+            id: note.id ?? '',
+            title: note.title ?? '',
+            content: note.content ?? ''
+        })
+        setModalMode('edit')
+    }
 
     const loadNotes = useCallback(async () => {
         try {
-            const res = await fetch(`/api/private/notes?search=${search}&status=${filter}`, { credentials: "include" });
-            const data = await res.json();
+            const res = await fetch(`/api/private/notes?search=${search}&status=${filter}`, { credentials: 'include' })
+            const data = await res.json()
 
-            setNotes(Array.isArray(data) ? data : data.notes || []);
+            setNotes(Array.isArray(data) ? data : data.notes || [])
         } catch (err) {
-            console.error("Erro ao carrgar notas", err)
+            console.error('Erro ao carrgar notas', err)
             setNotes([])
         }
-    }, [search, filter]);
+    }, [search, filter])
 
-    useEffect(() => {
-        loadNotes();
-    }, [loadNotes]);
 
     async function handleSubmit() {
         try {
-            const { id, title, content } = currentNote;
-            if (!title.trim() || !content.trim()) return;
+            const { id, title, content } = currentNote
+            if (!title.trim() || !content.trim()) return
 
             switch (modalMode) {
-                case "create":
-                    await fetch("/api/private/notes", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        credentials: "include",
+                case 'create':
+                    await fetch('/api/private/notes', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
                         body: JSON.stringify({ title, content })
-                    });
-                    break;
-                case "edit":
+                    })
+                    break
+                case 'edit':
                     await fetch(`/api/private/notes/${id}`, {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        credentials: "include",
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
                         body: JSON.stringify({ title, content })
-                    });
+                    })
+                    break
             }
-            setModalMode(null);
-            await loadNotes();
+
+            setModalMode(null)
+            await loadNotes()
         } catch (err) {
-            console.error("Erro ao salvar", err);
+            console.error('Erro ao salvar', err)
         }
-    };
+    }
 
     async function toggleNotes(id) {
         await fetch(`/api/private/notes/${id}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-        });
-        await loadNotes();
-    };
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        })
+        await loadNotes()
+    }
 
     async function deleteNote(id) {
         await fetch(`/api/private/notes/${id}`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-        });
-        await loadNotes();
-    };
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        })
+        await loadNotes()
+    }
+
+    useEffect(() => {
+        loadNotes()
+    }, [loadNotes])
 
     return (
-        <div className="flex-1 min-h-screen px-3 md:mt-0 -mt-14 bg-card text-foreground">
+        <div className='flex-1 min-h-screen px-3 md:mt-0 -mt-14 bg-card text-foreground'>
             <Header
-                title="Lista de Notas"
-                buttonLabel="Adicionar Nota"
+                title='Lista de Notas'
+                buttonLabel='Adicionar Nota'
                 onButtonClick={openCreateModal}
                 searchValue={search}
                 onSearchChange={setSearch}
             />
 
             <TableFilter
-                selectedPage="notes"
+                selectedPage='notes'
                 setFilter={setFilter}
             />
 
             {notes.length === 0 ? (
-                <h1 className="text-center text-lg font-semibold">Nenhuma nota encontrada</h1>
+                <h1 className='text-center text-lg font-semibold'>Nenhuma nota encontrada</h1>
             ) : (
                 <TableItem
                     data={notes}
@@ -119,16 +123,15 @@ export default function Notes() {
                 />
             )}
 
-            <NoteModal
+            <ItemModal
                 isOpen={modalMode !== null}
+                mode={modalMode ?? 'create'}
+                itemType='note'
+                formData={currentNote}
+                setFormData={setCurrentNote}
                 onClose={() => setModalMode(null)}
                 onSubmit={handleSubmit}
-                titleValue={currentNote.title ?? ""}
-                setTitleValue={(v) => setCurrentNote(prev => ({ ...prev, title: v }))}
-                contentValue={currentNote.content ?? ""}
-                setContentValue={(v) => setCurrentNote(prev => ({ ...prev, content: v }))}
-                mode={modalMode ?? "create"}
             />
         </div>
     )
-};
+}
