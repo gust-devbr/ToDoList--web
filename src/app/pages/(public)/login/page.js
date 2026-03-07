@@ -66,6 +66,7 @@ export default function LoginPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="py-6 text-xl md:text-lg w-90"
+                            autoCapitalize="none"
                         />
                         {errors.email && (
                             <span className="text-sm text-red-500">
