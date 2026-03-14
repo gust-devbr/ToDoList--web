@@ -31,10 +31,19 @@ export async function PUT(req) {
     }
 };
 
-export async function DELETE() {
+export async function DELETE(req) {
     try {
         const user = await getUserFromToken();
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
+
+        const { password } = await req.json();
+        if (!password) return NextResponse.json({ error: "Senha incorreta" }, { status: 400 });
+
+        const findUser = await prisma.user.findUnique({ where: { id: user.id } });
+        if (!findUser) return NextResponse.json({ error: "Usuário não encontrado" }, { status: 404 });
+
+        const matched = await bcrypt.compare(password, findUser.password);
+        if (!matched) return NextResponse.json({ error: "Senha incorreta" }, { status: 401 });
 
         await prisma.user.delete({
             where: { id: user.id }
