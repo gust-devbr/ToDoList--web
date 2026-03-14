@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUserFromToken } from "@/components/utils/auth";
+import { requireAuth } from "@/components/utils/requireAuth";
 
 export async function GET(req) {
     try {
@@ -8,7 +9,7 @@ export async function GET(req) {
         const search = url.searchParams.get("search") || "";
         const status = url.searchParams.get("status");
 
-        const user = await getUserFromToken();
+        const user = await requireAuth(req);
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const where = {
@@ -40,7 +41,7 @@ export async function POST(req) {
         const { title } = await req.json();
         if (!title) return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
 
-        const user = await getUserFromToken();
+        const user = await requireAuth(req);
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const created = await prisma.task.create({

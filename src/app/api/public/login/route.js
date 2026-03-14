@@ -34,7 +34,7 @@ export async function POST(req) {
             email: user.email
         };
 
-        const response = NextResponse.json({ user: safeUser });
+        const response = NextResponse.json({ user: safeUser, token });
 
         response.cookies.set("token", token, {
             httpOnly: true,

@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from 'bcrypt';
-import { getUserFromToken } from "@/components/utils/auth";
+import { requireAuth } from "@/components/utils/requireAuth";
 
 export async function PUT(req) {
     try {
         const { atualSenha, novaSenha } = await req.json();
         if (!atualSenha || !novaSenha) return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
 
-        const user = await getUserFromToken();
+        const user = await requireAuth(req);
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const findUser = await prisma.user.findFirst({ where: { id: user.id } });
@@ -33,7 +33,7 @@ export async function PUT(req) {
 
 export async function DELETE(req) {
     try {
-        const user = await getUserFromToken();
+        const user = await requireAuth(req);
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const { password } = await req.json();

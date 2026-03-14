@@ -101,7 +101,7 @@ Relações usam `onDelete: Cascade` para remoção em cascata ao excluir usuári
 4. Rotas privadas usam `getUserFromToken()` (`src/lib/auth.js`) para validar o usuário logado.
 5. Logout remove o cookie em `POST /api/public/logout`.
 
-> Observação: existe `src/app/middleware.js` com validação via header `Authorization`, mas as APIs privadas atualmente dependem principalmente do cookie (`getUserFromToken`).
+> Observação: existe `src/app/middleware.js` com validação via header `Authorization`, mas as APIs privadas atualmente dependem principalmente do cookie (`requireAuth`), mas que também podem utilizar token pelo Header.
 
 ---
 

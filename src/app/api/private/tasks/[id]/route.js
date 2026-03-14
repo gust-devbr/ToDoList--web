@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUserFromToken } from "@/components/utils/auth";
+import { requireAuth } from "@/components/utils/requireAuth";
 
 export async function DELETE(req, { params }) {
     try {
         const { id } = await params;
 
-        const user = await getUserFromToken();
+        const user = await requireAuth(req);
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const task = await prisma.task.findFirst({
@@ -32,7 +33,7 @@ export async function PUT(req, { params }) {
         const { title } = await req.json();
         if (!title) return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
 
-        const user = await getUserFromToken();
+        const user = await requireAuth(req);
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const task = await prisma.task.findFirst({
@@ -56,7 +57,7 @@ export async function PATCH(req, { params }) {
     try {
         const { id } = await params;
 
-        const user = await getUserFromToken();
+        const user = await requireAuth(req);
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const task = await prisma.task.findFirst({

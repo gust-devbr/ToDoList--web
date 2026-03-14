@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getUserFromToken } from "@/components/utils/auth";
+import { requireAuth } from "@/components/utils/requireAuth";
 
 export async function GET(req) {
     try {
@@ -8,8 +8,7 @@ export async function GET(req) {
         const search = url.searchParams.get("search") || "";
         const status = url.searchParams.get("status");
 
-
-        const user = await getUserFromToken();
+        const user = await requireAuth(req);
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const where = {
@@ -46,7 +45,7 @@ export async function POST(req) {
         const { name, email, tel, category } = await req.json();
         if (!name || !email || !tel || !category) return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
 
-        const user = await getUserFromToken();
+        const user = await requireAuth(req);
         if (!user) return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
 
         const contact = await prisma.contact.create({
