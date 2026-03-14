@@ -8,6 +8,7 @@ import { Spinner, ValidatePassword, ValidateEmail } from "@/components";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -41,7 +42,7 @@ export default function LoginPage() {
             setTimeout(() => router.replace("/pages/tasks"), 800);
         } catch (err) {
             console.error(err);
-            alert("Email ou senha inválidos");
+            toast.error("Email e/ou senha inválidos");
         } finally {
             setLoading(false);
         }
