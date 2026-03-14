@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -51,11 +52,11 @@ export default function RegisterPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ nome, email, senha }),
             });
-            alert("Cadastro realizado!");
+            toast.success("Cadastro realizado!");
             setTimeout(() => router.replace("/"), 800);
         } catch (err) {
             console.error(err);
-            alert("Erro ao cadastrar");
+            toast.error("Erro ao cadastrar");
             setLoading(false);
         } finally {
             setLoading(false);

@@ -7,6 +7,7 @@ export { AppSidebar } from './layout/AppSidebar';
 
 // Modals
 export { ChangePassModal } from './modals/ChangePassModal';
+export { DeleteAccountModal } from './modals/DeleteAccountModal';
 export { ConfirmDialog } from './modals/ConfirmDialog';
 export { ItemModal } from './modals/ItemModal';
 
