@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 export async function POST(req) {
     try {
         const { email, senha } = await req.json();
-        if (!email || !senha) return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
+        if (!email || !senha) return NextResponse.json({ ok: false, error: "Dados incompletos" }, { status: 400 });
 
         const user = await prisma.user.findUnique({
             where: { email },
@@ -17,10 +17,10 @@ export async function POST(req) {
                 password: true
             }
         });
-        if (!user) return NextResponse.json({ error: "Usuário não encontrado" }, { status: 404 });
+        if (!user) return NextResponse.json({ ok: false, error: "Usuário não encontrado" }, { status: 404 });
 
         const matched = await bcrypt.compare(senha, user.password);
-        if (!matched) return NextResponse.json({ error: "Credenciais inválidas" }, { status: 400 });
+        if (!matched) return NextResponse.json({ ok: false, error: "Credenciais inválidas" }, { status: 400 });
 
         const token = jwt.sign(
             { id: user.id, nome: user.name },
@@ -34,7 +34,7 @@ export async function POST(req) {
             email: user.email
         };
 
-        const response = NextResponse.json({ user: safeUser, token });
+        const response = NextResponse.json({ ok: true, user: safeUser, token });
 
         response.cookies.set("token", token, {
             httpOnly: true,
@@ -45,6 +45,6 @@ export async function POST(req) {
         return response;
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: "Erro ao logar usuário" }, { status: 500 });
+        return NextResponse.json({ ok: false, error: "Erro ao logar usuário" }, { status: 500 });
     }
 };
