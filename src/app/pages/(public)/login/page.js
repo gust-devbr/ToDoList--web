@@ -14,21 +14,23 @@ export default function LoginPage() {
     const router = useRouter();
     const { login } = useAuth();
 
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [state, setState] = useState({
+        email: "",
+        senha: "",
+        loading: false,
+    });
     const [errors, setErrors] = useState({
         email: "",
         senha: ""
     });
 
     useEffect(() => {
-        setErrors(prev => ({ ...prev, email: ValidateEmail(email) }));
-    }, [email]);
+        setErrors(prev => ({ ...prev, email: ValidateEmail(state.email) }));
+    }, [state.email]);
 
     useEffect(() => {
-        setErrors(prev => ({ ...prev, senha: ValidatePassword(senha) }));
-    }, [senha]);
+        setErrors(prev => ({ ...prev, senha: ValidatePassword(state.senha) }));
+    }, [state.senha]);
 
     async function handleLogin(e) {
         e.preventDefault();
@@ -36,21 +38,25 @@ export default function LoginPage() {
         if (errors.email || errors.senha) return;
 
         try {
-            setLoading(true);
+            setState(prev => ({ ...prev, loading: true }));
 
-            await login({ email, senha });
+            await login({
+                email: state.email,
+                senha: state.senha
+            });
             setTimeout(() => router.replace("/pages/tasks"), 800);
         } catch (err) {
             console.error(err);
             toast.error("Email e/ou senha inválidos");
+            setState(prev => ({ ...prev, loading: false }));
         } finally {
-            setLoading(false);
+            setState(prev => ({ ...prev, loading: false }));
         }
     };
 
     const isDisabled =
-        !email ||
-        !senha ||
+        !state.email ||
+        !state.senha ||
         errors.email ||
         errors.senha;
 
@@ -64,8 +70,8 @@ export default function LoginPage() {
                         <Input
                             autoFocus
                             placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={state.email}
+                            onChange={(e) => setState(prev => ({ ...prev, email: e.target.value }))}
                             className="py-6 text-xl md:text-lg w-90"
                             autoCapitalize="none"
                         />
@@ -76,8 +82,8 @@ export default function LoginPage() {
                         )}
                         <Input
                             placeholder="Senha"
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
+                            value={state.senha}
+                            onChange={(e) => setState(prev => ({ ...prev, senha: e.target.value }))}
                             className="py-6 text-xl md:text-lg w-90"
                         />
                         {errors.senha && (
@@ -96,7 +102,7 @@ export default function LoginPage() {
                     </span>
 
                     <Button disabled={isDisabled}>
-                        {loading ? <Spinner /> : "Login"}
+                        {state.loading ? <Spinner /> : "Login"}
                     </Button>
                 </Card>
             </div>

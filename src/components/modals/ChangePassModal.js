@@ -9,18 +9,20 @@ import { Label } from "@/components/ui/label"
 import { toast } from "sonner";
 
 export function ChangePassModal({ isOpen, onClose }) {
-    const { logout } = useAuth()
+    const { logout } = useAuth();
 
-    const [atualSenha, setAtualSenha] = useState('')
-    const [novaSenha, setNovaSenha] = useState('')
-    const [confirmarSenha, setConfirmarSenha] = useState('')
+    const [state, setState] = useState({
+        atualSenha: "",
+        novaSenha: "",
+        confirmarSenha: ""
+    });
 
     async function handleChangePassword() {
-        if (novaSenha !== confirmarSenha) {
+        if (state.novaSenha !== state.confirmarSenha) {
             return toast.error("As senhas não coincidem")
         };
 
-        if (novaSenha.length < 6) {
+        if (state.novaSenha.length < 6) {
             return toast.error("Nova senha deve ser maior que 6 caracteres")
         };
 
@@ -30,20 +32,22 @@ export function ChangePassModal({ isOpen, onClose }) {
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
                 body: JSON.stringify({
-                    atualSenha,
-                    novaSenha
+                    atualSenha: state.atualSenha,
+                    novaSenha: state.novaSenha
                 })
             });
 
             toast.success("Sua senha foi alterada");
 
-            setAtualSenha('')
-            setNovaSenha('')
-            setConfirmarSenha('')
+            setState(prev => ({
+                ...prev,
+                atualSenha: "",
+                novaSenha: "",
+                confirmarSenha: ""
+            }));
 
-            await logout()
-        } catch (err) {
-            console.error(err)
+            await logout();
+        } catch {
             toast.error("Não foi possível alterar sua senha");
         }
     };
@@ -59,27 +63,24 @@ export function ChangePassModal({ isOpen, onClose }) {
                     <div>
                         <Label className="mb-1">Senha atual</Label>
                         <Input
-                            type="password"
-                            value={atualSenha}
-                            onChange={(e) => setAtualSenha(e.target.value)}
+                            value={state.atualSenha}
+                            onChange={(e) => setState(prev => ({ ...prev, atualSenha: e.target.value }))}
                         />
                     </div>
 
                     <div>
                         <Label className="mb-1">Nova senha</Label>
                         <Input
-                            type="password"
-                            value={novaSenha}
-                            onChange={(e) => setNovaSenha(e.target.value)}
+                            value={state.novaSenha}
+                            onChange={(e) => setState(prev => ({ ...prev, novaSenha: e.target.value }))}
                         />
                     </div>
 
                     <div>
                         <Label className="mb-1">Confirmar nova senha</Label>
                         <Input
-                            type="password"
-                            value={confirmarSenha}
-                            onChange={(e) => setConfirmarSenha(e.target.value)}
+                            value={state.confirmarSenha}
+                            onChange={(e) => setState(prev => ({ ...prev, confirmarSenha: e.target.value }))}
                         />
                     </div>
                 </div>

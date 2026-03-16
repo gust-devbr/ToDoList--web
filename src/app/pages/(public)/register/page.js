@@ -17,10 +17,12 @@ import { toast } from "sonner";
 export default function RegisterPage() {
     const router = useRouter();
 
-    const [nome, setNome] = useState('');
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [state, setState] = useState({
+        nome: "",
+        email: "",
+        senha: "",
+        loading: false,
+    });
     const [errors, setErrors] = useState({
         nome: "",
         email: "",
@@ -28,16 +30,16 @@ export default function RegisterPage() {
     });
 
     useEffect(() => {
-        setErrors(prev => ({ ...prev, nome: ValidateUsername(nome) }));
-    }, [nome]);
+        setErrors(prev => ({ ...prev, nome: ValidateUsername(state.nome) }));
+    }, [state.nome]);
 
     useEffect(() => {
-        setErrors(prev => ({ ...prev, email: ValidateEmail(email) }));
-    }, [email]);
+        setErrors(prev => ({ ...prev, email: ValidateEmail(state.email) }));
+    }, [state.email]);
 
     useEffect(() => {
-        setErrors(prev => ({ ...prev, senha: ValidatePassword(senha) }));
-    }, [senha]);
+        setErrors(prev => ({ ...prev, senha: ValidatePassword(state.senha) }));
+    }, [state.senha]);
 
     async function handleCadastro(e) {
         e.preventDefault();
@@ -45,28 +47,32 @@ export default function RegisterPage() {
         if (errors.nome || errors.email || errors.senha) return;
 
         try {
-            setLoading(true);
+            setState(prev => (({ ...prev, loading: true })));
 
             await fetch("/api/public/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nome, email, senha }),
+                body: JSON.stringify({
+                    nome: state.nome,
+                    email: state.email,
+                    senha: state.senha
+                })
             });
             toast.success("Cadastro realizado!");
             setTimeout(() => router.replace("/"), 800);
         } catch (err) {
             console.error(err);
             toast.error("Erro ao cadastrar");
-            setLoading(false);
+            setState(prev => (({ ...prev, loading: false })));
         } finally {
-            setLoading(false);
+            setState(prev => (({ ...prev, loading: false })));
         }
     };
 
     const isDisabled =
-        !nome ||
-        !email ||
-        !senha ||
+        !state.nome ||
+        !state.email ||
+        !state.senha ||
         errors.nome ||
         errors.email ||
         errors.senha;
@@ -81,8 +87,8 @@ export default function RegisterPage() {
                         <Input
                             autoFocus
                             placeholder="Nome"
-                            value={nome}
-                            onChange={(e) => setNome(e.target.value)}
+                            value={state.nome}
+                            onChange={(e) => setState(prev => ({ ...prev, nome: e.target.value }))}
                             className="py-6 text-xl md:text-lg w-90"
                         />
                         {errors.nome && (
@@ -92,8 +98,8 @@ export default function RegisterPage() {
                         )}
                         <Input
                             placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={state.email}
+                            onChange={(e) => setState(prev => ({ ...prev, email: e.target.value }))}
                             className="py-6 text-xl md:text-lg w-90"
                             autoCapitalize="none"
                         />
@@ -104,8 +110,8 @@ export default function RegisterPage() {
                         )}
                         <Input
                             placeholder="Senha"
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
+                            value={state.senha}
+                            onChange={(e) => setState(prev => ({ ...prev, senha: e.target.value }))}
                             className="py-6 text-xl md:text-lg w-90"
                         />
                         {errors.senha && (
@@ -124,7 +130,7 @@ export default function RegisterPage() {
                     </span>
 
                     <Button disabled={isDisabled}>
-                        {loading ? <Spinner /> : "Cadastrar"}
+                        {state.loading ? <Spinner /> : "Cadastrar"}
                     </Button>
                 </Card>
 

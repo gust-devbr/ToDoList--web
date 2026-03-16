@@ -5,74 +5,80 @@ import { useCallback, useEffect, useState } from "react";
 import { StatusPieChart, chartConfig } from "@/components";
 import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
 
 export default function Dashboard() {
-    const [tasks, setTasks] = useState([]);
-    const [contacts, setContacts] = useState([]);
-    const [notes, setNotes] = useState([]);
-    const [selectChart, setSelectChart] = useState("tasks");
+    const [state, setState] = useState({
+        tasks: [],
+        notes: [],
+        contacts: [],
+        selectChart: "tasks"
+    });
 
     const loadData = useCallback(async () => {
         let data;
         let res;
 
         try {
-            switch (selectChart) {
+            switch (state.selectChart) {
                 case "tasks":
                     res = await fetch("/api/private/tasks", {
                         method: "GET",
                         headers: { "Content-Type": "application/json" },
                     });
                     data = await res.json();
-                    setTasks(Array.isArray(data) ? data : data.tasks || []);
+                    setState(prev => ({ ...prev, tasks: Array.isArray(data) ? data : data.tasks || [] }));
                     break;
+
                 case "contacts":
                     res = await fetch("/api/private/contacts", {
                         method: "GET",
                         headers: { "Content-Type": "application/json" },
                     });
                     data = await res.json();
-                    setContacts(Array.isArray(data) ? data : data.contacts || []);
+                    setState(prev => ({ ...prev, contacts: Array.isArray(data) ? data : data.contacts || [] }));
                     break;
+
                 case "notes":
                     res = await fetch("/api/private/notes", {
                         method: "GET",
                         headers: { "Content-Type": "application/json" }
                     });
                     data = await res.json();
-                    setNotes(Array.isArray(data) ? data : data.notes || []);
+                    setState(prev => ({ ...prev, notes: Array.isArray(data) ? data : data.notes || [] }));
                     break;
             }
-        } catch (error) {
-            console.error("Erro ao carregar dados", error);
-            switch (selectChart) {
-                case "tasks": setTasks([]); break;
-                case "contacts": setContacts([]); break;
-                case "notes": setNotes([]); break;
-            }
+        } catch {
+            toast.error("Erro ao carregar dados");
+            setState(prev => ({
+                ...prev,
+                tasks: [],
+                notes: [],
+                contacts: []
+            }));
         }
-    }, [selectChart]);
+    }, [state.selectChart]);
 
     useEffect(() => {
-        if (selectChart) loadData();
+        if (state.selectChart) loadData();
     }, [loadData]);
 
     //Tasks
-    const completed = tasks.filter(t => t.completed).length;
-    const notCompleted = tasks.length - completed;
+    const completed = state.tasks.filter(t => t.completed).length;
+    const notCompleted = state.tasks.length - completed;
 
     //Contacts
-    const favorite = contacts.filter(c => c.favorite).length;
-    const notFavorite = contacts.length - favorite;
+    const favorite = state.contacts.filter(c => c.favorite).length;
+    const notFavorite = state.contacts.length - favorite;
 
     //Notes
-    const pinned = notes.filter(n => n.pinned).length;
-    const notPinned = notes.length - pinned;
+    const pinned = state.notes.filter(n => n.pinned).length;
+    const notPinned = state.notes.length - pinned;
 
-    const config = chartConfig[selectChart];
+    const config = chartConfig[state.selectChart];
 
-    const isTask = selectChart === 'tasks';
-    const isNote = selectChart === 'notes';
+    const isTask = state.selectChart === 'tasks';
+    const isNote = state.selectChart === 'notes';
 
     return (
         <div className="min-h-screen px-4 py-6 md:mt-1 -mt-45 bg-background text-foreground">
@@ -82,8 +88,8 @@ export default function Dashboard() {
                     Dashboard de {isTask ? "Tarefas" : (isNote ? "Notas" : "Contatos")}
                 </p>
                 <Select
-                    value={selectChart}
-                    onValueChange={(value) => setSelectChart(value)}
+                    value={state.selectChart}
+                    onValueChange={(value) => setState(prev => ({ ...prev, selectChart: value }))}
                 >
                     <SelectTrigger>
                         <SelectValue />
@@ -91,8 +97,8 @@ export default function Dashboard() {
                     <SelectContent>
                         <SelectGroup>
                             <SelectItem value="tasks">Tarefas</SelectItem>
-                            <SelectItem value="contacts">Contatos</SelectItem>
                             <SelectItem value="notes">Notas</SelectItem>
+                            <SelectItem value="contacts">Contatos</SelectItem>
                         </SelectGroup>
                     </SelectContent>
                 </Select>
@@ -107,7 +113,7 @@ export default function Dashboard() {
                         </CardTitle>
                         <CardContent>
                             <p className="text-3xl font-bold">
-                                {isTask ? tasks.length : (isNote ? notes.length : contacts.length)}
+                                {isTask ? state.tasks.length : (isNote ? state.notes.length : state.contacts.length)}
                             </p>
                         </CardContent>
                     </Card>
@@ -137,7 +143,7 @@ export default function Dashboard() {
 
                 <Card className="p-6 rounded-xl shadow" style={{ minHeight: 320 }}>
                     <StatusPieChart
-                        items={isTask ? tasks : (isNote ? notes : contacts)}
+                        items={isTask ? state.tasks : (isNote ? state.notes : state.contacts)}
                         booleanKey={config.booleanKey}
                         positiveLabel={config.positiveLabel}
                         negativeLabel={config.negativeLabel}

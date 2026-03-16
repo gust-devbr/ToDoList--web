@@ -10,9 +10,11 @@ import { ThemeToggle } from "@/context/ThemeToggle";
 import { Label } from "@/components/ui/label";
 
 export default function Settings() {
-    const { user, logout, deleteAccount } = useAuth();
-    const [isModalChangePassOpen, setIsModalChangePassOpen] = useState(false);
-    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+    const { user, logout } = useAuth();
+    const [modal, setModal] = useState({
+        isChangeOpen: false,
+        isDeleteOpen: false
+    });
 
     return (
         <Card className="h-screen px-4 -mt-14 md:-mt-4 rounded-none border-zinc-600 bg-background text-foreground">
@@ -32,20 +34,20 @@ export default function Settings() {
                 <Button
                     className="mt-3 bg-background text-foreground"
                     name="change"
-                    onClick={() => setIsModalChangePassOpen(true)}
+                    onClick={() => setModal(prev => ({ ...prev, isChangeOpen: true }))}
                 >
                     ALTERAR SENHA
                 </Button>
             </CardContent>
 
             <ChangePassModal
-                isOpen={isModalChangePassOpen}
-                onClose={() => setIsModalChangePassOpen(false)}
+                isOpen={modal.isChangeOpen}
+                onClose={() => setModal(prev => ({ ...prev, isChangeOpen: false }))}
             />
 
             <DeleteAccountModal
-                isOpen={isModalDeleteOpen}
-                onClose={() => setIsModalDeleteOpen(false)}
+                isOpen={modal.isDeleteOpen}
+                onClose={() => setModal(prev => ({ ...prev, isDeleteOpen: false }))}
             />
 
             <CardFooter className="flex flex-col gap-2 mt-auto md:mb-0">
@@ -61,7 +63,7 @@ export default function Settings() {
                     trigger={<Button className="w-full py-6" variant="destructive">APAGAR CONTA</Button>}
                     title="Apagar conta"
                     description="Deseja realmente deletar sua conta? Esta ação não pode ser desfeita."
-                    onConfirm={() => setIsModalDeleteOpen(true)}
+                    onConfirm={() => setModal(prev => ({ ...prev, isDeleteOpen: true }))}
                     confirmText="Apagar"
                     cancelText="Cancelar"
                 />

@@ -4,120 +4,153 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ItemModal, Header, TableFilter, CardList } from '@/components'
 import { TbPinnedOff, TbPinned } from "@/components/icons";
+import { toast } from 'sonner';
+
+const emptyNote = {
+    id: null,
+    title: "",
+    content: ""
+};
 
 export default function Notes() {
-    const [notes, setNotes] = useState([])
-    const [search, setSearch] = useState('')
-    const [filter, setFilter] = useState('all')
-    const [modalMode, setModalMode] = useState(null)
-    const [currentNote, setCurrentNote] = useState({
-        id: null,
-        title: '',
-        content: ''
-    })
+    const [state, setState] = useState({
+        notes: [],
+        search: "",
+        filter: "all",
+        modalMode: null,
+        currentNote: emptyNote
+    });
 
     function openCreateModal() {
-        setCurrentNote({ id: null, title: '', content: '' })
-        setModalMode('create')
-    }
+        setState(prev => ({
+            ...prev,
+            currentNote: emptyNote,
+            modalMode: "create"
+        }))
+    };
 
     function openEditModal(note) {
-        if (!note.id) return
+        if (!note.id) return;
 
-        setCurrentNote({
-            id: note.id ?? '',
-            title: note.title ?? '',
-            content: note.content ?? ''
-        })
-        setModalMode('edit')
-    }
+        setState(prev => ({
+            ...prev,
+            currentNote: {
+                id: note.id,
+                title: note.title,
+                content: note.content
+            },
+            modalMode: "edit"
+        }))
+    };
 
     const loadNotes = useCallback(async () => {
         try {
-            const res = await fetch(`/api/private/notes?search=${search}&status=${filter}`, { credentials: 'include' })
+            const res = await fetch(`/api/private/notes?search=${state.search}&status=${state.filter}`, { credentials: 'include' })
             const data = await res.json()
 
-            setNotes(Array.isArray(data) ? data : data.notes || [])
-        } catch (err) {
-            console.error('Erro ao carrgar notas', err)
-            setNotes([])
+            setState(prev => ({
+                ...prev,
+                notes: Array.isArray(data) ? data : data.notes || []
+            }));
+        } catch {
+            toast.error("Erro ao carregar");
+            setState(prev => ({ ...prev, notes: [] }));
         }
-    }, [search, filter])
+    }, [state.search, state.filter]);
 
 
     async function handleSubmit() {
         try {
-            const { id, title, content } = currentNote
-            if (!title.trim() || !content.trim()) return
+            const payload = {
+                id: state.currentNote.id,
+                title: state.currentNote.title,
+                content: state.currentNote.content
+            };
 
-            switch (modalMode) {
-                case 'create':
+            if (!payload.title.trim() || !payload.content.trim()) {
+                toast.error("Complete os campos!");
+                return;
+            };
+
+            switch (state.modalMode) {
+                case "create":
                     await fetch('/api/private/notes', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         credentials: 'include',
-                        body: JSON.stringify({ title, content })
+                        body: JSON.stringify(payload)
                     })
-                    break
-                case 'edit':
-                    await fetch(`/api/private/notes/${id}`, {
+                    break;
+                case "edit":
+                    await fetch(`/api/private/notes/${payload.id}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         credentials: 'include',
-                        body: JSON.stringify({ title, content })
+                        body: JSON.stringify(payload)
                     })
-                    break
-            }
+                    break;
+            };
 
-            setModalMode(null)
-            await loadNotes()
-        } catch (err) {
-            console.error('Erro ao salvar', err)
+            setState(prev => ({ ...prev, modalMode: null }));
+            await loadNotes();
+            toast.success("Nota salva!");
+        } catch {
+            toast.error("Erro ao salvar");
         }
-    }
+    };
 
     async function toggleNotes(id) {
-        await fetch(`/api/private/notes/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'
-        })
-        await loadNotes()
-    }
+        try {
+            await fetch(`/api/private/notes/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            })
+            await loadNotes();
+            toast.success("Nota fixada!");
+        } catch {
+            toast.error("Erro ao fixar");
+        }
+    };
 
     async function deleteNote(id) {
-        await fetch(`/api/private/notes/${id}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'
-        })
-        await loadNotes()
-    }
+        try {
+            await fetch(`/api/private/notes/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            })
+            await loadNotes();
+            toast.success("Nota excluída");
+        } catch {
+            toast.error("Erro ao excluir");
+        }
+    };
 
     useEffect(() => {
         loadNotes()
-    }, [loadNotes])
+    }, [loadNotes]);
 
     return (
         <div className='flex-1 min-h-screen px-3 md:mt-0 -mt-14 bg-card text-foreground'>
             <Header
-                title='Lista de Notas'
-                buttonLabel='Adicionar Nota'
+                title="Lista de Notas"
+                buttonLabel="Adicionar Nota"
                 onButtonClick={openCreateModal}
-                searchValue={search}
-                onSearchChange={setSearch}
+                searchValue={state.search}
+                onSearchChange={(value) => setState(prev => ({ ...prev, search: value }))}
             />
 
             <TableFilter
-                selectedPage='notes'
-                setFilter={setFilter}
+                selectedPage="notes"
+                setFilter={(value) => setState(prev => ({ ...prev, filter: value }))}
             />
 
-            {notes.length === 0 ? (
+            {state.notes.length === 0 ? (
                 <h1 className='text-center text-lg font-semibold'>Nenhuma nota encontrada</h1>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {notes.map((note) => (
+                    {state.notes.map((note) => (
                         <CardList
                             key={note.id}
                             title={note.title}
@@ -136,14 +169,17 @@ export default function Notes() {
             )}
 
             <ItemModal
-                isOpen={modalMode !== null}
-                mode={modalMode ?? 'create'}
+                isOpen={state.modalMode !== null}
+                mode={state.modalMode ?? 'create'}
                 itemType='note'
-                formData={currentNote}
-                setFormData={setCurrentNote}
-                onClose={() => setModalMode(null)}
+                formData={state.currentNote}
+                setFormData={(value) => setState(prev => ({
+                    ...prev,
+                    currentNote: typeof value === "function" ? value(prev.currentNote) : value
+                }))}
+                onClose={() => setState(prev => ({ ...prev, modalMode: null }))}
                 onSubmit={handleSubmit}
             />
         </div>
     )
-}
+};
