@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Header, ItemModal, TableFilter, CardList } from '@/components'
 import { FaStar, FaRegStar } from "@/components/icons";
 import { toast } from 'sonner';
+import { api } from '@/components/utils/api';
 
 const emptyContact = {
     id: null,
@@ -48,8 +49,7 @@ export default function Contacts() {
 
     const loadContacts = useCallback(async () => {
         try {
-            const res = await fetch(`/api/private/contacts?search=${state.search}&status=${state.filter}`, { credentials: 'include' })
-            const data = await res.json()
+            const data = await api(`/private/contacts?search=${state.search}&status=${state.filter}`,);
 
             setState(prev => ({
                 ...prev,
@@ -64,11 +64,7 @@ export default function Contacts() {
 
     async function deleteContact(id) {
         try {
-            await fetch(`/api/private/contacts/${id}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include'
-            });
+            await api(`/private/contacts/${id}`, { method: 'DELETE' });
 
             loadContacts();
             toast.success("Contato excluído!");
@@ -82,10 +78,8 @@ export default function Contacts() {
             const contact = state.contacts.find((c) => c.id === id)
             if (!contact) return;
 
-            await fetch(`/api/private/contacts/${id}`, {
+            await api(`/private/contacts/${id}`, {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
                 body: JSON.stringify({ favorite: !contact.favorite })
             })
             await loadContacts();
@@ -112,18 +106,14 @@ export default function Contacts() {
 
             switch (state.modalMode) {
                 case "create":
-                    await fetch('/api/private/contacts', {
+                    await api('/private/contacts', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        credentials: 'include',
                         body: JSON.stringify(payload)
                     })
                     break;
                 case "edit":
-                    await fetch(`/api/private/contacts/${payload.id}`, {
+                    await api(`/private/contacts/${payload.id}`, {
                         method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        credentials: 'include',
                         body: JSON.stringify(payload)
                     })
                     break;

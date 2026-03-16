@@ -1,5 +1,6 @@
 'use client'
 
+import { api } from "@/components/utils/api";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -13,20 +14,13 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         async function loadUser() {
             try {
-                const res = await fetch('/api/private/me', {
-                    credentials: "include",
-                });
-                const data = await res.json();
+                const data = await api('/private/me');
 
-                if (!res.ok) {
-                    setUser(null);
-                } else {
-                    setUser(data);
-                }
+                setUser(data);
             } catch {
                 setUser(null);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
         }
 
@@ -34,33 +28,24 @@ export function AuthProvider({ children }) {
     }, []);
 
     async function login(credentials) {
-        const res = await fetch('/api/public/login', {
+        const data = await api('/public/login', {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
             body: JSON.stringify(credentials),
         });
-        const data = await res.json();
 
-        if (!res.ok) throw new Error(data?.error || "Erro no login");
+        if (!data.ok) throw new Error(data?.error || "Erro no login");
         setUser(data.user);
     };
 
     async function logout() {
-        await fetch('/api/public/logout', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-        });
+        await api('/public/logout', { method: "POST" });
 
         setUser(null);
         router.replace("/");
     };
 
     async function deleteAccount() {
-        await fetch('/api/private/user', {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-        });
+        await api('/api/private/user', { method: "DELETE" });
         setUser(null);
         router.replace("/");
     };

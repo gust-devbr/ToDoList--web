@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { api } from "@/components/utils/api";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -49,9 +50,8 @@ export default function RegisterPage() {
         try {
             setState(prev => (({ ...prev, loading: true })));
 
-            await fetch("/api/public/register", {
+            await api("/public/register", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     nome: state.nome,
                     email: state.email,

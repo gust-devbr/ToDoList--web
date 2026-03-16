@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner";
+import { api } from "../utils/api";
 
 export function DeleteAccountModal({ isOpen, onClose }) {
     const { logout, user } = useAuth();
@@ -17,10 +18,8 @@ export function DeleteAccountModal({ isOpen, onClose }) {
         if (password.length < 6) return toast.error("Senha maior que 6 caracteres");
 
         try {
-            await fetch('/api/private/user', {
+            await api('/private/user', {
                 method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
                 body: JSON.stringify({
                     userId: user.id,
                     password: password

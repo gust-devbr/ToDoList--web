@@ -6,6 +6,7 @@ import { StatusPieChart, chartConfig } from "@/components";
 import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { api } from "@/components/utils/api";
 
 export default function Dashboard() {
     const [state, setState] = useState({
@@ -17,34 +18,21 @@ export default function Dashboard() {
 
     const loadData = useCallback(async () => {
         let data;
-        let res;
 
         try {
             switch (state.selectChart) {
                 case "tasks":
-                    res = await fetch("/api/private/tasks", {
-                        method: "GET",
-                        headers: { "Content-Type": "application/json" },
-                    });
-                    data = await res.json();
+                    data = await api("/private/tasks");
                     setState(prev => ({ ...prev, tasks: Array.isArray(data) ? data : data.tasks || [] }));
                     break;
 
                 case "contacts":
-                    res = await fetch("/api/private/contacts", {
-                        method: "GET",
-                        headers: { "Content-Type": "application/json" },
-                    });
-                    data = await res.json();
+                    data = await api("/private/contacts");
                     setState(prev => ({ ...prev, contacts: Array.isArray(data) ? data : data.contacts || [] }));
                     break;
 
                 case "notes":
-                    res = await fetch("/api/private/notes", {
-                        method: "GET",
-                        headers: { "Content-Type": "application/json" }
-                    });
-                    data = await res.json();
+                    data = await api("/private/notes");
                     setState(prev => ({ ...prev, notes: Array.isArray(data) ? data : data.notes || [] }));
                     break;
             }

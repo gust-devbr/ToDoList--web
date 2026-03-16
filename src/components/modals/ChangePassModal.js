@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner";
+import { api } from "../utils/api";
 
 export function ChangePassModal({ isOpen, onClose }) {
     const { logout } = useAuth();
@@ -27,10 +28,8 @@ export function ChangePassModal({ isOpen, onClose }) {
         };
 
         try {
-            await fetch('/api/private/user', {
+            await api('/private/user', {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
                 body: JSON.stringify({
                     atualSenha: state.atualSenha,
                     novaSenha: state.novaSenha

@@ -180,6 +180,7 @@ A estrutura privada é montada via `PrivateStructure` + `AppSidebar` + `Header`.
 - `src/utils/chart-config.js`: configuração de labels/chaves para dashboard.
 - `src/utils/filters-config.js`: configuração de valores/labels/ícones para tabela de filtros.
 - `src/utils/modal-config.js`: configuração de títulos/ações/campos para modais de criação e edição.
+- `src/utils/api.js`: componente de Fetch API.
 
 ---
 

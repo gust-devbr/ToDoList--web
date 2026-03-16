@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Header, ItemModal, TableFilter, CardList } from '@/components'
 import { FaCheck, FaReply } from 'react-icons/fa'
 import { toast } from 'sonner';
+import { api } from '@/components/utils/api';
 
 export default function Tasks() {
     const [state, setState] = useState({
@@ -41,8 +42,7 @@ export default function Tasks() {
 
     const loadTasks = useCallback(async () => {
         try {
-            const res = await fetch(`/api/private/tasks?search=${state.search}&status=${state.filter}`, { credentials: 'include' })
-            const data = await res.json();
+            const data = await api(`/private/tasks?search=${state.search}&status=${state.filter}`);
 
             setState(prev => ({
                 ...prev,
@@ -57,11 +57,7 @@ export default function Tasks() {
 
     async function toggleTasks(id) {
         try {
-            await fetch(`/api/private/tasks/${id}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include'
-            })
+            await api(`/private/tasks/${id}`, { method: 'PATCH' });
             await loadTasks();
             toast.success("Tarefa concluída");
         } catch {
@@ -71,11 +67,7 @@ export default function Tasks() {
 
     async function deleteTasks(id) {
         try {
-            await fetch(`/api/private/tasks/${id}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include'
-            })
+            await api(`private/tasks/${id}`, { method: 'DELETE' });
             await loadTasks();
             toast.success("Tarefa excluída");
         } catch {
@@ -92,20 +84,16 @@ export default function Tasks() {
 
             switch (state.modalMode) {
                 case "create":
-                    await fetch('/api/private/tasks', {
+                    await api('/private/tasks', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        credentials: 'include',
                         body: JSON.stringify({ title: state.currentTask.title })
-                    })
+                    });
                     break;
                 case "edit":
-                    await fetch(`/api/private/tasks/${state.currentTask.id}`, {
+                    await api(`/private/tasks/${state.currentTask.id}`, {
                         method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        credentials: 'include',
                         body: JSON.stringify({ title: state.currentTask.title })
-                    })
+                    });
                     break;
             };
             setState(prev => ({ ...prev, modalMode: null }));

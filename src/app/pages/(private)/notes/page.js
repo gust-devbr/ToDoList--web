@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { ItemModal, Header, TableFilter, CardList } from '@/components'
 import { TbPinnedOff, TbPinned } from "@/components/icons";
 import { toast } from 'sonner';
+import { api } from '@/components/utils/api';
 
 const emptyNote = {
     id: null,
@@ -45,8 +46,7 @@ export default function Notes() {
 
     const loadNotes = useCallback(async () => {
         try {
-            const res = await fetch(`/api/private/notes?search=${state.search}&status=${state.filter}`, { credentials: 'include' })
-            const data = await res.json()
+            const data = await api(`/private/notes?search=${state.search}&status=${state.filter}`);
 
             setState(prev => ({
                 ...prev,
@@ -74,18 +74,14 @@ export default function Notes() {
 
             switch (state.modalMode) {
                 case "create":
-                    await fetch('/api/private/notes', {
+                    await api('/private/notes', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        credentials: 'include',
                         body: JSON.stringify(payload)
                     })
                     break;
                 case "edit":
-                    await fetch(`/api/private/notes/${payload.id}`, {
+                    await api(`/private/notes/${payload.id}`, {
                         method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        credentials: 'include',
                         body: JSON.stringify(payload)
                     })
                     break;
@@ -101,11 +97,7 @@ export default function Notes() {
 
     async function toggleNotes(id) {
         try {
-            await fetch(`/api/private/notes/${id}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include'
-            })
+            await api(`/private/notes/${id}`, { method: 'PATCH' });
             await loadNotes();
             toast.success("Nota fixada!");
         } catch {
@@ -115,11 +107,7 @@ export default function Notes() {
 
     async function deleteNote(id) {
         try {
-            await fetch(`/api/private/notes/${id}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include'
-            })
+            await api(`/private/notes/${id}`, { method: 'DELETE' });
             await loadNotes();
             toast.success("Nota excluída");
         } catch {
