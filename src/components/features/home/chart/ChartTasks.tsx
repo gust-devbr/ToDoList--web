@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Legend, Pie, PieChart, Tooltip } from "recharts";
 
 type Task = {
     id: string

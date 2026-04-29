@@ -13,7 +13,7 @@ import { StatisticsCards } from "./StatisticsCards"
 import { apiFetch } from "@/utils/api"
 import { ChartTasks } from "./ChartTasks"
 
-export function ChartCollapsible() {
+export function ChartCollapsible({ onReload }: { onReload: () => void }) {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [tasks, setTasks] = useState<Task[]>([])
 
@@ -35,7 +35,7 @@ export function ChartCollapsible() {
         }
 
         getTasks()
-    }, [])
+    }, [onReload])
 
     return (
         <Collapsible

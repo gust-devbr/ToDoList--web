@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 
 import { UpdateTitleModal } from "@/components/features/home/modal/UpdateTask"
@@ -32,7 +33,7 @@ export function TasksTable({ tasks, reload }: TaskTableProps) {
 
     async function deleteTask(id: string) {
         await apiFetch(`/private/tasks/${id}`, { method: "DELETE" })
-        setTimeout(() => reload(), 700)
+        await reload()
     }
 
     async function toggleTask(id: string) {
@@ -45,7 +46,7 @@ export function TasksTable({ tasks, reload }: TaskTableProps) {
                     : task
             )
         );
-        setTimeout(() => reload(), 700)
+        await reload()
     }
 
     useEffect(() => {

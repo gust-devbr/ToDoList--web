@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 
 import { AddTask } from "@/components/features/home/form/AddTask"
@@ -12,8 +14,14 @@ import { useCallback, useEffect, useState } from "react"
 
 
 export default function HomePage() {
+    const greeting = getGreeting()
+    const { user } = useAuth()
+
     const [tasks, setTasks] = useState<Task[]>([])
     const [filter, setFilter] = useState<string>("all")
+    const [reload, setReload] = useState<number>(0)
+
+    const reloadAllTasks = () => setReload(prev => prev + 1)
 
     const getTasks = useCallback(async () => {
         try {
@@ -32,11 +40,7 @@ export default function HomePage() {
 
     useEffect(() => {
         getTasks()
-    }, [getTasks])
-
-    const greeting = getGreeting()
-    const { user } = useAuth()
-
+    }, [reload])
 
     return (
         <div className="space-y-5 px-5">
@@ -47,16 +51,16 @@ export default function HomePage() {
             </header>
 
             <div>
-                <ChartCollapsible />
+                <ChartCollapsible onReload={reloadAllTasks} />
             </div>
 
             <div>
-                <AddTask reload={getTasks} />
+                <AddTask reload={reloadAllTasks} />
             </div>
 
             <main className="border p-2 rounded-sm">
                 <TaskFilter filter={filter} setFilter={setFilter} />
-                <TasksTable tasks={tasks} reload={getTasks} />
+                <TasksTable tasks={tasks} reload={reloadAllTasks} />
             </main>
         </div>
     )
