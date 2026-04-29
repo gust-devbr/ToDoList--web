@@ -3,12 +3,12 @@
 import {
     Sidebar,
     SidebarContent,
-    SidebarGroupLabel,
     SidebarMenu,
     SidebarMenuItem,
     SidebarMenuButton,
     SidebarFooter,
     SidebarGroup,
+    useSidebar,
 } from "@/components/ui/sidebar"
 import { useAuth } from "@/context/AuthContext";
 import { Avatar, AvatarImage } from "../ui/avatar";
@@ -22,23 +22,24 @@ import { Separator } from "../ui/separator";
 export function AppSidebar() {
     const { user } = useAuth()
     const pathname = usePathname()
+    const { state } = useSidebar()
+    const isCollapsed = state === "collapsed"
 
     const routes = [
-        { name: "Ínicio", href: "/screens/home", icon: House },
+        { name: "Início", href: "/screens/home", icon: House },
         { name: "Configurações", href: "/screens/settings", icon: Cog },
     ]
 
-
     return (
-        <Sidebar>
+        <Sidebar collapsible="icon">
             <SidebarContent>
                 <SidebarGroup className="space-y-5 mt-4">
-                    <SidebarGroupLabel className="flex flex-row items-center gap-3 text-2xl">
-                        <SquareCheckBig className="text-blue-700 w-8! h-8!" />
-                        Minhas Tarefas
-                    </SidebarGroupLabel>
+                    <div className="flex flex-row items-center gap-3">
+                        <SquareCheckBig className="text-blue-700 w-8! h-8! shrink-0" />
+                        {!isCollapsed && <span className="text-2xl font-medium">Minhas Tarefas</span>}
+                    </div>
 
-                    <Separator />
+                    {!isCollapsed && <Separator />}
 
                     <SidebarMenu>
                         {routes.map(route => {
@@ -47,51 +48,58 @@ export function AppSidebar() {
 
                             return (
                                 <SidebarMenuItem key={route.href}>
-                                    <SidebarMenuButton isActive={isActive} className="py-5">
-                                        <Link
-                                            href={route.href}
-                                            className={cn(
-                                                "flex items-center gap-3 w-full px-3 py-2 rounded-lg text-[16px] transition-all",
-                                                isActive
-                                                    ? "bg-blue-100 text-blue-600 font-medium"
-                                                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                                            )}
-                                        >
-                                            <Icon
-                                                className={cn(
-                                                    "w-5! h-5!",
-                                                    isActive ? "text-blue-600" : "text-muted-foreground"
-                                                )}
-                                            />
-                                            {route.name}
+                                    <SidebarMenuButton
+                                        asChild
+                                        isActive={isActive}
+                                        tooltip={route.name}
+                                        className={cn(
+                                            "py-5",
+                                            isActive && "bg-blue-100 text-blue-600 font-medium hover:bg-blue-100 hover:text-blue-600"
+                                        )}
+                                    >
+                                        <Link href={route.href} className="flex items-center gap-3 w-full">
+                                            <Icon className={cn(
+                                                "shrink-0",
+                                                isCollapsed ? "w-4! h-4!" : "w-5! h-5!",
+                                                isActive ? "text-blue-600" : "text-muted-foreground"
+                                            )} />
+                                            <span className={cn(
+                                                "text-[16px]",
+                                                !isActive && "text-muted-foreground"
+                                            )}>
+                                                {route.name}
+                                            </span>
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             )
-
                         })}
                     </SidebarMenu>
                 </SidebarGroup>
             </SidebarContent>
 
             <SidebarFooter>
-                <main className="flex flex-row justify-between items-center">
-                    <section className="flex flex-row gap-2">
-                        <Avatar className="w-12 h-12">
-                            <AvatarImage
-                                src={"https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"}
-                                alt="user"
-                            />
-                        </Avatar>
+                <div className={cn(
+                    "flex items-center transition-all",
+                    isCollapsed ? "justify-center" : "justify-between"
+                )}>
+                    <Avatar className="w-10 h-10 shrink-0">
+                        <AvatarImage
+                            src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"
+                            alt="user"
+                        />
+                    </Avatar>
 
-                        <div className="flex flex-col">
-                            <p className="md:text-xl text-lg">{user?.name}</p>
-                            <p className="text-zinc-500 md:text-[16px]">{user?.email}</p>
-                        </div>
-                    </section>
-
-                    <UserOptionPortal />
-                </main>
+                    {!isCollapsed && (
+                        <>
+                            <div className="flex flex-col min-w-0 flex-1 mx-2">
+                                <p className="text-lg truncate">{user?.name}</p>
+                                <p className="text-zinc-500 text-sm truncate">{user?.email}</p>
+                            </div>
+                            <UserOptionPortal />
+                        </>
+                    )}
+                </div>
             </SidebarFooter>
         </Sidebar>
     )
