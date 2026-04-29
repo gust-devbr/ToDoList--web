@@ -17,4 +17,14 @@ export const userService = {
         })
     },
 
+    update: async (id: string, name: string, email: string) => {
+        await prisma.user.update({
+            where: { id },
+            data: {
+                ...(name !== undefined && { name }),
+                ...(email !== undefined && { email }),
+            }
+        })
+    },
+
 }
