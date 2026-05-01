@@ -13,7 +13,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { UserOptionPortal } from "../portal/UserOptions";
-import { Cog, House, SquareCheckBig } from "lucide-react";
+import { Archive, Cog, House, SquareCheckBig } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -27,6 +27,7 @@ export function AppSidebar() {
 
     const routes = [
         { name: "Início", href: "/screens/home", icon: House },
+        { name: "Arquivadas", href: "/screens/archiveds", icon: Archive },
         { name: "Configurações", href: "/screens/settings", icon: Cog },
     ]
 
@@ -39,15 +40,16 @@ export function AppSidebar() {
                         {!isCollapsed && <span className="text-2xl font-medium">Minhas Tarefas</span>}
                     </div>
 
-                    {!isCollapsed && <Separator />}
+                    <Separator />
 
-                    <SidebarMenu>
+                    <SidebarMenu className="space-y-2">
                         {routes.map(route => {
                             const Icon = route.icon
                             const isActive = pathname.startsWith(route.href)
 
                             return (
                                 <SidebarMenuItem key={route.href}>
+                                    {route.href === "/screens/settings" && <Separator />}
                                     <SidebarMenuButton
                                         asChild
                                         isActive={isActive}
@@ -57,6 +59,7 @@ export function AppSidebar() {
                                             isActive && "bg-blue-100 text-blue-600 font-medium hover:bg-blue-100 hover:text-blue-600"
                                         )}
                                     >
+
                                         <Link href={route.href} className="flex items-center gap-3 w-full">
                                             <Icon className={cn(
                                                 "shrink-0",

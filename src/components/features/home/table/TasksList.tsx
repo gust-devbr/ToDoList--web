@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 
-import { UpdateTitleModal } from "@/components/features/home/modal/UpdateTask"
+import { TaskOptionsPortal } from "@/components/portal/TaskOptions"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
     Table,
@@ -14,7 +13,6 @@ import {
 import { cn } from "@/lib/utils"
 import { Task } from "@/types/task"
 import { apiFetch } from "@/utils/api"
-import { Trash2 } from "lucide-react"
 import { useEffect, useState } from "react"
 
 
@@ -32,12 +30,12 @@ export function TasksTable({ tasks, reload }: TaskTableProps) {
     const [taskList, setTaskList] = useState(tasks)
 
     async function deleteTask(id: string) {
-        await apiFetch(`/private/tasks/${id}`, { method: "DELETE" })
+        await apiFetch(`/private/tasks/${id}/delete`, { method: "DELETE" })
         await reload()
     }
 
     async function toggleTask(id: string) {
-        await apiFetch(`/private/tasks/${id}`, { method: "PATCH" })
+        await apiFetch(`/private/tasks/${id}/complete`, { method: "PATCH" })
 
         setTaskList(prev =>
             prev.map(task =>
@@ -46,6 +44,11 @@ export function TasksTable({ tasks, reload }: TaskTableProps) {
                     : task
             )
         );
+        await reload()
+    }
+
+    async function archiveTask(id: string) {
+        await apiFetch(`/private/tasks/${id}/archive`, { method: "PATCH" })
         await reload()
     }
 
@@ -83,11 +86,11 @@ export function TasksTable({ tasks, reload }: TaskTableProps) {
                             </TableCell>
 
                             <TableCell className="text-right">
-                                <UpdateTitleModal task={task} />
-
-                                <Button variant="ghost" onClick={() => deleteTask(task.id)}>
-                                    <Trash2 className="w-5! h-5! text-red-400" />
-                                </Button>
+                                <TaskOptionsPortal
+                                    task={task}
+                                    onDelete={() => deleteTask(task.id)}
+                                    onArchive={() => archiveTask(task.id)}
+                                />
                             </TableCell>
                         </TableRow>
                     ))}

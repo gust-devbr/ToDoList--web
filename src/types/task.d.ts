@@ -2,5 +2,7 @@ export type Task = {
     id: string
     title: string
     completed: boolean
-    status: "pending" | "completed"
+    archived?: boolean
+    archivedAt?: Date | null
+    status: "pending" | "completed" | "archive"
 }

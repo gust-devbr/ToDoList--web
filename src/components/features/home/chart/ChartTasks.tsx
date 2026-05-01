@@ -5,7 +5,7 @@ type Task = {
     id: string
     title: string
     completed: boolean
-    status: "pending" | "completed"
+    status: "pending" | "completed" | "archive"
 }
 
 type TaskChartProps = {
@@ -15,8 +15,10 @@ type TaskChartProps = {
 export function ChartTasks({ tasks }: TaskChartProps) {
 
     const chartData = useMemo(() => {
-        const completed = tasks.filter(t => t.completed === true).length
-        const pending = tasks.filter(t => t.completed === false).length
+        const activeTasks = tasks.filter(t => t.status !== "archive")
+
+        const completed = activeTasks.filter(t => t.status === "completed").length
+        const pending = activeTasks.filter(t => t.status === "pending").length
 
         return [
             { name: "Concluídas", value: completed, fill: "#22c55e" },

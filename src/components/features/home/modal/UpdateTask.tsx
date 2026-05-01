@@ -25,7 +25,7 @@ export function UpdateTitleModal({ task }: TaskProps) {
     async function handleUpdateTask() {
         if (!updateTask) return;
 
-        const data = await apiFetch(`/private/tasks/${task.id}`, {
+        const data = await apiFetch(`/private/tasks/${task.id}/edit`, {
             method: "PUT",
             body: JSON.stringify({ title: updateTask.title })
         })
@@ -44,6 +44,7 @@ export function UpdateTitleModal({ task }: TaskProps) {
             <DialogTrigger asChild>
                 <Button variant="ghost">
                     <Pencil className="w-5! h-5!" />
+                    Editar
                 </Button>
             </DialogTrigger>
 

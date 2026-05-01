@@ -4,12 +4,21 @@ export const taskService = {
     getAll: async (status: string) => {
         return await prisma.task.findMany({
             where: {
-                ...(status === "completed" && { completed: true }),
-                ...(status === "pending" && { completed: false }),
+                archived: status === "archived" ? true : false,
+
+                completed:
+                    status === "completed"
+                        ? true
+                        : status === "pending"
+                            ? false
+                            : undefined
             },
+
             orderBy: [
                 { completed: "desc" },
-                { createdAt: "asc" }
+                status === "archived"
+                    ? { archivedAt: "desc" }
+                    : { createdAt: "desc" },
             ]
         });
     },
@@ -43,6 +52,23 @@ export const taskService = {
 
     delete: async (id: string) => {
         await prisma.task.delete({ where: { id } });
+    },
+
+    archive: async (id: string) => {
+        const task = await prisma.task.findFirst({ where: { id } })
+        if (!task) return
+
+        const archived = !task.archived
+
+        await prisma.task.update({
+            where: { id },
+            data: {
+                archived,
+                ...(archived
+                    ? { archivedAt: new Date() }
+                    : { archivedAt: null })
+            }
+        })
     },
 
 }
