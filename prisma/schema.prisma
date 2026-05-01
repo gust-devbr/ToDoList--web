@@ -25,9 +25,11 @@ model User {
 }
 
 model Task {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  completed Boolean @default(false)
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  completed  Boolean   @default(false)
+  archived   Boolean   @default(false)
+  archivedAt DateTime?
 
   userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
