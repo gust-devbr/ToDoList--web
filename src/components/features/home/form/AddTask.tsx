@@ -6,10 +6,12 @@ import { apiFetch } from "@/utils/api"
 import React, { useState } from "react"
 import { toast } from "sonner"
 import { Spinner } from "@/components/ui/spinner"
+import { SelectCategory } from "./SelectCategory"
 
 export function AddTask({ reload }: { reload: () => void }) {
     const [title, setTitle] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
+    const [categoryId, setCategoryId] = useState<string | null>("")
 
     async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
@@ -23,18 +25,21 @@ export function AddTask({ reload }: { reload: () => void }) {
             setLoading(true)
             const data = await apiFetch("/private/tasks", {
                 method: "POST",
-                body: JSON.stringify({ title })
+                body: JSON.stringify({
+                    title,
+                    categoryId
+                })
             })
 
             if (data.ok) {
                 toast.success("Tarefa adicionada")
+
                 setTitle("")
+                setCategoryId(null)
                 setTimeout(() => reload(), 700)
             } else {
                 toast.error(data.message)
             }
-        } catch (error) {
-            console.error(error)
         } finally {
             setLoading(false)
         }
@@ -52,6 +57,8 @@ export function AddTask({ reload }: { reload: () => void }) {
                     className="md:text-lg"
                 />
 
+                <SelectCategory value={categoryId} onChange={setCategoryId} />
+
                 <Button
                     disabled={loading || !title}
                     className="bg-blue-700 text-white p-4"
@@ -59,6 +66,7 @@ export function AddTask({ reload }: { reload: () => void }) {
                 >
                     {loading ? <Spinner className="w-5! h-5!" /> : "Adicionar"}
                 </Button>
+
             </div>
         </div>
     )

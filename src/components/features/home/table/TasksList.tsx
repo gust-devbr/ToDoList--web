@@ -8,11 +8,14 @@ import {
     Table,
     TableBody,
     TableCell,
+    TableHead,
+    TableHeader,
     TableRow,
 } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { Task } from "@/types/task"
 import { apiFetch } from "@/utils/api"
+import { darkenColor } from "@/utils/darkenColor"
 import { useEffect, useState } from "react"
 
 
@@ -59,6 +62,14 @@ export function TasksTable({ tasks, reload }: TaskTableProps) {
     return (
         <div className="w-full overflow-x-auto">
             <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="text-lg">Título</TableHead>
+                        <TableHead className="text-lg">Status</TableHead>
+                        <TableHead className="text-lg">Categoria</TableHead>
+                        <TableHead className="text-right text-lg">Ações</TableHead>
+                    </TableRow>
+                </TableHeader>
                 <TableBody>
                     {taskList?.map(task => (
                         <TableRow key={task.id}>
@@ -83,6 +94,19 @@ export function TasksTable({ tasks, reload }: TaskTableProps) {
                                 >
                                     {task.completed ? "Concluída" : "Pendente"}
                                 </Badge>
+                            </TableCell>
+
+                            <TableCell>
+                                {task.category && (
+                                    <Badge
+                                        style={{
+                                            backgroundColor: task.category.color,
+                                            color: darkenColor(task.category.color, 0.4)
+                                        }}
+                                    >
+                                        {task.category.name}
+                                    </Badge>
+                                )}
                             </TableCell>
 
                             <TableCell className="text-right">

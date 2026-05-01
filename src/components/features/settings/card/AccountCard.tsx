@@ -68,7 +68,7 @@ export function AccountCard() {
     }, [user])
 
     return (
-        <Card>
+        <Card className="flex-1">
             <CardHeader>
                 <CardTitle className="text-2xl">Conta</CardTitle>
                 <CardDescription>Gerencie sua conta</CardDescription>

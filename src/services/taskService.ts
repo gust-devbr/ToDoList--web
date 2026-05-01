@@ -19,13 +19,20 @@ export const taskService = {
                 status === "archived"
                     ? { archivedAt: "desc" }
                     : { createdAt: "desc" },
-            ]
+            ],
+            include: {
+                category: true
+            }
         });
     },
 
-    create: async (title: string, userId: string) => {
+    create: async (title: string, userId: string, categoryId: string) => {
         return await prisma.task.create({
-            data: { title, userId }
+            data: {
+                title,
+                userId,
+                ...(categoryId && { categoryId })
+            }
         })
     },
 

@@ -22,12 +22,12 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
     try {
-        const { title } = await req.json()
+        const { title, categoryId } = await req.json()
 
         const user = await getToken(req)
         if (!user) return Response.error("Não autorizado", null, 401)
 
-        const task = await taskService.create(title, user.id)
+        const task = await taskService.create(title, user.id, categoryId)
 
         return Response.success({ task })
     } catch (error) {

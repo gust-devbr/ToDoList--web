@@ -1,3 +1,9 @@
+export type Category = {
+    id: string
+    name: string
+    color: string
+}
+
 export type Task = {
     id: string
     title: string
@@ -5,4 +11,5 @@ export type Task = {
     archived?: boolean
     archivedAt?: Date | null
     status: "pending" | "completed" | "archive"
+    category: Category
 }

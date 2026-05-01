@@ -2,7 +2,7 @@
 
 import { AccountCard } from "@/components/features/settings/card/AccountCard"
 import { ThemeCard } from "@/components/features/settings/card/ThemeCard"
-import { ThemeSelector } from "@/components/features/settings/card/ThemeSelector"
+import { CategoryCard } from "@/components/features/settings/category/CategoryCard"
 
 export default function SettingsPage() {
     return (
@@ -13,9 +13,14 @@ export default function SettingsPage() {
                 </h1>
             </header>
 
-            <AccountCard />
+            <main className="flex md:flex-row flex-col md:justify-between gap-4">
+                <AccountCard />
+                <CategoryCard />
+            </main>
 
-            <ThemeCard />
+            <footer>
+                <ThemeCard />
+            </footer>
         </div>
     )
 }
