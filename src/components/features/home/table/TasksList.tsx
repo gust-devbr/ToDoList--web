@@ -64,22 +64,26 @@ export function TasksTable({ tasks, reload }: TaskTableProps) {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="text-lg">Título</TableHead>
-                        <TableHead className="text-lg">Status</TableHead>
-                        <TableHead className="text-lg">Categoria</TableHead>
-                        <TableHead className="text-right text-lg">Ações</TableHead>
+                        <TableHead className="md:text-lg"></TableHead>
+                        <TableHead className="md:text-lg">Título</TableHead>
+                        <TableHead className="md:text-lg">Status</TableHead>
+                        <TableHead className="md:text-lg">Categoria</TableHead>
+                        <TableHead className="text-right md:text-lg">Ações</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {taskList?.map(task => (
                         <TableRow key={task.id}>
-                            <TableCell className="flex flex-row text-xl items-center gap-5 text-right">
+                            <TableCell>
                                 <Checkbox
                                     className="w-5 h-5"
                                     checked={task.completed}
                                     onCheckedChange={() => toggleTask(task.id)}
                                 />
-                                <p title={task.title} className="md:text-lg text-sm wrap-break-word sm:max-w-62.5">
+                            </TableCell>
+
+                            <TableCell>
+                                <p title={task.title} className="md:text-lg text-sm sm:max-w-62.5 md:max-w-120 max-w-40  whitespace-normal wrap-break-word text-left">
                                     {task.title}
                                 </p>
                             </TableCell>

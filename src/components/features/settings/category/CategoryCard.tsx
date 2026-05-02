@@ -10,7 +10,7 @@ export function CategoryCard() {
         <div className="w-full md:max-w-100">
             <Card>
                 <CardHeader>
-                    <CardTitle>Categorias</CardTitle>
+                    <CardTitle className="text-2xl">Categorias</CardTitle>
                     <CardDescription>Gerencie suas categorias</CardDescription>
                 </CardHeader>
 
