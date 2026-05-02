@@ -40,7 +40,7 @@ export default function HomePage() {
 
     useEffect(() => {
         getTasks()
-    }, [reload])
+    }, [reload, filter])
 
     return (
         <div className="space-y-5 px-5">
