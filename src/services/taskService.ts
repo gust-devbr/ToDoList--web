@@ -40,10 +40,12 @@ export const taskService = {
         return await prisma.task.findFirst({ where: { id } });
     },
 
-    update: async (id: string, title: string) => {
+    update: async (id: string, title: string, categoryId: string) => {
+        const catId = !categoryId ? null : categoryId
+
         await prisma.task.update({
             where: { id },
-            data: { title }
+            data: { title, categoryId: catId }
         })
     },
 

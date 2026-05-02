@@ -8,10 +8,11 @@ import { TaskProps, UpdateTaskProps } from "@/types/updateTask"
 import { toast } from "sonner"
 import { Button } from "../../../ui/button"
 import { Pencil } from "lucide-react"
-
+import { SelectCategory } from "../form/SelectCategory"
 
 export function UpdateTitleModal({ task }: TaskProps) {
     const [updateTask, setUpdateTask] = useState<UpdateTaskProps | null>(null)
+    const [categoryId, setCategoryId] = useState<string | null>(null)
 
     useEffect(() => {
         if (task) {
@@ -19,15 +20,21 @@ export function UpdateTitleModal({ task }: TaskProps) {
                 id: task.id,
                 title: task.title
             });
+            setCategoryId(task?.category?.id)
         }
     }, [task]);
 
     async function handleUpdateTask() {
         if (!updateTask) return;
 
+        const { title } = updateTask
+
         const data = await apiFetch(`/private/tasks/${task.id}/edit`, {
             method: "PUT",
-            body: JSON.stringify({ title: updateTask.title })
+            body: JSON.stringify({
+                ...(title && { title }),
+                ...(categoryId && { categoryId })
+            })
         })
 
         if (data.ok) {
@@ -51,18 +58,21 @@ export function UpdateTitleModal({ task }: TaskProps) {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle className="text-xl">Editar Tarefa</DialogTitle>
-                    <DialogDescription>Digite o novo título da tarefa</DialogDescription>
+                    <DialogDescription>Digite o novo título ou categoria da tarefa</DialogDescription>
                 </DialogHeader>
 
-                <Input
-                    placeholder="Novo título..."
-                    value={updateTask?.title ?? ""}
-                    onChange={(e) =>
-                        setUpdateTask(prev =>
-                            prev ? { ...prev, title: e.target.value } : prev
-                        )
-                    }
-                />
+                <div className="space-y-3">
+                    <Input
+                        placeholder="Novo título..."
+                        value={updateTask?.title ?? ""}
+                        onChange={(e) =>
+                            setUpdateTask(prev =>
+                                prev ? { ...prev, title: e.target.value } : prev
+                            )
+                        }
+                    />
+                    <SelectCategory value={categoryId} onChange={setCategoryId} />
+                </div>
 
                 <DialogFooter>
                     <DialogClose>

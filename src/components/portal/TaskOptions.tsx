@@ -21,7 +21,7 @@ export function TaskOptionsPortal({ task, onDelete, onArchive }: TaskPortalProps
                 </Button>
             </PopoverTrigger>
 
-            <PopoverContent className="w-30">
+            <PopoverContent className="w-25">
                 <UpdateTitleModal task={task} />
 
                 <Button variant="ghost" onClick={onDelete} className="text-red-500 hover:text-red-600">

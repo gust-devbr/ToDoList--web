@@ -1,7 +1,11 @@
+import { Category } from "./task"
+
+
 export type TaskProps = {
     task: {
         id: string
         title: string
+        category: Category
     }
 }
 

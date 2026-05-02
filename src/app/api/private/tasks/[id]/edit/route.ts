@@ -8,7 +8,8 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const { title } = await req.json()
+        const { title, categoryId } = await req.json()
+        console.log("CATEGORY ID: ", categoryId)
 
         const { id } = await params
         if (!id) return Response.error("ID não fornecido", null, 400)
@@ -16,7 +17,7 @@ export async function PUT(
         const user = await getToken(req)
         if (!user) return Response.error("Não autorizado", null, 401)
 
-        await taskService.update(id, title)
+        await taskService.update(id, title, categoryId)
 
         return Response.success(null, "Tarefa editada")
     } catch (error) {
