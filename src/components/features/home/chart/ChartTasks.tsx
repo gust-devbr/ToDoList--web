@@ -1,12 +1,6 @@
+import { Task } from "@/types/task";
 import { useMemo } from "react";
 import { Legend, Pie, PieChart, Tooltip } from "recharts";
-
-type Task = {
-    id: string
-    title: string
-    completed: boolean
-    status: "pending" | "completed" | "archive"
-}
 
 type TaskChartProps = {
     tasks: Task[]
@@ -15,10 +9,10 @@ type TaskChartProps = {
 export function ChartTasks({ tasks }: TaskChartProps) {
 
     const chartData = useMemo(() => {
-        const activeTasks = tasks.filter(t => t.status !== "archive")
+        const activeTasks = tasks.filter(t => !t.archived)
 
-        const completed = activeTasks.filter(t => t.status === "completed").length
-        const pending = activeTasks.filter(t => t.status === "pending").length
+        const completed = activeTasks.filter(t => t.completed).length
+        const pending = activeTasks.filter(t => !t.completed).length
 
         return [
             { name: "Concluídas", value: completed, fill: "#22c55e" },
@@ -35,8 +29,7 @@ export function ChartTasks({ tasks }: TaskChartProps) {
                     nameKey="name"
                     outerRadius={90}
                     label
-                >
-                </Pie>
+                />
                 <Tooltip />
                 <Legend />
             </PieChart>
