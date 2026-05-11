@@ -4,7 +4,7 @@
 
 import { AddTask } from "@/components/features/home/form/AddTask"
 import { ChartCollapsible } from "@/components/features/home/chart/ChartCollapsible"
-import { TaskFilter } from "@/components/features/home/table/TaskFilter"
+import { StatusType, TaskFilter } from "@/components/features/home/table/TaskFilter"
 import { TasksTable } from "@/components/features/home/table/TasksList"
 import { useAuth } from "@/context/AuthContext"
 import { Task } from "@/types/task"
@@ -18,7 +18,7 @@ export default function HomePage() {
     const { user } = useAuth()
 
     const [tasks, setTasks] = useState<Task[]>([])
-    const [filter, setFilter] = useState<string>("all")
+    const [filter, setFilter] = useState<StatusType>("all")
     const [reload, setReload] = useState<number>(0)
 
     const reloadAllTasks = () => setReload(prev => prev + 1)

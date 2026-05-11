@@ -1,17 +1,28 @@
 "use client"
 
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../ui/dialog"
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog"
 import { apiFetch } from "@/utils/api"
 import { Input } from "../../../ui/input"
 import { useState, useEffect } from "react"
-import { TaskProps, UpdateTaskProps } from "@/types/updateTask"
 import { toast } from "sonner"
 import { Button } from "../../../ui/button"
 import { Pencil } from "lucide-react"
 import { SelectCategory } from "../form/SelectCategory"
+import { Task } from "@/types/task"
 
-export function UpdateTitleModal({ task }: TaskProps) {
-    const [updateTask, setUpdateTask] = useState<UpdateTaskProps | null>(null)
+type TaskProps = Pick<Task, 'id' | 'title' | 'category'>
+
+export function UpdateTitleModal({ task }: { task: TaskProps }) {
+    const [updateTask, setUpdateTask] = useState<Omit<TaskProps, 'category'> | null>(null)
     const [categoryId, setCategoryId] = useState<string | null>(null)
 
     useEffect(() => {

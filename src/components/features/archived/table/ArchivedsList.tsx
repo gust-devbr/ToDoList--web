@@ -9,47 +9,14 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { apiFetch } from "@/utils/api"
 import { ArchiveOptionsPortal } from "@/components/portal/ArchivedOptions";
-import { useCallback, useEffect, useState } from "react";
 import { Undo } from "lucide-react";
+import { useArchiveds } from "@/hooks/useArchiveds";
 
 const formatDate = (date: Date) => new Date(date).toLocaleDateString("pt-BR");
 
-type ArchivedProps = {
-    id: string
-    title: string
-    archived: boolean
-    archivedAt: Date
-}
-
 export function ArchivedsList() {
-    const [archiveds, setArchiveds] = useState<ArchivedProps[]>([])
-
-    const loadArchiveds = useCallback(async () => {
-        const res = await apiFetch("/private/tasks?status=archived")
-
-        if (res.ok) {
-            const data = res?.tasks || res?.data?.tasks || []
-            setArchiveds(data)
-        } else {
-            setArchiveds([])
-        }
-    }, [])
-
-    async function handleDeleteArchived(id: string) {
-        await apiFetch(`/private/tasks/${id}/delete`, { method: "DELETE" })
-        await loadArchiveds()
-    }
-
-    async function handleUnarchive(id: string) {
-        await apiFetch(`/private/tasks/${id}/archive`, { method: "PATCH" })
-        await loadArchiveds()
-    }
-
-    useEffect(() => {
-        loadArchiveds()
-    }, [loadArchiveds])
+    const { archiveds, handleDeleteArchived, handleUnarchive } = useArchiveds()
 
     return (
         <div className="border p-2 rounded-sm">
@@ -63,27 +30,33 @@ export function ArchivedsList() {
                 </TableHeader>
 
                 <TableBody>
-                    {archiveds?.map(archived => (
-                        <TableRow key={archived.id}>
-                            <TableCell className="text-lg">{archived?.title}</TableCell>
-                            <TableCell className="text-right text-lg">{formatDate(archived?.archivedAt)}</TableCell>
+                    {archiveds?.map(archived => {
+                        const { id, title, archivedAt } = archived
 
-                            <TableCell className="flex flex-row justify-end">
-                                <Button
-                                    onClick={() => handleUnarchive(archived.id)}
-                                    className="flex flex-row items-center gap-1 text-lg text-blue-600 hover:text-blue-700"
-                                    variant="ghost"
-                                >
-                                    <Undo className="w-5! h-5!" />
-                                    Desarquivar
-                                </Button>
+                        return (
+                            <TableRow key={id}>
+                                <TableCell className="text-lg">{title}</TableCell>
+                                <TableCell className="text-right text-lg">
+                                    {archivedAt && formatDate(archivedAt)}
+                                </TableCell>
 
-                                <ArchiveOptionsPortal
-                                    onDelete={() => handleDeleteArchived(archived.id)}
-                                />
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                                <TableCell className="flex flex-row justify-end">
+                                    <Button
+                                        onClick={() => handleUnarchive(id)}
+                                        className="flex flex-row items-center gap-1 text-lg text-blue-600 hover:text-blue-700"
+                                        variant="ghost"
+                                    >
+                                        <Undo className="w-5! h-5!" />
+                                        Desarquivar
+                                    </Button>
+
+                                    <ArchiveOptionsPortal
+                                        onDelete={() => handleDeleteArchived(id)}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        )
+                    })}
                 </TableBody>
             </Table>
         </div>
