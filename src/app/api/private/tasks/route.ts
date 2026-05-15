@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         const user = await getToken(req)
         if (!user) return Response.error("Não autorizado", null, 401)
 
-        const tasks = await taskService.getAll(status)
+        const tasks = await taskService.getAll(status, user.id)
         if (!tasks) return Response.error("Tarefas não encontradas", null, 404)
 
         return Response.success({ tasks })

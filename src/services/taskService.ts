@@ -1,9 +1,11 @@
 import { prisma } from "@/lib/prisma";
 
 export const taskService = {
-    getAll: async (status: string) => {
+    getAll: async (status: string, userId: string) => {
         return await prisma.task.findMany({
             where: {
+                userId,
+
                 archived: status === "archived" ? true : false,
 
                 completed:
