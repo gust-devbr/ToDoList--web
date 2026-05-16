@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
         const user = await getToken(req)
         if (!user) return Response.error("Não autorizado", null, 401)
 
-        const categories = await categoryService.getAll()
+        const categories = await categoryService.getAll(user.id)
         if (!categories) return Response.error("Nenhuma categoria foi encontrada", null, 404)
 
         return Response.success({ categories })

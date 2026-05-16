@@ -27,4 +27,8 @@ export const userService = {
         })
     },
 
+    delete: async (id: string) => {
+        await prisma.user.delete({ where: { id } })
+    },
+
 }

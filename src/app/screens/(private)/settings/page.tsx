@@ -1,6 +1,7 @@
 "use client"
 
 import { AccountCard } from "@/components/features/settings/card/AccountCard"
+import { SecurityCard } from "@/components/features/settings/card/SecurityCard"
 import { ThemeCard } from "@/components/features/settings/card/ThemeCard"
 import { CategoryCard } from "@/components/features/settings/category/CategoryCard"
 
@@ -18,8 +19,13 @@ export default function SettingsPage() {
                 <CategoryCard />
             </main>
 
-            <footer>
-                <ThemeCard />
+            <footer className="flex md:flex-row flex-col gap-4">
+                <div className="flex-1">
+                    <ThemeCard />
+                </div>
+                <div className="flex-1">
+                    <SecurityCard />
+                </div>
             </footer>
         </div>
     )

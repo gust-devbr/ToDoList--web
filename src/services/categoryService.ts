@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
 
 export const categoryService = {
-    getAll: async () => {
-        return await prisma.category.findMany()
+    getAll: async (userId: string) => {
+        return await prisma.category.findMany({ where: { userId } })
     },
 
     findById: async (id: string) => {
