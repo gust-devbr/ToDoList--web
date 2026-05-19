@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
         const user = await userService.create(name, email, password)
 
-        const token = jwtUtil.generate(existing!)
+        const token = jwtUtil.generate(user)
 
         const res = Response.success({ token, user }, "Cadastrado com sucesso", 201)
 
@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             maxAge: 60 * 60 * 24,
+            sameSite: "lax",
             path: "/"
         })
 
