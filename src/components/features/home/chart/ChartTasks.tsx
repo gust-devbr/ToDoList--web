@@ -3,16 +3,16 @@ import { useMemo } from "react";
 import { Legend, Pie, PieChart, Tooltip } from "recharts";
 
 type TaskChartProps = {
-    tasks: Task[]
+    tasks: Task[] | undefined
 }
 
 export function ChartTasks({ tasks }: TaskChartProps) {
 
     const chartData = useMemo(() => {
-        const activeTasks = tasks.filter(t => !t.archived)
+        const activeTasks = tasks?.filter(t => !t.archived)
 
-        const completed = activeTasks.filter(t => t.completed).length
-        const pending = activeTasks.filter(t => !t.completed).length
+        const completed = activeTasks?.filter(t => t.completed).length
+        const pending = activeTasks?.filter(t => !t.completed).length
 
         return [
             { name: "Concluídas", value: completed, fill: "#22c55e" },

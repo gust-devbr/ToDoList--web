@@ -2,16 +2,17 @@
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { apiFetch } from "@/utils/api"
 import React, { useState } from "react"
 import { toast } from "sonner"
 import { Spinner } from "@/components/ui/spinner"
 import { SelectCategory } from "./SelectCategory"
+import { useCreateTask } from "@/hooks/react-query/task/useCreateTask"
 
-export function AddTask({ reload }: { reload: () => void }) {
+export function AddTask() {
     const [title, setTitle] = useState<string>("")
-    const [loading, setLoading] = useState<boolean>(false)
     const [categoryId, setCategoryId] = useState<string | null>("")
+
+    const createTask = useCreateTask()
 
     async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
@@ -22,27 +23,23 @@ export function AddTask({ reload }: { reload: () => void }) {
         }
 
         try {
-            setLoading(true)
-            const data = await apiFetch("/private/tasks", {
-                method: "POST",
-                body: JSON.stringify({
-                    title,
-                    categoryId
-                })
+            createTask.mutate({
+                title,
+                categoryId: categoryId ?? ""
             })
 
-            if (data.ok) {
+            if (createTask.error) {
+                toast.error("ERROR")
+            } else {
                 toast.success("Tarefa adicionada")
 
                 setTitle("")
                 setCategoryId(null)
-                setTimeout(() => reload(), 700)
-            } else {
-                toast.error(data.message)
             }
-        } finally {
-            setLoading(false)
+        } catch (err) {
+            console.error(err)
         }
+
     }
 
     return (
@@ -60,11 +57,11 @@ export function AddTask({ reload }: { reload: () => void }) {
                 <SelectCategory value={categoryId} onChange={setCategoryId} />
 
                 <Button
-                    disabled={loading || !title}
+                    disabled={!title}
                     className="bg-blue-700 text-white p-4"
                     onClick={handleSubmit}
                 >
-                    {loading ? <Spinner className="w-5! h-5!" /> : "Adicionar"}
+                    {createTask.isPending ? <Spinner className="w-5! h-5!" /> : "Adicionar"}
                 </Button>
 
             </div>

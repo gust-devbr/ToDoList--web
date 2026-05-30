@@ -6,36 +6,15 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible"
-import { Task } from "@/types/task"
 import { ChevronsUpDown } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { StatisticsCards } from "./StatisticsCards"
-import { apiFetch } from "@/utils/api"
 import { ChartTasks } from "./ChartTasks"
+import { useTasks } from "@/hooks/react-query/task/useTask"
 
-export function ChartCollapsible({ onReload }: { onReload: () => void }) {
+export function ChartCollapsible() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [tasks, setTasks] = useState<Task[]>([])
-
-    useEffect(() => {
-        async function getTasks() {
-            try {
-                const res = await apiFetch("/private/tasks?status=all")
-
-                if (res.ok) {
-                    const data = res?.data?.tasks || res?.tasks || []
-                    setTasks(data)
-                } else {
-                    setTasks([])
-                }
-            } catch (error) {
-                console.error(error)
-                setTasks([])
-            }
-        }
-
-        getTasks()
-    }, [onReload])
+    const { data } = useTasks("all")
 
     return (
         <Collapsible
@@ -52,13 +31,13 @@ export function ChartCollapsible({ onReload }: { onReload: () => void }) {
                     </CollapsibleTrigger>
 
                     <div className="flex-1">
-                        <StatisticsCards tasks={tasks} />
+                        <StatisticsCards tasks={data} />
                     </div>
                 </header>
 
                 <CollapsibleContent>
                     <div className="mt-4 w-full">
-                        {isOpen && <ChartTasks tasks={tasks} />}
+                        {isOpen && <ChartTasks tasks={data} />}
                     </div>
                 </CollapsibleContent>
             </main>

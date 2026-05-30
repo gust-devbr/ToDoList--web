@@ -1,3 +1,5 @@
+export type StatusType = 'all' | 'pending' | 'completed' | 'archived'
+
 export type Category = {
     id: string
     name: string

@@ -11,6 +11,7 @@ export function Header() {
     const { theme, setTheme } = useTheme()
     const [mounted, setMounted] = useState<boolean>(false);
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => setMounted(true), []);
     if (!mounted) return null;
 

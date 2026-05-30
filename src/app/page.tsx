@@ -1,11 +1,12 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-"use client"
-import { useRouter } from "next/navigation";
+import { getToken } from "@/utils/auth";
+import { redirect } from "next/navigation";
 
-import { useEffect } from "react";
+export default async function Home() {
+  const token = await getToken()
 
-export default function Home() {
-  const router = useRouter()
+  if (!token) {
+    redirect("/screens/auth")
+  }
 
-  useEffect(() => router.replace("/screens/auth"), [])
+  redirect("/screens/home")
 }

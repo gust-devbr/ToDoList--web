@@ -1,21 +1,12 @@
-'use client'
 
 import { AppSidebar } from "@/components/layout/AppSidebar"
 import { Header } from "@/components/layout/Header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { useAuth } from "@/context/AuthContext"
 import { ThemeProvider } from "next-themes"
-import React, { useEffect } from "react"
+import { ReactNode } from "react"
 
-export default function PrivateLayout({ children }: { children: React.ReactNode }) {
-
-    const { loadUser } = useAuth()
-
-    useEffect(() => {
-        setTimeout(() => loadUser(), 500)
-    }, [loadUser])
-
+export default function PrivateLayout({ children }: { children: ReactNode }) {
     return (
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <TooltipProvider>

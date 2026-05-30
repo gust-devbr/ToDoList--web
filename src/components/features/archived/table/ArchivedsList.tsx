@@ -11,12 +11,15 @@ import {
 import { Button } from "@/components/ui/button"
 import { ArchiveOptionsPortal } from "@/components/portal/ArchivedOptions";
 import { Undo } from "lucide-react";
-import { useArchiveds } from "@/hooks/useArchiveds";
-
-const formatDate = (date: Date) => new Date(date).toLocaleDateString("pt-BR");
+import { useTasks } from "@/hooks/react-query/task/useTask";
+import { useArchiveTask } from "@/hooks/react-query/task/useArchiveTask";
+import { useDeleteTask } from "@/hooks/react-query/task/useDeleteTask";
+import { formatDate } from "next-lib-utils"
 
 export function ArchivedsList() {
-    const { archiveds, handleDeleteArchived, handleUnarchive } = useArchiveds()
+    const { data: archiveds } = useTasks("archived")
+    const archiveTask = useArchiveTask()
+    const deleteArchive = useDeleteTask()
 
     return (
         <div className="border p-2 rounded-sm">
@@ -42,7 +45,7 @@ export function ArchivedsList() {
 
                                 <TableCell className="flex flex-row justify-end">
                                     <Button
-                                        onClick={() => handleUnarchive(id)}
+                                        onClick={() => archiveTask.mutate(id)}
                                         className="flex flex-row items-center gap-1 text-lg text-blue-600 hover:text-blue-700"
                                         variant="ghost"
                                     >
@@ -51,7 +54,7 @@ export function ArchivedsList() {
                                     </Button>
 
                                     <ArchiveOptionsPortal
-                                        onDelete={() => handleDeleteArchived(id)}
+                                        onDelete={() => deleteArchive.mutate(id)}
                                     />
                                 </TableCell>
                             </TableRow>

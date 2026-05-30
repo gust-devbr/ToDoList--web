@@ -8,21 +8,13 @@ import {
     TableCell,
     TableRow,
 } from "@/components/ui/table"
-import { Category } from "@/types/task"
-import { apiFetch } from "@/utils/api"
+import { useCategories } from "@/hooks/react-query/category/useCategories"
+import { useDeleteCategory } from "@/hooks/react-query/category/useDeleteCategory"
 import { Trash2 } from "lucide-react"
 
-type Props = {
-    categories: Category[] | null
-    onReload: () => void
-}
-
-export function CategoryList({ categories, onReload }: Props) {
-
-    async function handleDelete(id: string) {
-        await apiFetch(`/private/tasks/category/${id}/delete`, { method: "DELETE" })
-        await onReload()
-    }
+export function CategoryList() {
+    const { data: categories } = useCategories()
+    const deleteCategory = useDeleteCategory()
 
     return (
         <ScrollArea className="h-25">
@@ -37,7 +29,7 @@ export function CategoryList({ categories, onReload }: Props) {
 
                             <TableCell>
                                 <Button
-                                    onClick={() => handleDelete(cat.id)}
+                                    onClick={() => deleteCategory.mutate(cat.id)}
                                     variant="ghost"
                                     className="text-red-600 hover:text-red-700"
                                 >

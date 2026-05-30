@@ -17,8 +17,8 @@ async function getUserFromToken(tokenFromHeader: string | null) {
     }
 }
 
-export async function getToken(req: NextRequest): Promise<TokenPayload | null> {
-    const authHeader = req.headers.get("authorization")
+export async function getToken(req?: NextRequest): Promise<TokenPayload | null> {
+    const authHeader = req?.headers.get("authorization")
 
     const tokenHeader = authHeader?.split(" ")[1] || null
 

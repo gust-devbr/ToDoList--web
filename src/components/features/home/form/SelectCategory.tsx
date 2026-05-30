@@ -3,13 +3,11 @@
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useCategories } from "@/hooks/useCategories"
+import { useCategories } from "@/hooks/react-query/category/useCategories"
 
 type SelectProps = {
     value: string | null
@@ -17,7 +15,10 @@ type SelectProps = {
 }
 
 export function SelectCategory({ value, onChange }: SelectProps) {
-    const { categories, loading } = useCategories()
+    const {
+        data: categories,
+        isLoading
+    } = useCategories()
 
     const EMPTY_VALUE = "null"
 
@@ -28,10 +29,10 @@ export function SelectCategory({ value, onChange }: SelectProps) {
                 onValueChange={(val) =>
                     onChange(val === EMPTY_VALUE ? null : val)
                 }
-                disabled={loading}
+                disabled={isLoading}
             >
                 <SelectTrigger>
-                    <SelectValue placeholder={loading ? "Carrengando..." : "Escolha a cor"} />
+                    <SelectValue placeholder={isLoading ? "Carrengando..." : "Escolha a cor"} />
                 </SelectTrigger>
 
                 <SelectContent>
