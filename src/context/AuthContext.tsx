@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
 import React, { useState, useEffect, createContext, useContext, useCallback } from "react";
@@ -19,6 +21,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setLoading(true)
 
             const res = await apiFetch("/private/me")
+
+            if (res.status === 401) {
+                await logout()
+                return
+            }
+
             setUser(res?.data?.user)
         } catch (error) {
             console.error(error)

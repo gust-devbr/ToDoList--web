@@ -4,7 +4,7 @@ import { Task } from "@/types/task";
 import { ChartNoAxesColumnIncreasing } from "lucide-react";
 
 type StatisticsCardsProps = {
-    tasks: Task[];
+    tasks: Task[] | undefined
 };
 
 const badgeStyle = {
@@ -15,9 +15,9 @@ const badgeStyle = {
 
 export function StatisticsCards({ tasks }: StatisticsCardsProps) {
 
-    const total = tasks.length;
-    const completed = tasks.filter(t => t.completed).length;
-    const pending = tasks.filter(t => !t.completed).length;
+    const total = tasks?.length;
+    const completed = tasks?.filter(t => t.completed).length;
+    const pending = tasks?.filter(t => !t.completed).length;
 
     return (
         <main className="flex md:flex-row flex-col md:gap-0 gap-5 justify-between items-center">

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 
 import { TaskOptionsPortal } from "@/components/portal/TaskOptions"
@@ -12,52 +11,26 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { useArchiveTask } from "@/hooks/react-query/task/useArchiveTask"
+import { useDeleteTask } from "@/hooks/react-query/task/useDeleteTask"
+import { useTasks } from "@/hooks/react-query/task/useTask"
+import { useToggleTask } from "@/hooks/react-query/task/useToggleTask"
 import { cn } from "@/lib/utils"
-import { Task } from "@/types/task"
-import { apiFetch } from "@/utils/api"
+import { useFilterStore } from "@/store/useFilterStore"
 import { darkenColor } from "@/utils/darkenColor"
-import { useEffect, useState } from "react"
-
-
-type TaskTableProps = {
-    tasks: Task[],
-    reload: () => void
-}
 
 const badgeStyle = {
     completed: "bg-green-100 text-green-600",
     pending: "bg-yellow-100 text-yellow-600"
 }
 
-export function TasksTable({ tasks, reload }: TaskTableProps) {
-    const [taskList, setTaskList] = useState(tasks)
+export function TasksTable() {
+    const { filter } = useFilterStore()
 
-    async function deleteTask(id: string) {
-        await apiFetch(`/private/tasks/${id}/delete`, { method: "DELETE" })
-        await reload()
-    }
-
-    async function toggleTask(id: string) {
-        await apiFetch(`/private/tasks/${id}/complete`, { method: "PATCH" })
-
-        setTaskList(prev =>
-            prev.map(task =>
-                task.id === id
-                    ? { ...task, completed: !task.completed }
-                    : task
-            )
-        );
-        await reload()
-    }
-
-    async function archiveTask(id: string) {
-        await apiFetch(`/private/tasks/${id}/archive`, { method: "PATCH" })
-        await reload()
-    }
-
-    useEffect(() => {
-        setTaskList(tasks ?? [])
-    }, [tasks])
+    const { data: taskList } = useTasks(filter)
+    const toggleTask = useToggleTask()
+    const archiveTask = useArchiveTask()
+    const deleteTask = useDeleteTask()
 
     return (
         <div className="w-full overflow-x-auto">
@@ -78,7 +51,7 @@ export function TasksTable({ tasks, reload }: TaskTableProps) {
                                 <Checkbox
                                     className="w-5 h-5"
                                     checked={task.completed}
-                                    onCheckedChange={() => toggleTask(task.id)}
+                                    onCheckedChange={() => toggleTask.mutate(task.id)}
                                 />
                             </TableCell>
 
@@ -116,8 +89,8 @@ export function TasksTable({ tasks, reload }: TaskTableProps) {
                             <TableCell className="text-right">
                                 <TaskOptionsPortal
                                     task={task}
-                                    onDelete={() => deleteTask(task.id)}
-                                    onArchive={() => archiveTask(task.id)}
+                                    onDelete={() => deleteTask.mutate(task.id)}
+                                    onArchive={() => archiveTask.mutate(task.id)}
                                 />
                             </TableCell>
                         </TableRow>

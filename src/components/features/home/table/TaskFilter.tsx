@@ -1,13 +1,8 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-
-export type StatusType = 'all' | 'pending' | 'completed'
-
-type Props = {
-    filter: StatusType
-    setFilter: (value: StatusType) => void
-}
+import { useFilterStore } from "@/store/useFilterStore"
+import { StatusType } from "@/types/task"
 
 const config: {
     label: string,
@@ -18,7 +13,9 @@ const config: {
         { label: "Concluídas", status: "completed" },
     ]
 
-export function TaskFilter({ filter, setFilter }: Props) {
+export function TaskFilter() {
+    const { filter, setFilter } = useFilterStore()
+
     return (
         <div className="flex flex-row gap-7 items-center text-lg md:justify-start justify-between px-8 py-2 border-b-2">
             {config.map(c => (

@@ -2,15 +2,16 @@
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { apiFetch } from "@/utils/api"
 import { useState } from "react"
 import { Spinner } from "@/components/ui/spinner"
 import { toast } from "sonner"
+import { useAddCategory } from "@/hooks/react-query/category/useAddCategory"
 
-export function AddCategory({ onReload }: { onReload: () => void }) {
-    const [loading, setLoading] = useState<boolean>(false)
+export function AddCategory() {
     const [name, setName] = useState<string>("")
     const [color, setColor] = useState<string>("")
+
+    const { mutate, error, isPending } = useAddCategory()
 
     async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
@@ -21,23 +22,17 @@ export function AddCategory({ onReload }: { onReload: () => void }) {
         }
 
         try {
-            setLoading(true)
-            const data = await apiFetch("/private/tasks/category", {
-                method: "POST",
-                body: JSON.stringify({ name, color })
-            })
+            mutate({ name, color })
 
-            if (data.ok) {
+            if (error) {
+                toast.error("ERROR")
+            } else {
                 toast.success("Categoria adicionada")
-
                 setName("")
                 setColor("")
-                await onReload()
-            } else {
-                toast.error(data.message)
             }
-        } finally {
-            setLoading(false)
+        } catch (err) {
+            console.error(err)
         }
     }
 
@@ -59,11 +54,11 @@ export function AddCategory({ onReload }: { onReload: () => void }) {
                 />
 
                 <Button
-                    disabled={loading || !name || !color}
+                    disabled={isPending || !name || !color}
                     className="bg-blue-700 text-white p-4"
                     onClick={handleSubmit}
                 >
-                    {loading ? <Spinner className="w-5! h-5!" /> : "Adicionar"}
+                    {isPending ? <Spinner className="w-5! h-5!" /> : "Adicionar"}
                 </Button>
 
             </div>

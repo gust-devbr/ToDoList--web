@@ -10,14 +10,14 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog"
-import { apiFetch } from "@/utils/api"
-import { Input } from "../../../ui/input"
+import { Input } from "@/components/ui/input"
 import { useState, useEffect } from "react"
 import { toast } from "sonner"
-import { Button } from "../../../ui/button"
+import { Button } from "@/components/ui/button"
 import { Pencil } from "lucide-react"
 import { SelectCategory } from "../form/SelectCategory"
 import { Task } from "@/types/task"
+import { useUpdateTask } from "@/hooks/react-query/task/useUpdateTask"
 
 type TaskProps = Pick<Task, 'id' | 'title' | 'category'>
 
@@ -25,8 +25,13 @@ export function UpdateTitleModal({ task }: { task: TaskProps }) {
     const [updateTask, setUpdateTask] = useState<Omit<TaskProps, 'category'> | null>(null)
     const [categoryId, setCategoryId] = useState<string | null>(null)
 
+    const [open, setOpen] = useState<boolean>(false)
+
+    const editTask = useUpdateTask()
+
     useEffect(() => {
         if (task) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setUpdateTask({
                 id: task.id,
                 title: task.title
@@ -38,27 +43,23 @@ export function UpdateTitleModal({ task }: { task: TaskProps }) {
     async function handleUpdateTask() {
         if (!updateTask) return;
 
-        const { title } = updateTask
-
-        const data = await apiFetch(`/private/tasks/${task.id}/edit`, {
-            method: "PUT",
-            body: JSON.stringify({
-                ...(title && { title }),
-                ...(categoryId && { categoryId })
-            })
+        editTask.mutate({
+            id: updateTask.id,
+            title: updateTask.title,
+            categoryId: categoryId ?? ""
         })
 
-        if (data.ok) {
-            toast.success(data.message)
-            setTimeout(() => window.location.reload(), 900);
-            setUpdateTask(null)
+        if (editTask.isError) {
+            toast.error("ERROR")
         } else {
-            toast.error(data.message)
+            toast.success("TAREFA EDITADA")
+            setUpdateTask(null)
+            setOpen(false)
         }
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="ghost">
                     <Pencil className="w-5! h-5!" />

@@ -9,6 +9,7 @@ export async function apiFetch(url: string, options: RequestInit = {}) {
 
     return {
         ok: res.ok,
+        status: res.status,
         ...data
     }
 
