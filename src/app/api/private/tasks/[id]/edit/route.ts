@@ -1,4 +1,4 @@
-import { taskService } from "@/services/taskService"
+import { taskService } from "@/services/api/taskService"
 import { getToken } from "@/utils/auth"
 import { Response } from "@/utils/response"
 import { NextRequest } from "next/server"

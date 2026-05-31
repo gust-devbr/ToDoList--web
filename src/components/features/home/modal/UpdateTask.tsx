@@ -10,14 +10,14 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog"
+import { useUpdateTask } from "@/mutations/task/useUpdateTask"
+import { SelectCategory } from "../form/SelectCategory"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useState, useEffect } from "react"
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
 import { Pencil } from "lucide-react"
-import { SelectCategory } from "../form/SelectCategory"
 import { Task } from "@/types/task"
-import { useUpdateTask } from "@/hooks/react-query/task/useUpdateTask"
+import { toast } from "sonner"
 
 type TaskProps = Pick<Task, 'id' | 'title' | 'category'>
 

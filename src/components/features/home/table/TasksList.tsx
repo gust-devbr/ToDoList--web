@@ -1,8 +1,5 @@
 "use client"
 
-import { TaskOptionsPortal } from "@/components/portal/TaskOptions"
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
     Table,
     TableBody,
@@ -11,13 +8,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useArchiveTask } from "@/hooks/react-query/task/useArchiveTask"
-import { useDeleteTask } from "@/hooks/react-query/task/useDeleteTask"
-import { useTasks } from "@/hooks/react-query/task/useTask"
-import { useToggleTask } from "@/hooks/react-query/task/useToggleTask"
-import { cn } from "@/lib/utils"
+import { TaskOptionsPortal } from "@/components/portal/TaskOptions"
+import { useArchiveTask } from "@/mutations/task/useArchiveTask"
+import { useToggleTask } from "@/mutations/task/useToggleTask"
+import { useDeleteTask } from "@/mutations/task/useDeleteTask"
 import { useFilterStore } from "@/store/useFilterStore"
+import { Checkbox } from "@/components/ui/checkbox"
 import { darkenColor } from "@/utils/darkenColor"
+import { Badge } from "@/components/ui/badge"
+import { useTasks } from "@/queries/useTask"
+import { cn } from "@/lib/utils"
 
 const badgeStyle = {
     completed: "bg-green-100 text-green-600",

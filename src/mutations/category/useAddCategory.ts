@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { addCategory } from "@/services/query/category-sevice"
+import { addCategory } from "@/services/client/category-sevice"
 import { Category } from "@/types/task"
 
 export function useAddCategory() {

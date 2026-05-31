@@ -1,6 +1,6 @@
 import { StatusType } from "@/types/task";
 import { Task } from "@/types/task";
-import { apiFetch } from "@/utils/api";
+import { apiFetch } from "next-lib-utils";
 
 export async function getTasks(status: StatusType) {
     const res = await apiFetch(`/private/tasks?status=${status}`)

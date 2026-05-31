@@ -1,16 +1,17 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { useEditUser } from "@/hooks/react-query/user/useEditUser"
-import { useGetUser } from "@/hooks/react-query/user/useGetUser"
-import { useLogout } from "@/hooks/react-query/user/useLogout"
+import { useEditUser } from "@/mutations/user/useEditUser"
+import { useLogout } from "@/mutations/user/useLogout"
 import React, { useEffect, useState } from "react"
+import { Spinner } from "@/components/ui/spinner"
+import { useGetUser } from "@/queries/useUser"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Pencil } from "lucide-react"
 import { toast } from "sonner"
-import { Spinner } from "@/components/ui/spinner"
 
 type currentUserProps = {
     name: string

@@ -1,13 +1,13 @@
 "use client"
 
-import { AppSidebar } from "@/components/layout/AppSidebar"
-import { Header } from "@/components/layout/Header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/layout/AppSidebar"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { useGetUser } from "@/hooks/react-query/user/useGetUser"
-import { useLogout } from "@/hooks/react-query/user/useLogout"
-import { ThemeProvider } from "next-themes"
+import { useLogout } from "@/mutations/user/useLogout"
+import { Header } from "@/components/layout/Header"
+import { useGetUser } from "@/queries/useUser"
 import { ReactNode, useEffect } from "react"
+import { ThemeProvider } from "next-themes"
 
 export default function PrivateLayout({ children }: { children: ReactNode }) {
     const { isError } = useGetUser()

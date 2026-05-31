@@ -1,5 +1,5 @@
 import { Category } from "@/types/task";
-import { apiFetch } from "@/utils/api";
+import { apiFetch } from "next-lib-utils";
 
 export async function getCategories() {
     const res = await apiFetch("/private/tasks/category")

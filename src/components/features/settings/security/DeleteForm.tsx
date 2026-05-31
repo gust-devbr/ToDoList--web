@@ -9,13 +9,13 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog"
-import { useDeleteUser } from "@/hooks/react-query/user/useDeleteUser"
-import { useLogout } from "@/hooks/react-query/user/useLogout"
+import { useDeleteUser } from "@/mutations/user/useDeleteUser"
+import { useLogout } from "@/mutations/user/useLogout"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { toast } from "sonner"
-import { Spinner } from "@/components/ui/spinner"
 
 export function DeleteFormModal() {
     const { logout } = useLogout()

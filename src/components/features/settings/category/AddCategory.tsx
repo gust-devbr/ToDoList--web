@@ -1,11 +1,11 @@
 "use client"
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useAddCategory } from "@/mutations/category/useAddCategory"
 import { Spinner } from "@/components/ui/spinner"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { useState } from "react"
 import { toast } from "sonner"
-import { useAddCategory } from "@/hooks/react-query/category/useAddCategory"
 
 export function AddCategory() {
     const [name, setName] = useState<string>("")

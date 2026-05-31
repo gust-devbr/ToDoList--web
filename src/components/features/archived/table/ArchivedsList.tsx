@@ -8,13 +8,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
 import { ArchiveOptionsPortal } from "@/components/portal/ArchivedOptions";
-import { Undo } from "lucide-react";
-import { useTasks } from "@/hooks/react-query/task/useTask";
-import { useArchiveTask } from "@/hooks/react-query/task/useArchiveTask";
-import { useDeleteTask } from "@/hooks/react-query/task/useDeleteTask";
+import { useArchiveTask } from "@/mutations/task/useArchiveTask";
+import { useDeleteTask } from "@/mutations/task/useDeleteTask";
+import { Button } from "@/components/ui/button"
+import { useTasks } from "@/queries/useTask";
 import { formatDate } from "next-lib-utils"
+import { Undo } from "lucide-react";
 
 export function ArchivedsList() {
     const { data: archiveds } = useTasks("archived")

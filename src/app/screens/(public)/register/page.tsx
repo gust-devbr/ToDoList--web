@@ -1,15 +1,15 @@
 "use client"
 
-import React, { useState } from "react"
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { toast } from "sonner"
+import { useRegisterUser } from "@/mutations/user/useRegisterUser"
 import { Spinner } from "@/components/ui/spinner"
-import { Eye, EyeOff } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
-import { useRegisterUser } from "@/hooks/react-query/user/useRegisterUser"
+import { Eye, EyeOff } from "lucide-react"
+import React, { useState } from "react"
+import { toast } from "sonner"
 
 type FormProps = {
     name: string

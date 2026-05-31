@@ -1,9 +1,9 @@
 "use client"
 
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
-import { Button } from "@/components/ui/button"
+import { useLogout } from "@/mutations/user/useLogout"
 import { ChevronDown, LogOut } from "lucide-react"
-import { useLogout } from "@/hooks/react-query/user/useLogout"
+import { Button } from "@/components/ui/button"
 
 export function UserOptionPortal() {
     const { logout } = useLogout()

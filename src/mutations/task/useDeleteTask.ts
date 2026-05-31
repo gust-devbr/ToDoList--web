@@ -1,17 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toggleTask } from "@/services/query/task-service";
+import { deleteTask } from "@/services/client/task-service";
 
-export function useToggleTask() {
+export function useDeleteTask() {
     const queryClient =
         useQueryClient()
 
     return useMutation({
-        mutationFn: (id: string) => toggleTask(id),
+        mutationFn: (id: string) => deleteTask(id),
 
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ['tasks']
             })
         }
+
     })
 }

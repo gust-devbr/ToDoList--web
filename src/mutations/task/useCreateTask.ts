@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createTask } from "@/services/query/task-service";
+import { createTask } from "@/services/client/task-service";
 
 type Props = {
     title: string,

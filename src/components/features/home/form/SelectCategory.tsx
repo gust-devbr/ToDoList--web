@@ -7,7 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useCategories } from "@/hooks/react-query/category/useCategories"
+import { useCategories } from "@/queries/useCategories"
 
 type SelectProps = {
     value: string | null

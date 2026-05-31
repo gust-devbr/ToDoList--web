@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { archiveTask } from "@/services/query/task-service";
+import { archiveTask } from "@/services/client/task-service";
 
 export function useArchiveTask() {
     const queryClient =

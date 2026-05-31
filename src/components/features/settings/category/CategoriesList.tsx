@@ -1,15 +1,10 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { Table, TableBody, TableCell, TableRow, } from "@/components/ui/table"
+import { useDeleteCategory } from "@/mutations/category/useDeleteCategory"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-} from "@/components/ui/table"
-import { useCategories } from "@/hooks/react-query/category/useCategories"
-import { useDeleteCategory } from "@/hooks/react-query/category/useDeleteCategory"
+import { useCategories } from "@/queries/useCategories"
+import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react"
 
 export function CategoryList() {

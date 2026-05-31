@@ -1,5 +1,5 @@
 import { Response } from "@/utils/response";
-import { userService } from "@/services/userServices";
+import { userService } from "@/services/api/userServices";
 import { getToken } from "@/utils/auth";
 import { NextRequest } from "next/server";
 import bcrypt from "bcryptjs";

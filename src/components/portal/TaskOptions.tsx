@@ -2,7 +2,7 @@
 
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
-import { Archive, ChevronDown, Trash, Trash2 } from "lucide-react"
+import { Archive, ChevronDown, Trash2 } from "lucide-react"
 import { Task } from "@/types/task"
 import { UpdateTitleModal } from "../features/home/modal/UpdateTask"
 

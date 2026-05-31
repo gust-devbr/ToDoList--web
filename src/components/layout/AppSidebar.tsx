@@ -10,14 +10,14 @@ import {
     SidebarGroup,
     useSidebar,
 } from "@/components/ui/sidebar"
-import { Avatar, AvatarImage } from "../ui/avatar";
-import { UserOptionPortal } from "../portal/UserOptions";
 import { Archive, Cog, House, SquareCheckBig } from "lucide-react";
+import { UserOptionPortal } from "../portal/UserOptions";
+import { Avatar, AvatarImage } from "../ui/avatar";
+import { useGetUser } from "@/queries/useUser";
 import { usePathname } from "next/navigation";
+import { Separator } from "../ui/separator";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Separator } from "../ui/separator";
-import { useGetUser } from "@/hooks/react-query/user/useGetUser";
 
 export function AppSidebar() {
     const { data: user } = useGetUser()

@@ -1,16 +1,16 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible"
-import { ChevronsUpDown } from "lucide-react"
-import { useState } from "react"
 import { StatisticsCards } from "./StatisticsCards"
+import { Button } from "@/components/ui/button"
+import { ChevronsUpDown } from "lucide-react"
+import { useTasks } from "@/queries/useTask"
 import { ChartTasks } from "./ChartTasks"
-import { useTasks } from "@/hooks/react-query/task/useTask"
+import { useState } from "react"
 
 export function ChartCollapsible() {
     const [isOpen, setIsOpen] = useState<boolean>(false)

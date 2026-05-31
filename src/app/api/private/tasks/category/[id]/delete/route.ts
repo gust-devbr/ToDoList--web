@@ -1,7 +1,7 @@
 import { Response } from "@/utils/response";
 import { getToken } from "@/utils/auth";
 import { NextRequest } from "next/server";
-import { categoryService } from "@/services/categoryService";
+import { categoryService } from "@/services/api/categoryService";
 
 export async function DELETE(
     req: NextRequest,

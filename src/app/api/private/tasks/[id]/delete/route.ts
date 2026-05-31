@@ -1,5 +1,5 @@
 import { Response } from "@/utils/response";
-import { taskService } from "@/services/taskService";
+import { taskService } from "@/services/api/taskService";
 import { getToken } from "@/utils/auth";
 import { NextRequest } from "next/server";
 

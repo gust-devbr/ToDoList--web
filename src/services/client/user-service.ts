@@ -1,4 +1,3 @@
-import { useLogout } from "@/hooks/react-query/user/useLogout";
 import { AuthResponse } from "@/types/authContext";
 import { User } from "@/types/user";
 import { apiFetch } from "next-lib-utils"

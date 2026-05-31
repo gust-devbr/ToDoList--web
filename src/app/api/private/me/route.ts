@@ -1,6 +1,6 @@
 import { Response } from "@/utils/response";
 import { getToken } from "@/utils/auth";
-import { userService } from "@/services/userServices";
+import { userService } from "@/services/api/userServices";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {

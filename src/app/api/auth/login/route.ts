@@ -1,5 +1,5 @@
 import { Response } from "@/utils/response";
-import { userService } from "@/services/userServices";
+import { userService } from "@/services/api/userServices";
 import { NextRequest } from "next/server";
 import { jwtUtil } from "@/utils/jwt";
 import bcrypt from "bcryptjs";

@@ -6,7 +6,7 @@ import React, { useState } from "react"
 import { toast } from "sonner"
 import { Spinner } from "@/components/ui/spinner"
 import { SelectCategory } from "./SelectCategory"
-import { useCreateTask } from "@/hooks/react-query/task/useCreateTask"
+import { useCreateTask } from "@/mutations/task/useCreateTask"
 
 export function AddTask() {
     const [title, setTitle] = useState<string>("")
