@@ -10,7 +10,6 @@ import {
     SidebarGroup,
     useSidebar,
 } from "@/components/ui/sidebar"
-import { useAuth } from "@/context/AuthContext";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { UserOptionPortal } from "../portal/UserOptions";
 import { Archive, Cog, House, SquareCheckBig } from "lucide-react";
@@ -18,9 +17,10 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Separator } from "../ui/separator";
+import { useGetUser } from "@/hooks/react-query/user/useGetUser";
 
 export function AppSidebar() {
-    const { user } = useAuth()
+    const { data: user } = useGetUser()
     const pathname = usePathname()
     const { state } = useSidebar()
     const isCollapsed = state === "collapsed"

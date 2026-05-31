@@ -1,7 +1,7 @@
 import { User } from "./user";
 
 type AuthResponse = {
-    ok: boolean,
+    success: boolean,
     message: string
     data: unknown
 }

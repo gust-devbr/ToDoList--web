@@ -1,5 +1,3 @@
-"use client"
-
 import { AccountCard } from "@/components/features/settings/card/AccountCard"
 import { SecurityCard } from "@/components/features/settings/card/SecurityCard"
 import { ThemeCard } from "@/components/features/settings/card/ThemeCard"

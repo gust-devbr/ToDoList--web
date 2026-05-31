@@ -3,10 +3,10 @@
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { ChevronDown, LogOut } from "lucide-react"
-import { useAuth } from "@/context/AuthContext"
+import { useLogout } from "@/hooks/react-query/user/useLogout"
 
 export function UserOptionPortal() {
-    const { logout } = useAuth()
+    const { logout } = useLogout()
 
     return (
         <Popover>

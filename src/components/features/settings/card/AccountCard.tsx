@@ -1,14 +1,16 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { useEditUser } from "@/hooks/react-query/user/useEditUser"
+import { useGetUser } from "@/hooks/react-query/user/useGetUser"
+import { useLogout } from "@/hooks/react-query/user/useLogout"
+import React, { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useAuth } from "@/context/AuthContext"
-import { apiFetch } from "@/utils/api"
 import { Pencil } from "lucide-react"
-import React, { useEffect, useState } from "react"
 import { toast } from "sonner"
+import { Spinner } from "@/components/ui/spinner"
 
 type currentUserProps = {
     name: string
@@ -16,7 +18,9 @@ type currentUserProps = {
 }
 
 export function AccountCard() {
-    const { user, logout } = useAuth()
+    const { data: user } = useGetUser()
+    const { logout } = useLogout()
+    const { mutateAsync, isPending } = useEditUser()
 
     const [isEditing, setIsEditing] = useState<string | null>(null)
     const [form, setForm] = useState<currentUserProps>({
@@ -34,22 +38,16 @@ export function AccountCard() {
         }
 
         try {
-            const data = await apiFetch("/private/user", {
-                method: "PUT",
-                body: JSON.stringify({
-                    ...(name && { name }),
-                    ...(email && { email })
-                })
-            })
+            const data = await mutateAsync({ name, email })
 
-            if (data.ok) {
-                toast.success(data.message)
+            if (data.success) {
+                toast.success("Sucesso", { description: data.message })
                 setTimeout(() => logout(), 1000)
             } else {
-                toast.error(data.message)
+                toast.error("Erro", { description: data.message })
             }
-        } catch (error) {
-            console.error(error)
+        } catch (err) {
+            console.error(err)
         }
     }
 
@@ -123,7 +121,9 @@ export function AccountCard() {
                         className="bg-blue-600 text-white text-[16px]"
                         disabled={disabledSubmitBtn}
                     >
-                        Salvar alterações
+                        {isPending
+                            ? <Spinner className="w-5! h-5!" />
+                            : "Salvar alterações"}
                     </Button>
                 </CardFooter>
             )}

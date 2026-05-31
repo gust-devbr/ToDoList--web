@@ -9,73 +9,70 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog"
+import { useDeleteUser } from "@/hooks/react-query/user/useDeleteUser"
+import { useLogout } from "@/hooks/react-query/user/useLogout"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useAuth } from "@/context/AuthContext"
-import { apiFetch } from "@/utils/api"
 import { useState } from "react"
 import { toast } from "sonner"
+import { Spinner } from "@/components/ui/spinner"
 
 export function DeleteFormModal() {
-    const { logout } = useAuth()
+    const { logout } = useLogout()
+    const { mutateAsync, isPending } = useDeleteUser()
 
     const [password, setPassword] = useState<string>("")
-    const [loading, setLoading] = useState<boolean>(false)
 
     async function handleDelete() {
-        setLoading(true)
-
         if (!password) {
-            toast.error("Insira sua senha")
+            toast.error("Senha obrigatória")
             return
         }
 
         try {
-            const data = await apiFetch("/private/user/delete-account", {
-                method: "DELETE",
-                body: JSON.stringify({ password })
-            })
+            const data = await mutateAsync(password)
 
-            if (data.ok) {
-                toast.success(data?.message)
+            if (data.success) {
+                toast.success(data.message)
                 await logout()
             } else {
-                toast.error(data?.message)
+                toast.error("Erro", { description: data.message })
             }
-        } finally {
-            setLoading(false)
+        } catch (err) {
+            console.error(err)
         }
     }
 
-    const disabledBtn = !password || loading
+    const disabledBtn = !password || isPending
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <p>Continuar</p>
+                <Button variant="outline">Continuar</Button>
             </DialogTrigger>
 
             <DialogContent>
                 <DialogTitle className="text-red-600">Excluir conta</DialogTitle>
                 <DialogDescription>Insira sua senha para confirmar a exclusão</DialogDescription>
 
-                <div>
-                    <Input
-                        disabled={loading}
-                        placeholder="Sua senha..."
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
+                <Input
+                    disabled={isPending}
+                    placeholder="Sua senha..."
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
 
                 <DialogFooter>
                     <DialogClose>Cancelar</DialogClose>
-                    <button
+                    <Button
+                        variant="outline"
                         disabled={disabledBtn}
-                        className={disabledBtn ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}
                         onClick={handleDelete}
                     >
-                        Confirmar
-                    </button>
+                        {isPending
+                            ? <Spinner className="w-5! h-5!" />
+                            : " Confirmar"}
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

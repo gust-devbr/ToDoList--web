@@ -3,13 +3,17 @@
 import { AddTask } from "@/components/features/home/form/AddTask"
 import { ChartCollapsible } from "@/components/features/home/chart/ChartCollapsible"
 import { TasksTable } from "@/components/features/home/table/TasksList"
-import { useAuth } from "@/context/AuthContext"
+// import { useAuth } from "@/context/AuthContext"
 import { getGreeting } from "@/utils/greeting"
 import { TaskFilter } from "@/components/features/home/table/TaskFilter"
+import { useGetUser } from "@/hooks/react-query/user/useGetUser"
 
 export default function HomePage() {
     const greeting = getGreeting()
-    const { user } = useAuth()
+    // const { user } = useAuth()
+    const {
+        data: user
+    } = useGetUser()
 
     return (
         <div className="space-y-5 px-5">

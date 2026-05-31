@@ -5,7 +5,7 @@ export default async function Home() {
   const token = await getToken()
 
   if (!token) {
-    redirect("/screens/auth")
+    redirect("/screens/login")
   }
 
   redirect("/screens/home")

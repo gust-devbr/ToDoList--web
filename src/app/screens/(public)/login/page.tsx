@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState } from "react"
-import { useAuth } from "@/context/AuthContext"
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -10,54 +9,45 @@ import { toast } from "sonner"
 import { Spinner } from "@/components/ui/spinner"
 import { Eye, EyeOff } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useLoginUser } from "@/hooks/react-query/user/useLoginUser"
 
 type FormProps = {
-    name: string
     email?: string
     password: string
 }
 
-const initialState: FormProps = {
-    name: "",
-    email: "",
-    password: ""
-}
-
 export default function AuthPage() {
-    const { login, register } = useAuth()
+    const login = useLoginUser()
+
     const router = useRouter()
 
-    const [loading, setLoading] = useState<boolean>(false)
-    const [isLogin, setIsLogin] = useState<boolean>(true)
     const [showPass, setShowPass] = useState<boolean>(false)
-    const [form, setForm] = useState(initialState)
+    const [form, setForm] = useState<FormProps>({
+        email: "",
+        password: ""
+    })
 
     async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
-        const { name, email, password } = form;
+        const { email, password } = form;
 
-        if (!isLogin && !name || !email || !password) {
-            toast.error("Complete os campos")
+        if (!email || !password) {
+            toast.error("Erro", { description: "Complete os campos" })
             return
         }
 
         try {
-            setLoading(true)
+            const data = await login.mutateAsync({ email, password })
 
-            const data = isLogin
-                ? await login(email, password)
-                : await register(name, email, password)
-
-            if (data.ok) {
-                toast.success(data.message)
+            if (data.success) {
+                toast.success("Sucesso", { description: data.message, })
                 setTimeout(() => router.replace("/screens/home"), 1000)
             } else {
-                toast.error(data.message)
+                toast.error("Erro", { description: data.message })
             }
-        } catch (error) {
-            console.error(error)
-        } finally {
-            setLoading(false)
+
+        } catch (err) {
+            console.error(err)
         }
     }
 
@@ -65,41 +55,27 @@ export default function AuthPage() {
         <div className="p-5 flex justify-center items-center h-screen">
             <Card className="md:w-150 w-full">
                 <CardHeader>
-                    <CardTitle className="text-3xl font-semibold">{isLogin ? "Login" : "Cadastro"}</CardTitle>
+                    <CardTitle className="text-3xl font-semibold">Login</CardTitle>
                     <CardDescription>
-                        Preencha os dados abaixo para {isLogin ? 'entrar na sua conta' : 'criar sua conta'}
+                        Preencha os dados abaixo para entrar na sua conta
                     </CardDescription>
                     <CardAction>
                         <Button
                             className="text-lg"
                             variant="link"
-                            onClick={() => setIsLogin(!isLogin)}
+                            onClick={() => router.replace("/screens/register")}
                         >
-                            {!isLogin ? "Login" : "Cadastro"}
+                            Cadastro
                         </Button>
                     </CardAction>
                 </CardHeader>
 
                 <CardContent>
                     <div className="space-y-1">
-
-                        {!isLogin && (
-                            <>
-                                <Label className="text-lg" htmlFor="name">Nome</Label>
-                                <Input
-                                    id="name"
-                                    autoFocus={!isLogin}
-                                    value={form.name}
-                                    onChange={e => setForm(prev => ({ ...prev, name: e.target.value }))}
-                                    className="py-5 text-lg"
-                                />
-                            </>
-                        )}
-
                         <Label className="text-lg" htmlFor="email">Email</Label>
                         <Input
                             id="email"
-                            autoFocus={isLogin}
+                            autoFocus
                             autoCapitalize="off"
                             value={form.email}
                             onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
@@ -129,9 +105,9 @@ export default function AuthPage() {
                             onClick={handleSubmit}
                             className="w-full py-5 text-xl mt-5 bg-blue-700"
                         >
-                            {loading
+                            {login.isPending
                                 ? <Spinner className="w-5! h-5!" />
-                                : (isLogin ? "Entrar" : "Cadastrar")
+                                : "Entrar"
                             }
                         </Button>
                     </div>

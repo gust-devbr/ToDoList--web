@@ -1,6 +1,12 @@
-"use client"
-
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog"
 import { ChevronRight, Trash2 } from "lucide-react"
 import { DeleteFormModal } from "./DeleteForm"
 
