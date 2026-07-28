@@ -1,7 +1,7 @@
-import { AccountCard } from "@/components/features/settings/card/AccountCard"
-import { SecurityCard } from "@/components/features/settings/card/SecurityCard"
-import { ThemeCard } from "@/components/features/settings/card/ThemeCard"
-import { CategoryCard } from "@/components/features/settings/category/CategoryCard"
+import { CategoryCard } from "@/modules/categories/components/CategoryCard"
+import { SecurityCard } from "@/modules/settings/components/account/SecurityCard"
+import { AccountCard } from "@/modules/settings/components/account/AccountCard"
+import { ThemeCard } from "@/modules/settings/components/theme/ThemeCard"
 
 export default function SettingsPage() {
     return (

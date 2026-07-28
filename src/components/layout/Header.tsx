@@ -1,10 +1,13 @@
 "use client"
 
-import { Card, CardContent } from "../ui/card"
-import { Button } from "../ui/button"
-import { SidebarTrigger } from "../ui/sidebar"
-import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
+
+import { useTheme } from "next-themes"
+
+import { Card, CardContent } from "../ui/card"
+import { SidebarTrigger } from "../ui/sidebar"
+import { Button } from "../ui/button"
+
 import { Moon, Sun } from "lucide-react"
 
 export function Header() {

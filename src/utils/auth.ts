@@ -1,29 +1,17 @@
-import { cookies } from "next/headers";
-import { jwtUtil } from "./jwt";
 import { NextRequest } from "next/server";
+import { Jwt } from "./class/Jwt";
 
-type TokenPayload = { id: string }
+export function getUserId(req: NextRequest) {
+    const token =
+        req.headers.get("authorization")?.split(" ")[1]
+        || req.cookies.get("token")?.value
 
-async function getUserFromToken(tokenFromHeader: string | null) {
-    const cookieStore = await cookies()
-
-    const token = tokenFromHeader || cookieStore.get("token")?.value
     if (!token) return null
 
     try {
-        return jwtUtil.verify<TokenPayload>(token)
+        return Jwt.verify(token).id
     } catch {
         return null
     }
-}
 
-export async function getToken(req?: NextRequest): Promise<TokenPayload | null> {
-    const authHeader = req?.headers.get("authorization")
-
-    const tokenHeader = authHeader?.split(" ")[1] || null
-
-    const user = await getUserFromToken(tokenHeader)
-    if (!user) return null
-
-    return user
 }

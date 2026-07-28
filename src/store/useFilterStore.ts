@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-import { StatusType } from "@/types/task"
+import { StatusType } from "@/modules/tasks/types"
 
 type FilterStore = {
     filter: StatusType

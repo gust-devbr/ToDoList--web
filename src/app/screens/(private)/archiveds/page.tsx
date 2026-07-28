@@ -1,4 +1,4 @@
-import { ArchivedsList } from "@/components/features/archived/table/ArchivedsList";
+import { ArchivedsTaskList } from "@/modules/tasks/components/ArchivedsTaskList";
 
 export default function ArchivedsTasksPage() {
     return (
@@ -11,7 +11,7 @@ export default function ArchivedsTasksPage() {
             </header>
 
             <div>
-                <ArchivedsList />
+                <ArchivedsTaskList />
             </div>
         </div>
     )

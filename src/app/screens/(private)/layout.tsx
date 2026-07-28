@@ -1,24 +1,12 @@
-"use client"
+import { ThemeProvider } from "next-themes"
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/layout/AppSidebar"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { useLogout } from "@/mutations/user/useLogout"
+
 import { Header } from "@/components/layout/Header"
-import { useGetUser } from "@/queries/useUser"
-import { ReactNode, useEffect } from "react"
-import { ThemeProvider } from "next-themes"
 
-export default function PrivateLayout({ children }: { children: ReactNode }) {
-    const { isError } = useGetUser()
-    const { logout } = useLogout()
-
-    useEffect(() => {
-        if (isError) {
-            logout()
-        }
-    }, [isError])
-
+export default function PrivateLayout({ children }: { children: React.ReactNode }) {
     return (
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <TooltipProvider>

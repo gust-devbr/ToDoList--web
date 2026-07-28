@@ -1,7 +1,5 @@
-import { Response } from "@/utils/response";
+import { AuthController } from "@/modules/auth/controller/auth-controller";
 
 export async function POST() {
-    const res = Response.success(null, "Logout com sucesso")
-    res.cookies.set("token", "", { maxAge: 0, path: "/" })
-    return res
+    return await new AuthController().handleLogout()
 }

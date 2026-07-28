@@ -1,5 +1,10 @@
 "use client"
 
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+
+import { cn } from "@/lib/utils";
+
 import {
     Sidebar,
     SidebarContent,
@@ -10,18 +15,19 @@ import {
     SidebarGroup,
     useSidebar,
 } from "@/components/ui/sidebar"
-import { Archive, Cog, House, SquareCheckBig } from "lucide-react";
-import { UserOptionPortal } from "../portal/UserOptions";
-import { Avatar, AvatarImage } from "../ui/avatar";
-import { useGetUser } from "@/queries/useUser";
-import { usePathname } from "next/navigation";
 import { Separator } from "../ui/separator";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { Avatar, AvatarImage } from "../ui/avatar";
+import { UserOptions } from "../../modules/user/components/UserOptions";
+
+import { Archive, Cog, House, SquareCheckBig } from "lucide-react";
+
+import { useUser } from "@/modules/user/hooks/useUserHooks";
 
 export function AppSidebar() {
-    const { data: user } = useGetUser()
+    const { data: user } = useUser()
+
     const pathname = usePathname()
+
     const { state } = useSidebar()
     const isCollapsed = state === "collapsed"
 
@@ -99,7 +105,7 @@ export function AppSidebar() {
                                 <p className="text-lg truncate">{user?.name}</p>
                                 <p className="text-zinc-500 text-sm truncate">{user?.email}</p>
                             </div>
-                            <UserOptionPortal />
+                            <UserOptions />
                         </>
                     )}
                 </div>

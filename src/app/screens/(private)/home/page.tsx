@@ -1,15 +1,17 @@
 "use client"
 
-import { ChartCollapsible } from "@/components/features/home/chart/ChartCollapsible"
-import { TaskFilter } from "@/components/features/home/table/TaskFilter"
-import { TasksTable } from "@/components/features/home/table/TasksList"
-import { AddTask } from "@/components/features/home/form/AddTask"
+import { ChartCollapsible } from "@/modules/dashboard/components/ChartCollapsible"
+import { TaskFilter } from "@/modules/tasks/components/TaskFilter"
+import { TasksTable } from "@/modules/tasks/components/TasksList"
+import { CreateTaskForm } from "@/modules/tasks/components/CreateTaskForm"
+
 import { getGreeting } from "@/utils/greeting"
-import { useGetUser } from "@/queries/useUser"
+
+import { useUser } from "@/modules/user/hooks/useUserHooks"
 
 export default function HomePage() {
     const greeting = getGreeting()
-    const { data: user } = useGetUser()
+    const { data: user } = useUser()
 
     return (
         <div className="space-y-5 px-5">
@@ -21,7 +23,7 @@ export default function HomePage() {
 
             <section>
                 <ChartCollapsible />
-                <AddTask />
+                <CreateTaskForm />
             </section>
 
             <main className="border p-2 rounded-sm">

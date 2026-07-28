@@ -1,18 +1,15 @@
-import { Response } from "@/utils/response";
-import { getToken } from "@/utils/auth";
-import { userService } from "@/services/api/userServices";
 import { NextRequest } from "next/server";
 
+import { UserController } from "@/modules/user/controller/user-controller";
+
 export async function GET(req: NextRequest) {
-    try {
-        const user = await getToken(req)
-        if (!user) return Response.error("Não autorizado", null, 401)
+    return await new UserController().getHandler(req)
+}
 
-        const find = await userService.findById(user.id)
-        if (!find) return Response.error("Usuário não encontrado", null, 404)
+export async function PUT(req: NextRequest) {
+    return await new UserController().putHandler(req)
+}
 
-        return Response.success({ user: find })
-    } catch (error) {
-        return Response.error("Erro ao buscar dados", error)
-    }
+export async function DELETE(req: NextRequest) {
+    return await new UserController().deleteHandler(req)
 }
